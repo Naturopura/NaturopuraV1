@@ -33,7 +33,7 @@ export const userSignup = async (
       let hashPass: string = "";
 
       // Generate salt and hash password
-      bcryptjs
+      return bcryptjs
         .genSalt(saltRounds)
         .then((salt: string) => {
           return bcryptjs.hash(signature, salt);
@@ -56,7 +56,7 @@ export const userSignup = async (
           // Construct response object for the newly created user
           const newCustomer = {
             isActive: customer.isActive,
-            id: customer.id,
+            // id: customer.id,
             firstName: customer.firstName,
             lastName: customer.lastName,
             role: customer.role,
@@ -66,13 +66,13 @@ export const userSignup = async (
           // Return success response
           return ApiResponse.success("Successfully registered.", {
             createSuccessResponse: "Successfully registered.",
-            // token: isRemember
-            //   ? jwt.sign(
-            //       newCustomer,
-            //       process.env.TOKEN_SECRET || env.TOKEN_SECRET,
-            //       { expiresIn: "48h" }
-            //     )
-            //   : "",
+            token: isRemember
+              ? jwt.sign(
+                  newCustomer,
+                  process.env.TOKEN_SECRET || env.TOKEN_SECRET,
+                  { expiresIn: "48h" }
+                )
+              : "",
             ...newCustomer,
             expiresIn: "48h",
           });
@@ -115,7 +115,7 @@ export const userLogin = async (signature: any, key: any) => {
       if (resData) {
         const newCustomer = {
           isActive: user.isActive,
-          id: user._id,
+          // id: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           role: user.role,

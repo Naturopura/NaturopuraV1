@@ -1,4 +1,6 @@
-import { adminExist, adminNotExist, setLoading } from "@/state";
+"use client";
+
+import { adminExist, adminNotExist, setLoading } from "@/store/adminSlice";
 import SignUpAdmin from "../api/signUp";
 import { Dispatch } from "redux";
 

@@ -3,8 +3,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { BrowserWallet } from "@meshsdk/core";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import SignUp from "@/app/action/signupAuthAction";
+import { useAppDispatch } from "@/store";
+// import ProtectedRoute from "@/auth/ProtectedRoute";
 
 const AdminSignup = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,7 +38,7 @@ const AdminSignup = () => {
     "cold-storage",
   ]);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {

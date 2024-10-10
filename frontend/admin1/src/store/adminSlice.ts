@@ -31,7 +31,7 @@ const initialState: adminReducerInitialState = {
 };
 
 export const adminSlice = createSlice({
-  name: "adminSlice",
+  name: "admin",
   initialState,
   reducers: {
     adminExist: (state, action: PayloadAction<Admin>) => {
@@ -56,4 +56,4 @@ export const adminSlice = createSlice({
 
 export const { adminExist, adminNotExist, adminLogout, setLoading } =
   adminSlice.actions;
-export default adminSlice.reducer;
+export const adminReducer = adminSlice.reducer;

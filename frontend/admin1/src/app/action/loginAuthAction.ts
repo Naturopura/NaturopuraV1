@@ -1,4 +1,6 @@
-import { adminExist, adminNotExist, setLoading } from "@/state"; // Adjust the import path
+"use client";
+
+import { adminExist, adminNotExist, setLoading } from "@/store/adminSlice"; // Adjust the import path
 import LoginAdmin from "../api/login"; // Adjust the import path
 import { Dispatch } from "redux";
 

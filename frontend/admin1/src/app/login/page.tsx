@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import Login from "@/app/action/loginAuthAction";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import { useAppDispatch } from "../redux";
+// import { useAppDispatch } from "../redux";
+// import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/store";
+import Image from "next/image";
 
 // Helper function to convert string to hex
 const stringToHex = (str: string) => {
@@ -43,7 +46,13 @@ const AdminLogin = () => {
   return (
     <div className="">
       <main className="main flex items-center flex-col">
-        <img src="/images/Group-230.png" alt="" className="m-4" />
+        <Image
+          src="/images/Group-230.png"
+          height={"7"}
+          width={"5"}
+          alt=""
+          className="m-4"
+        />
         <label htmlFor="mySelect" className="text-red-700">
           Sign-up with Nami Wallet
         </label>

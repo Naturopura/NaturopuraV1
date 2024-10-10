@@ -34,7 +34,7 @@ const userSignup = (firstName, lastName, email, signature, key, address, isRemem
         else {
             let hashPass = "";
             // Generate salt and hash password
-            bcryptjs_1.default
+            return bcryptjs_1.default
                 .genSalt(saltRounds)
                 .then((salt) => {
                 return bcryptjs_1.default.hash(signature, salt);
@@ -55,14 +55,16 @@ const userSignup = (firstName, lastName, email, signature, key, address, isRemem
                 // Construct response object for the newly created user
                 const newCustomer = {
                     isActive: customer.isActive,
-                    id: customer.id,
+                    // id: customer.id,
                     firstName: customer.firstName,
                     lastName: customer.lastName,
                     role: customer.role,
                     email: customer.email,
                 };
                 // Return success response
-                return ApiResponse_1.default.success("Successfully registered.", Object.assign(Object.assign({ createSuccessResponse: "Successfully registered." }, newCustomer), { expiresIn: "48h" }));
+                return ApiResponse_1.default.success("Successfully registered.", Object.assign(Object.assign({ createSuccessResponse: "Successfully registered.", token: isRemember
+                        ? jsonwebtoken_1.default.sign(newCustomer, process.env.TOKEN_SECRET || environment_1.default.TOKEN_SECRET, { expiresIn: "48h" })
+                        : "" }, newCustomer), { expiresIn: "48h" }));
             }))
                 .catch((err) => {
                 console.error(err.message);
@@ -91,7 +93,7 @@ const userLogin = (signature, key) => __awaiter(void 0, void 0, void 0, function
             if (resData) {
                 const newCustomer = {
                     isActive: user.isActive,
-                    id: user._id,
+                    // id: user._id,
                     firstName: user.firstName,
                     lastName: user.lastName,
                     role: user.role,

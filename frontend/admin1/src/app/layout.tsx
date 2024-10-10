@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { MeshProvider } from "@meshsdk/react";
-import StoreProvider from "./redux";
-import { PersistGate } from "redux-persist/integration/react";
 import ProtectedRoute from "@/auth/ProtectedRoute";
+import dynamic from "next/dynamic";
+import { Toaster } from "react-hot-toast";
+// import ReduxProvider from "@/store/redux-provider";
+// import { wrapper } from "./redux";
+// import ClientProvider from "./ClientProvider";
+
+const ReduxProvider = dynamic(() => import("@/store/redux-provider"), {
+  ssr: false,
+});
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,7 +39,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ProtectedRoute>{children}</ProtectedRoute>
+        {/* <MeshProvider> */}
+        <Toaster position="top-center" />
+        <ReduxProvider>
+          <ProtectedRoute>{children}</ProtectedRoute>
+        </ReduxProvider>
+        {/* </MeshProvider> */}
       </body>
     </html>
   );
