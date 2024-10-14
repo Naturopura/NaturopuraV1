@@ -2,15 +2,10 @@
 
 import React from "react";
 import { useEffect, useState } from "react";
-import { BrowserWallet } from "@meshsdk/core";
-// import { useDispatch } from "react-redux";
-import SignUp from "@/app/action/signupAuthAction";
 import { useAppDispatch } from "@/store";
-// import ProtectedRoute from "@/auth/ProtectedRoute";
+import SignUp from "@/app/action/signupAuthAction";
 
 const AdminSignup = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [wallets, setWallets] = useState<Array<any>>([]);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -23,8 +18,9 @@ const AdminSignup = () => {
     state: "",
     city: "",
     zipCode: "",
-    walletName: "",
+    walletName: "MetaMask", // Default to MetaMask
   });
+
   const [role] = useState<Array<string>>([
     "admin",
     "consumer",
@@ -39,6 +35,7 @@ const AdminSignup = () => {
   ]);
 
   const dispatch = useAppDispatch();
+
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -51,34 +48,65 @@ const AdminSignup = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const wallet = await BrowserWallet.enable(formData.walletName);
-    const addresses = await wallet.getUsedAddresses();
-    const signature = await wallet.signData(addresses[0], "mesh");
-    dispatch(
-      SignUp({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        isRemember: true,
-        isActive: true,
-        signature: signature.signature,
-        walletAddress: addresses[0],
-        dialingCode: formData.dialingCode,
-        addressLine: formData.addressLine,
-        phone: formData.phone,
-        country: formData.country,
-        state: formData.state,
-        city: formData.city,
-        zipCode: formData.zipCode,
-        key: signature.key,
-        role: formData.role,
-      })
-    );
+
+    // Checking if MetaMask is selected
+    if (formData.walletName !== "MetaMask") {
+      alert("Please select MetaMask to proceed.");
+      return;
+    }
+
+    try {
+      // Connecting to MetaMask
+      if (typeof window.ethereum !== "undefined") {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const walletAddress: string = accounts[0];
+
+        // Requesting the signature from the user
+        const message = `Please sign this message to confirm your identity for Naturopura. Wallet: ${walletAddress}`;
+        const signature = await window.ethereum.request({
+          method: "personal_sign",
+          params: [message, walletAddress],
+        });
+
+        const key = walletAddress; // Replace with actual key if different
+
+        // Dispatching sign-up action
+        dispatch(
+          SignUp({
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            isRemember: true,
+            isActive: true,
+            walletAddress: walletAddress, // Ensure wallet address is string
+            signature: signature, // Adding signature to the payload
+            dialingCode: formData.dialingCode,
+            addressLine: formData.addressLine,
+            phone: formData.phone,
+            country: formData.country,
+            state: formData.state,
+            city: formData.city,
+            zipCode: formData.zipCode,
+            role: formData.role,
+            key: key, // Adding the key field
+          })
+        );
+      } else {
+        alert("MetaMask is not installed. Please install it to proceed.");
+      }
+    } catch (error) {
+      console.error("Error connecting to MetaMask or signing the message:", error);
+      alert("Failed to connect with MetaMask. Please try again.");
+    }
   };
 
   useEffect(() => {
-    const getBrowser = BrowserWallet.getInstalledWallets();
-    setWallets(getBrowser);
+    // Check if MetaMask is installed
+    if (typeof window.ethereum === "undefined") {
+      console.log("MetaMask is not installed. Please install it.");
+    }
   }, []);
 
   return (
@@ -204,14 +232,8 @@ const AdminSignup = () => {
                   onChange={handleChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 >
-                  <option>Select a wallet</option>
-                  {wallets.map((item, index) => {
-                    return (
-                      <option key={index} value={item.name}>
-                        {item.name}
-                      </option>
-                    );
-                  })}
+                  <option value="MetaMask">MetaMask</option>
+                  {/* Other wallets can be added here if necessary */}
                 </select>
               </div>
             </div>
@@ -234,16 +256,19 @@ const AdminSignup = () => {
                   onChange={handleChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 >
-                  <option>Select Type</option>
-                  {role.map((item, index) => {
-                    return <option key={index}>{item}</option>;
-                  })}
+                  <option value="" disabled>
+                    Select Role
+                  </option>
+                  {role.map((roleOption, index) => (
+                    <option key={index} value={roleOption}>
+                      {roleOption.charAt(0).toUpperCase() + roleOption.slice(1).replace(/_/g, ' ')}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
           </div>
-
-          <div className="sm:col-span-2">
+          <div>
             <label
               htmlFor="addressLine"
               className="block text-sm font-semibold leading-6 text-gray-900"
@@ -262,7 +287,7 @@ const AdminSignup = () => {
               />
             </div>
           </div>
-          <div className="sm:col-span-2">
+          <div>
             <label
               htmlFor="country"
               className="block text-sm font-semibold leading-6 text-gray-900"
@@ -271,9 +296,9 @@ const AdminSignup = () => {
             </label>
             <div className="mt-2.5">
               <input
-                type="text"
                 id="country"
                 name="country"
+                type="text"
                 value={formData.country}
                 onChange={handleChange}
                 required
@@ -281,7 +306,7 @@ const AdminSignup = () => {
               />
             </div>
           </div>
-          <div className="sm:col-span-2">
+          <div>
             <label
               htmlFor="state"
               className="block text-sm font-semibold leading-6 text-gray-900"
@@ -290,9 +315,9 @@ const AdminSignup = () => {
             </label>
             <div className="mt-2.5">
               <input
-                type="text"
                 id="state"
                 name="state"
+                type="text"
                 value={formData.state}
                 onChange={handleChange}
                 required
@@ -300,7 +325,7 @@ const AdminSignup = () => {
               />
             </div>
           </div>
-          <div className="sm:col-span-2">
+          <div>
             <label
               htmlFor="city"
               className="block text-sm font-semibold leading-6 text-gray-900"
@@ -309,9 +334,9 @@ const AdminSignup = () => {
             </label>
             <div className="mt-2.5">
               <input
-                type="text"
                 id="city"
                 name="city"
+                type="text"
                 value={formData.city}
                 onChange={handleChange}
                 required
@@ -319,18 +344,18 @@ const AdminSignup = () => {
               />
             </div>
           </div>
-          <div className="sm:col-span-2">
+          <div>
             <label
               htmlFor="zipCode"
               className="block text-sm font-semibold leading-6 text-gray-900"
             >
-              ZIP Code
+              Zip Code
             </label>
             <div className="mt-2.5">
               <input
-                type="text"
                 id="zipCode"
                 name="zipCode"
+                type="text"
                 value={formData.zipCode}
                 onChange={handleChange}
                 required
@@ -339,14 +364,12 @@ const AdminSignup = () => {
             </div>
           </div>
         </div>
-        <div className="mt-10">
-          <button
-            type="submit"
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
-          >
-            Register New Account
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="mt-10 block w-full rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+        >
+          Sign Up
+        </button>
       </form>
     </div>
   );

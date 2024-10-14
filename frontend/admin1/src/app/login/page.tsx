@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import '@rainbow-me/rainbowkit/styles.css';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Login from "@/app/action/loginAuthAction";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import img1 from "@/assets/Group-230.png"
 // import { useAppDispatch } from "../redux";
 // import { useDispatch } from "react-redux";
 import { useAppDispatch } from "@/store";
@@ -47,16 +50,16 @@ const AdminLogin = () => {
     <div className="">
       <main className="main flex items-center flex-col">
         <Image
-          src="/images/Group-230.png"
-          height={"7"}
-          width={"5"}
+          src={img1}
+          height={"100"}
+          width={"200"}
           alt=""
           className="m-4"
         />
-        <label htmlFor="mySelect" className="text-red-700">
+        {/* <label htmlFor="mySelect" className="text-red-700">
           Sign-up with Nami Wallet
-        </label>
-        {isNamiInstalled ? (
+        </label> */}
+        {/* {isNamiInstalled ? (
           <button
             onClick={connectToNamiWallet}
             type="button"
@@ -64,16 +67,21 @@ const AdminLogin = () => {
           >
             Login with Nami Wallet
           </button>
+
         ) : (
           <p className="text-red-500">Nami Wallet is not installed.</p>
-        )}
+        )} */}
 
         <button
           type="button"
           className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mt-4"
         >
-          <Link href={"/signup"}>Signup</Link>
+          <Link href={"/signup"}> <b>Signup</b> </Link>
+
         </button>
+        <div className="mt-2">
+        <ConnectButton label="Sign in with wallet" />
+        </div>
       </main>
     </div>
   );
