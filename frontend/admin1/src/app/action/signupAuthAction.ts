@@ -26,14 +26,16 @@ export const SignUp = (credentials: {
     dispatch(setLoading(true));
     try {
       const response = await SignUpAdmin(credentials);
-      console.log("signupresponse", response);
+      console.log("signup response is here", response);
+      
 
       if (typeof window !== "undefined") {
         localStorage.setItem("accessToken", response?.data.token);
       }
+      console.log("here >>>>>>> also")
       const admin = response?.data;
       admin.token = response?.token;
-
+      
       dispatch(adminExist(admin));
 
       dispatch(setLoading(false));

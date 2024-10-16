@@ -24,15 +24,32 @@ const SignUpAdmin = async (credentials: {
       "http://localhost:8000/auth/admin/signup",
       credentials
     );
+
+    console.log("API call successful, response:", response);
+
     if (response.data.success === true) {
       toast.success("Signup Successful");
     } else {
-      toast.error("Signup failed");
+      toast.error(response.data.message);
     }
-    localStorage.setItem("accessToken", response?.data?.data?.token);
-    return response.data;
-  } catch (error) {
-    throw error;
+
+    // Store the token if signup was successful
+    if (response?.data?.data?.token) {
+      localStorage.setItem("accessToken", response?.data?.data?.token);
+    }
+
+    return response.data;  // Ensure the response is returned properly
+
+  } catch (error: any) {
+    if (
+      error.response?.data?.message === "Email or phone number already exists"
+    ) {
+      // toast.error("Email or phone number already exists");
+    } else {
+      toast.error("Signup failed. Please try again.");
+    }
+  } finally {
+    console.log("API call finished.");
   }
 };
 

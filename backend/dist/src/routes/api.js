@@ -90,6 +90,7 @@ router.post("/admin/signup", (req, res) => __awaiter(void 0, void 0, void 0, fun
             .required(),
     });
     const { error } = schema.validate(req.body);
+    console.log(error);
     if (error) {
         return res
             .status(400)

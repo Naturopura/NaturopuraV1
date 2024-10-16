@@ -1,7 +1,9 @@
 'use client'
 // import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { SessionProvider } from 'next-auth/react';
+import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next-auth';
 import "./globals.css";
 import { MeshProvider } from "@meshsdk/react";
 import ProtectedRoute from "@/auth/ProtectedRoute";
@@ -73,12 +75,12 @@ export default function RootLayout({
           <ProtectedRoute>
             <WagmiProvider config={config}>
               <QueryClientProvider client={queryClient} >
-                <RainbowKitProvider  theme={lightTheme({
-        accentColor: '#acb631',
-        accentColorForeground: 'white',
-        borderRadius: 'medium',
-        fontStack: 'system',
-      })}>
+                <RainbowKitProvider theme={lightTheme({
+                  accentColor: '#acb631',
+                  accentColorForeground: 'white',
+                  borderRadius: 'medium',
+                  fontStack: 'system',
+                })}>
                   {/* <MeshProvider> */}
                   <Toaster position="top-center" />
                   {children}

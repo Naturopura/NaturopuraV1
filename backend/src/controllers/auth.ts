@@ -149,7 +149,6 @@ export const userLogin = async (signature: any, key: any) => {
 
 export const adminLogin = async (signature: any, key: any) => {
   // const { signature, key } = req.body;
-
   try {
     const user = await User.findOne({
       key,
@@ -239,15 +238,17 @@ export const adminSignup = async (
   zipCode: any
 ) => {
   try {
-    const user = await User.findOne({
-      email,
-      deletedAt: { $eq: null },
+    // Check if email or phone already exists in the database
+    const existingUser = await User.findOne({
+      $or: [
+        { email, deletedAt: { $eq: null } },
+        { phone, deletedAt: { $eq: null } }
+      ],
     });
-    // console.log("user:", user);
 
-    if (user) {
+    if (existingUser) {
       return ApiResponse.error(
-        ResponseDefinitions.InvalidInput.message,
+        "Email or phone number already exists",
         ResponseDefinitions.InvalidInput.code
       );
     } else if (
@@ -261,108 +262,79 @@ export const adminSignup = async (
       );
     }
 
-    // console.log("Signature:", signature);
-    // console.log("Key:", key);
-    else
-      return await bcryptjs
-        .genSalt(saltRounds)
-        .then(async (salt: string) => {
-          // console.log("Generated Salt:", salt);
-          // console.log(bcryptjs.hash(signature, salt), "Hashed");
-
-          const hashedToken = await bcryptjs.hash(signature, salt);
-          // console.log("hashedToken", hashedToken);
-          return hashedToken;
-        })
-        .then(async (hashedToken) => {
-          // console.log("Hashed Signature:", hashedToken);
-          const customer = new User({
-            firstName,
-            lastName,
-            role,
-            email,
-            signature: hashedToken,
-            // signature,
-            isActive,
-            isRemember,
-            key,
-            dialingCode,
-            phone,
-            addressLine,
-            country,
-            state,
-            city,
-            zipCode,
-            walletAddress,
-          });
-          // console.log(signature, "signature");
-          // console.log(hashedToken, "hashedToken");
-
-          // console.log(customer, "customer");
-
-          await customer.save();
-
-          // publishUserRegisteredEvent({
-          //   user_id: customer._id,
-          //   dialingCode,
-          //   phone,
-          //   addressLine,
-          //   country,
-          //   state,
-          //   city,
-          //   zipCode,
-          // });
-
-          const newCustomer = {
-            firstName: customer.firstName,
-            lastName: customer.lastName,
-            role: customer.role,
-            email: customer.email,
-            signature: customer.signature,
-            isActive: customer.isActive,
-            isRemember: customer.isRemember,
-            key: customer.key,
-            dialingCode: customer.dialingCode,
-            phone: customer.phone,
-            addressLine: customer.addressLine,
-            country: customer.country,
-            state: customer.state,
-            city: customer.city,
-            zipCode: customer.zipCode,
-            walletAddress: customer.walletAddress,
-          };
-          // console.log(newCustomer, "newCustomer");
-
-          const responseSuccess = ApiResponse.success(
-            ResponseDefinitions.OperationSuccessful.message,
-            {
-              createSuccessResponse: "Successfully registered.",
-              token: isRemember
-                ? jwt.sign(newCustomer, env.TOKEN_SECRET, { expiresIn: "48h" })
-                : "",
-              ...newCustomer,
-              expiresIn: "48h",
-            },
-            ResponseDefinitions.OperationSuccessful.code
-          );
-
-          // console.log("responseSuccess:", responseSuccess);
-
-          return responseSuccess;
-          // console.log("Response ***")
-        })
-        .catch((err: any) => {
-          console.log(err, "console");
-          return ApiResponse.error(
-            ResponseDefinitions.HashError.message,
-            ResponseDefinitions.HashError.code
-          );
+    return await bcryptjs
+      .genSalt(saltRounds)
+      .then(async (salt: string) => {
+        const hashedToken = await bcryptjs.hash(signature, salt);
+        return hashedToken;
+      })
+      .then(async (hashedToken) => {
+        const customer = new User({
+          firstName,
+          lastName,
+          role,
+          email,
+          signature: hashedToken,
+          isActive,
+          isRemember,
+          key,
+          dialingCode,
+          phone,
+          addressLine,
+          country,
+          state,
+          city,
+          zipCode,
+          walletAddress,
         });
+
+        await customer.save();
+
+        const newCustomer = {
+          firstName: customer.firstName,
+          lastName: customer.lastName,
+          role: customer.role,
+          email: customer.email,
+          signature: customer.signature,
+          isActive: customer.isActive,
+          isRemember: customer.isRemember,
+          key: customer.key,
+          dialingCode: customer.dialingCode,
+          phone: customer.phone,
+          addressLine: customer.addressLine,
+          country: customer.country,
+          state: customer.state,
+          city: customer.city,
+          zipCode: customer.zipCode,
+          walletAddress: customer.walletAddress,
+        };
+
+        const responseSuccess = ApiResponse.success(
+          ResponseDefinitions.OperationSuccessful.message,
+          {
+            createSuccessResponse: "Successfully registered.",
+            token: isRemember
+              ? jwt.sign(newCustomer, env.TOKEN_SECRET, { expiresIn: "48h" })
+              : "",
+            ...newCustomer,
+            expiresIn: "48h",
+          },
+          ResponseDefinitions.OperationSuccessful.code
+        );
+
+        return responseSuccess;
+      })
+      .catch((err: any) => {
+        console.log(err, "console");
+        return ApiResponse.error(
+          ResponseDefinitions.HashError.message,
+          ResponseDefinitions.HashError.code
+        );
+      });
   } catch (error) {
     return ApiResponse.error(
       ResponseDefinitions.NotFound.message,
       ResponseDefinitions.NotFound.code
     );
-    // console.log("responseError", responseError);
   }
 };
