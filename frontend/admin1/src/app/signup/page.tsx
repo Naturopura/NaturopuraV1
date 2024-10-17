@@ -90,7 +90,6 @@ const AdminSignup = () => {
             city: formData.city,
             zipCode: formData.zipCode,
             role: formData.role,
-            key: key, // Adding the key field
           })
         );
       } else {

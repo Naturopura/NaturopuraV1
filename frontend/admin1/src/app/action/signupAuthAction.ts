@@ -19,7 +19,6 @@ export const SignUp = (credentials: {
   state: string;
   city: string;
   zipCode: string;
-  key: string;
   role: string;
 }) => {
   return async (dispatch: Dispatch) => {

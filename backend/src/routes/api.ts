@@ -109,7 +109,7 @@ router.post(
       signature,
       isActive,
       isRemember,
-      key,
+      nonce,
       dialingCode,
       phone,
       addressLine,
@@ -123,7 +123,7 @@ router.post(
       firstName: Joi.string().min(3).max(30).required(),
       lastName: Joi.string().min(3).max(30).required(),
       signature: Joi.string().required(),
-      key: Joi.string().required(),
+      nonce: Joi.number(),
       isRemember: Joi.boolean().truthy("true").falsy("false"),
       isActive: Joi.boolean().truthy("true").falsy("false"),
       email: Joi.string()
@@ -176,7 +176,7 @@ router.post(
         email,
         phone,
         isActive,
-        key,
+        nonce,
         signature,
         walletAddress,
         isRemember,
@@ -206,12 +206,13 @@ router.post(
 router.post(
   "/admin/login",
   async (req: Request, res: Response): Promise<any> => {
-    const { signature, key } = req.body;
+    const { signature, nonce, walletAddress } = req.body;
     console.log("reqBody:", req.body);
 
     const schema = Joi.object({
-      signature: Joi.string().required(),
-      key: Joi.string().required(),
+      signature: Joi.string().optional(),
+      nonce: Joi.number().optional(),
+      walletAddress: Joi.string().required(),
     });
     const { error } = schema.validate(req.body);
     console.log("error", error);
@@ -229,7 +230,7 @@ router.post(
         );
     }
     try {
-      const response = await adminLogin(signature, key);
+      const response = await adminLogin(signature, nonce, walletAddress);
       console.log(response);
 
       return res.status(200).json(response);

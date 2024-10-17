@@ -16,7 +16,6 @@ const SignUpAdmin = async (credentials: {
   state: string;
   city: string;
   zipCode: string;
-  key: string;
   role: string;
 }) => {
   try {

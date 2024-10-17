@@ -1,9 +1,9 @@
 "use client";
-
-import React, { useEffect } from "react";
+import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import '@rainbow-me/rainbowkit/styles.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi'; 
+import { useAccount } from 'wagmi';
 import Login from "@/app/action/loginAuthAction";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -14,25 +14,51 @@ import { BrowserProvider } from "ethers"; // Import BrowserProvider from ethers.
 
 const AdminLogin = () => {
   const dispatch = useAppDispatch();
-  const { address, isConnected } = useAccount(); // Get the connected wallet address
-  const message = "you are signing this message to log in to naturopura";
+  const { address, isConnected } = useAccount();
+  const [nonce, setNonce] = useState<string>(""); // State for nonce
+  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     if (address) {
-      signMessage(); // Sign the message once the wallet is connected
+      const walletAddress = address.toLocaleLowerCase();
+      sendAddress(walletAddress);
     }
   }, [address]);
 
+  useEffect(() => {
+    if (nonce) {
+      signMessage();
+    }
+  }, [nonce]); 
+
+  const sendAddress = async (walletAddress: string) => {
+    try {
+      console.log("sendAddress called");
+      const response = await axios.post(
+        "http://localhost:8000/auth/admin/login",
+        { walletAddress }
+      );
+      const nonce = response.data.data.nonce;
+      console.log("Nonce received:", nonce);
+      setNonce(nonce); // Set the nonce state
+      setMessage(`Please sign this message to authenticate: ${nonce}`); // Set the message to be signed
+    } catch (error) {
+      console.error("Error sending address:", error);
+      toast.error("Failed to retrieve nonce.");
+    }
+  };
+
   const signMessage = async () => {
-    if (window.ethereum && isConnected) {
+    if (window.ethereum && isConnected && message) {
       try {
+        console.log("signMessage called");
         const provider = new BrowserProvider(window.ethereum); // Create a Web3 provider
         const signer = await provider.getSigner(); // Get the signer (connected wallet)
         const signature = await signer.signMessage(message); // Sign the message
         console.log("Signature:", signature);
-        // Dispatch the signature and wallet address to the backend
-        console.log("response sent");
-        dispatch(Login({ key: address, signature }));
+        // Dispatch the signature, nonce, and wallet address to the backend
+        console.log("request sent");
+        dispatch(Login({ signature: signature, nonce: nonce, walletAddress: address?.toLocaleLowerCase() }));
         console.log("response received");
       } catch (error) {
         console.error("Error signing message:", error);

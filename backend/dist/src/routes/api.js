@@ -66,12 +66,12 @@ router.post("/user/login", (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 }));
 router.post("/admin/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { firstName, lastName, role, email, signature, isActive, isRemember, key, dialingCode, phone, addressLine, country, state, city, zipCode, walletAddress, } = req.body;
+    const { firstName, lastName, role, email, signature, isActive, isRemember, nonce, dialingCode, phone, addressLine, country, state, city, zipCode, walletAddress, } = req.body;
     const schema = joi_1.default.object({
         firstName: joi_1.default.string().min(3).max(30).required(),
         lastName: joi_1.default.string().min(3).max(30).required(),
         signature: joi_1.default.string().required(),
-        key: joi_1.default.string().required(),
+        nonce: joi_1.default.number(),
         isRemember: joi_1.default.boolean().truthy("true").falsy("false"),
         isActive: joi_1.default.boolean().truthy("true").falsy("false"),
         email: joi_1.default.string()
@@ -97,7 +97,7 @@ router.post("/admin/signup", (req, res) => __awaiter(void 0, void 0, void 0, fun
             .json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.InvalidInput.message, responses_1.ResponseDefinitions.InvalidInput.code, error.details));
     }
     try {
-        const response = yield (0, auth_1.adminSignup)(firstName, lastName, role, email, phone, isActive, key, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode);
+        const response = yield (0, auth_1.adminSignup)(firstName, lastName, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode);
         return res.status(201).json(response);
     }
     catch (error) {
@@ -108,11 +108,12 @@ router.post("/admin/signup", (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 }));
 router.post("/admin/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { signature, key } = req.body;
+    const { signature, nonce, walletAddress } = req.body;
     console.log("reqBody:", req.body);
     const schema = joi_1.default.object({
-        signature: joi_1.default.string().required(),
-        key: joi_1.default.string().required(),
+        signature: joi_1.default.string().optional(),
+        nonce: joi_1.default.number().optional(),
+        walletAddress: joi_1.default.string().required(),
     });
     const { error } = schema.validate(req.body);
     console.log("error", error);
@@ -123,7 +124,7 @@ router.post("/admin/login", (req, res) => __awaiter(void 0, void 0, void 0, func
             .json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.InvalidInput.message, responses_1.ResponseDefinitions.InvalidInput.code, error.details));
     }
     try {
-        const response = yield (0, auth_1.adminLogin)(signature, key);
+        const response = yield (0, auth_1.adminLogin)(signature, nonce, walletAddress);
         console.log(response);
         return res.status(200).json(response);
     }

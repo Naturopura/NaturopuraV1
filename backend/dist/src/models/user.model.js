@@ -48,13 +48,13 @@ const userSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: true,
     },
-    key: {
-        type: String,
-        required: true,
-    },
     signature: {
         type: String,
         required: true,
+    },
+    nonce: {
+        type: Number,
+        unique: true,
     },
     walletAddress: {
         type: String,

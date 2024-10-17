@@ -45,13 +45,13 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    key: {
-      type: String,
-      required: true,
-    },
     signature: {
       type: String,
       required: true,
+    },
+    nonce:{
+      type: Number,
+      unique: true,
     },
     walletAddress: {
       type: String,
