@@ -44,7 +44,7 @@ const AdminLogin = () => {
       setMessage(`Please sign this message to authenticate: ${nonce}`); // Set the message to be signed
     } catch (error) {
       console.error("Error sending address:", error);
-      toast.error("Failed to retrieve nonce.");
+      // toast.error("Failed to retrieve nonce.");
     }
   };
 
