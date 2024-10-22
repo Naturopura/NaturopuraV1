@@ -1,6 +1,6 @@
 import bcryptjs from "bcryptjs";
 const saltRounds = 10;
-import User from "../models/user.model";
+import User from "../models/admin.model";
 import env from "../environment/environment"; // Assuming you have environment setup
 import jwt from "jsonwebtoken";
 import ApiResponse from "../../helper/ApiResponse";

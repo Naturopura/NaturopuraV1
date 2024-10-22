@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 
 const LoginAdmin = async (credentials: {
   signature: string;
-  nonce: number;
-  walletAddress: string;
+  nonce: number | undefined ;
+  walletAddress: string | "" ;
 }) => {
   try {
     const response = await axios.post(

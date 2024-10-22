@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userLogin = exports.userSignup = exports.adminSignup = exports.adminLogin = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const saltRounds = 10;
-const user_model_1 = __importDefault(require("../models/user.model"));
+const admin_model_1 = __importDefault(require("../models/admin.model"));
 const environment_1 = __importDefault(require("../environment/environment")); // Assuming you have environment setup
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const ApiResponse_1 = __importDefault(require("../../helper/ApiResponse"));
@@ -41,7 +41,7 @@ const adminLogin = (signature, nonce, walletAddress) => __awaiter(void 0, void 0
     try {
         // Scenario 1: If only walletAddress is provided
         if (!signature && !nonce) {
-            const user = yield user_model_1.default.findOne({
+            const user = yield admin_model_1.default.findOne({
                 walletAddress,
                 deletedAt: { $eq: null },
                 isActive: 1,
@@ -75,7 +75,7 @@ const adminLogin = (signature, nonce, walletAddress) => __awaiter(void 0, void 0
                 return ApiResponse_1.default.error(responses_1.ResponseDefinitions.SignatureError.message, responses_1.ResponseDefinitions.SignatureError.code);
             }
             // Fetch user from the database
-            const user = yield user_model_1.default.findOne({
+            const user = yield admin_model_1.default.findOne({
                 walletAddress,
                 deletedAt: { $eq: null },
                 isActive: 1,
@@ -171,7 +171,7 @@ exports.adminLogin = adminLogin;
 const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check if email or phone already exists in the database
-        const existingUser = yield user_model_1.default.findOne({
+        const existingUser = yield admin_model_1.default.findOne({
             $or: [
                 { email, deletedAt: { $eq: null } },
                 { phone, deletedAt: { $eq: null } }
@@ -192,7 +192,7 @@ const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, s
             return hashedToken;
         }))
             .then((hashedToken) => __awaiter(void 0, void 0, void 0, function* () {
-            const customer = new user_model_1.default({
+            const customer = new admin_model_1.default({
                 firstName,
                 lastName,
                 role,
@@ -247,7 +247,7 @@ exports.adminSignup = adminSignup;
 const userSignup = (firstName, lastName, email, signature, key, address, isRemember) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check if user already exists with the given key
-        const user = yield user_model_1.default.findOne({
+        const user = yield admin_model_1.default.findOne({
             key: key,
             deletedAt: { $eq: null },
         });
@@ -264,7 +264,7 @@ const userSignup = (firstName, lastName, email, signature, key, address, isRemem
             })
                 .then((hash) => __awaiter(void 0, void 0, void 0, function* () {
                 // Create a new user instance
-                const customer = new user_model_1.default({
+                const customer = new admin_model_1.default({
                     firstName: firstName.toLowerCase(),
                     lastName: lastName.toLowerCase(),
                     role: "consumer",
@@ -304,7 +304,7 @@ exports.userSignup = userSignup;
 const userLogin = (signature, key) => __awaiter(void 0, void 0, void 0, function* () {
     // const { signature, key } = req.body;
     try {
-        const user = yield user_model_1.default.findOne({
+        const user = yield admin_model_1.default.findOne({
             key: key,
             deletedAt: { $eq: null },
             isActive: 1,

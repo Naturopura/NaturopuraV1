@@ -15,12 +15,12 @@ import { BrowserProvider } from "ethers"; // Import BrowserProvider from ethers.
 const AdminLogin = () => {
   const dispatch = useAppDispatch();
   const { address, isConnected } = useAccount();
-  const [nonce, setNonce] = useState<string>(""); // State for nonce
+  const [nonce, setNonce] = useState<number | undefined>(); // State for nonce
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     if (address) {
-      const walletAddress = address.toLocaleLowerCase();
+      const walletAddress = address.toLocaleLowerCase() || "" ;
       sendAddress(walletAddress);
     }
   }, [address]);
@@ -31,7 +31,7 @@ const AdminLogin = () => {
     }
   }, [nonce]); 
 
-  const sendAddress = async (walletAddress: string) => {
+  const sendAddress = async (walletAddress: string | "") => {
     try {
       console.log("sendAddress called");
       const response = await axios.post(

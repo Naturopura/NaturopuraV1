@@ -11,6 +11,8 @@ const morgan_1 = __importDefault(require("morgan"));
 const features_1 = require("./utils/features");
 const api_1 = __importDefault(require("./routes/api"));
 const dotenv_1 = require("dotenv");
+// import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
+const listProduct_controller_1 = __importDefault(require("./controllers/listProduct.controller"));
 // Load environment variables from .env file
 (0, dotenv_1.config)({
     path: "./.env",
@@ -42,6 +44,8 @@ app.get("/", (req, res) => {
 });
 // Use API router for authentication
 app.use("/auth", api_1.default);
+// app.use('/api',farmerUploadImageRoute)
+app.use('/api', listProduct_controller_1.default);
 // Set the port and start the server
 const port = Number(process.env.PORT) || 3000;
 app.listen(port, "0.0.0.0", () => {

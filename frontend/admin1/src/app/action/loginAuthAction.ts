@@ -4,7 +4,7 @@ import { adminExist, adminNotExist, setLoading } from "@/store/adminSlice"; // A
 import LoginAdmin from "../api/login"; // Adjust the import path
 import { Dispatch } from "redux";
 
-const Login = (credentials: { signature: string; nonce: number; walletAddress: string }) => {
+const Login = (credentials: { signature: string; nonce: number | undefined; walletAddress: string }) => {
   return async (dispatch: Dispatch) => {
     dispatch(setLoading(true));
     console.log(`>>>>>>>>>>.3`);

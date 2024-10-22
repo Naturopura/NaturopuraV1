@@ -6,7 +6,8 @@ import morgan from "morgan";
 import { connectDB } from "./utils/features";
 import apiRouter from "./routes/api";
 import { config } from "dotenv";
-
+// import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
+import listProduct from "./controllers/listProduct.controller";
 // Load environment variables from .env file
 config({
   path: "./.env",
@@ -47,9 +48,12 @@ app.get("/", (req: Request, res: Response) => {
 
 // Use API router for authentication
 app.use("/auth", apiRouter);
+// app.use('/api',farmerUploadImageRoute)
+app.use('/api',listProduct)
 
 // Set the port and start the server
 const port = Number(process.env.PORT) || 3000;
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server running on port ${port}`);
 });

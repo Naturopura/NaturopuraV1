@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const adminSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
@@ -89,6 +89,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 ); // timestamps will automatically create 'createdAt' and 'updatedAt' fields.
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+const Admin = mongoose.models.Admin || mongoose.model("Admin", adminSchema);
 
-export default User;
+export default Admin;

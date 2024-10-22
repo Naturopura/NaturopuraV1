@@ -18,53 +18,6 @@ const joi_1 = __importDefault(require("joi"));
 const ApiResponse_1 = __importDefault(require("../../helper/ApiResponse"));
 const responses_1 = require("../responses");
 const router = (0, express_1.Router)();
-router.post("/user/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { firstName, lastName, email, signature, key, address, isRemember } = req.body;
-    const schema = joi_1.default.object({
-        firstName: joi_1.default.string().min(3).max(30).required(),
-        lastName: joi_1.default.string().min(3).max(30).required(),
-        signature: joi_1.default.string().required(),
-        key: joi_1.default.string().required(),
-        address: joi_1.default.string().required(),
-        isRemember: joi_1.default.boolean().required(),
-        email: joi_1.default.string()
-            .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-            .required(),
-    });
-    const { error } = schema.validate(req.body);
-    if (error) {
-        return res
-            .status(400)
-            .json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.InvalidInput.message, responses_1.ResponseDefinitions.InvalidInput.code, error.details));
-    }
-    try {
-        const response = yield (0, auth_1.userSignup)(firstName, lastName, email, signature, key, address, isRemember);
-        return res.status(201).json(response);
-    }
-    catch (error) {
-        ApiResponse_1.default.error(responses_1.ResponseDefinitions.NotFound.message, responses_1.ResponseDefinitions.NotFound.code);
-    }
-}));
-router.post("/user/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { signature, key } = req.body;
-    const schema = joi_1.default.object({
-        signature: joi_1.default.string().required(),
-        key: joi_1.default.string().required(),
-    });
-    const { error } = schema.validate(req.body);
-    if (error) {
-        return res
-            .status(400)
-            .json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.InvalidInput.message, responses_1.ResponseDefinitions.InvalidInput.code, error.details));
-    }
-    try {
-        const response = yield (0, auth_1.userLogin)(signature, key);
-        return res.status(200).json(response);
-    }
-    catch (error) {
-        ApiResponse_1.default.error(responses_1.ResponseDefinitions.NotFound.message, responses_1.ResponseDefinitions.NotFound.code);
-    }
-}));
 router.post("/admin/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { firstName, lastName, role, email, signature, isActive, isRemember, nonce, dialingCode, phone, addressLine, country, state, city, zipCode, walletAddress, } = req.body;
     const schema = joi_1.default.object({
