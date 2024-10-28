@@ -4,19 +4,18 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import { connectDB } from "./utils/features";
-import apiRouter from "./routes/api";
+import userRouter from "./routes/user";
 import { config } from "dotenv";
-// import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
-import listProduct from "./controllers/listProduct.controller";
+
 // Load environment variables from .env file
 config({
   path: "./.env",
 });
 
-const mongoURI = process.env.MONGODB_URI || "";
+// const mongoURI = process.env.MONGODB_URI || "";
 
 // Connect to MongoDB
-connectDB(mongoURI);
+// connectDB(mongoURI);
 
 const app = express();
 
@@ -36,7 +35,7 @@ app.use(morgan("common"));
 // Body parsing middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(express.json()); // This line can be kept or removed if bodyParser is used
+app.use(express.json()); // This line can be kept or removed if bodyParser is used
 
 // Enable CORS for all routes
 app.use(cors());
@@ -47,13 +46,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Use API router for authentication
-app.use("/auth", apiRouter);
-// app.use('/api',farmerUploadImageRoute)
-app.use('/api',listProduct)
+app.use("/auth", userRouter);
 
 // Set the port and start the server
-const port = Number(process.env.PORT) || 3001;
-
+const port = Number(process.env.PORT) || 3000;
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server running on port ${port}`);
 });

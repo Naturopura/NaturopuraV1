@@ -8,18 +8,15 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
-const features_1 = require("./utils/features");
-const api_1 = __importDefault(require("./routes/api"));
+const user_1 = __importDefault(require("./routes/user"));
 const dotenv_1 = require("dotenv");
-// import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
-const listProduct_controller_1 = __importDefault(require("./controllers/listProduct.controller"));
 // Load environment variables from .env file
 (0, dotenv_1.config)({
     path: "./.env",
 });
-const mongoURI = process.env.MONGODB_URI || "";
+// const mongoURI = process.env.MONGODB_URI || "";
 // Connect to MongoDB
-(0, features_1.connectDB)(mongoURI);
+// connectDB(mongoURI);
 const app = (0, express_1.default)();
 // Middleware to handle CORS
 app.use((req, res, next) => {
@@ -35,7 +32,7 @@ app.use((0, morgan_1.default)("common"));
 // Body parsing middleware
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
-// app.use(express.json()); // This line can be kept or removed if bodyParser is used
+app.use(express_1.default.json()); // This line can be kept or removed if bodyParser is used
 // Enable CORS for all routes
 app.use((0, cors_1.default)());
 // Basic route for testing
@@ -43,11 +40,9 @@ app.get("/", (req, res) => {
     res.send("API Working fine");
 });
 // Use API router for authentication
-app.use("/auth", api_1.default);
-// app.use('/api',farmerUploadImageRoute)
-app.use('/api', listProduct_controller_1.default);
+app.use("/auth", user_1.default);
 // Set the port and start the server
-const port = Number(process.env.PORT) || 3001;
+const port = Number(process.env.PORT) || 3000;
 app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on port ${port}`);
 });
