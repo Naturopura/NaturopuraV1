@@ -3,8 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { ArrowRight, IndianRupee, Star } from "lucide-react";
-import Sidebar from "../(components)/Sidebar";
+import { ArrowRight, IndianRupee } from "lucide-react";
 import img3 from "@/assets/file (2).png";
 import img1 from "@/assets/file (1).png";
 import img2 from "@/assets/Braeburn.jpg";
@@ -40,6 +39,15 @@ import greenbg from "@/assets/green-bg.png";
 import honeynest from "@/assets/honeynest.png";
 import honeybottle from "@/assets/honeybottle.png";
 import honeynest2 from "@/assets/honeynest2.png";
+import honeybee from "@/assets/honeybee.png";
+import honeybee2 from "@/assets/honeybee2.png";
+import daburhoney from "@/assets/daburhoney.jpg";
+import blueberry from "@/assets/blueberry.png";
+import greenleaf from "@/assets/greenleaf.png";
+import anotherleaf from "@/assets/anotherleaf.png";
+import dragonfruit from "@/assets/dragonfruit.png";
+import capsicum from "@/assets/capsicum.png";
+import banana from "@/assets/banana.png";
 
 const Dashboard = () => {
   return (
@@ -1057,11 +1065,11 @@ const Dashboard = () => {
                 Free{" "}
                 <span className="text-black">Shipping on Order upto ₹5000</span>
               </h1>
-              <a href="/fruits">
+              <Link href="/fruits">
                 <button className="text-white text-xl bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg px-12 py-3 mt-4">
                   Shop now
                 </button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -1098,11 +1106,11 @@ const Dashboard = () => {
                       upto 50% on your First Order
                     </span>
                   </h1>
-                  <a href="/vegetables">
+                  <Link href="/vegetables">
                     <button className="text-white text-xl mt-8 ml-[180px] bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg px-12 py-3">
                       Shop now
                     </button>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -1795,6 +1803,17 @@ const Dashboard = () => {
 
         <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-[-28px]" />
 
+        <div className="flex items-center mb-4">
+          {/* Leaf Image */}
+          <Image
+            width={100}
+            height={100}
+            src={leaf}
+            alt="Leaf"
+            className="w-[200px] h-auto"
+          />
+        </div>
+
         {/* Natural Honey Text */}
         <div className="text-3xl font-bold mt-[-110px] ml-[120px] text-black">
           Natural Honey
@@ -1885,580 +1904,781 @@ const Dashboard = () => {
                   </div>
                 </h1>
 
-                <button className="text-white ml-[160px] text-xl bg-[#7A8311] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-md px-5 py-3">
-                  <a href="/honey">Buy now</a>
-                </button>
+                <Link href="/honey">
+                  <button className="text-white ml-[160px] mt-5 text-xl bg-[#7A8311] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-md px-5 py-3">
+                    Buy now
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-5 ml-[600px] mt-[-280px]">
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://m.media-amazon.com/images/I/41OQH1ST2dL._SX300_SY300_QL70_FMwebp_.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Dabur Honey</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              (5)
-            </div>
-
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://m.media-amazon.com/images/I/41JjKD+4NVL._SY300_SX300_.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Organic Honey</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              (5)
-            </div>
-
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://m.media-amazon.com/images/I/41y3+yO54hL._SY300_SX300_.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Patanjali Honey</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              (5)
-            </div>
-
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://m.media-amazon.com/images/I/41R0CMLEmhL._SX300_SY300_QL70_FMwebp_.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Zandu Pure Honey</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              (5)
-            </div>
-
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://m.media-amazon.com/images/I/71AuTPJ0veL._SX679_.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Lays</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              (5)
-            </div>
-
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://m.media-amazon.com/images/I/71AuTPJ0veL._SX679_.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Lays</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              (5)
-            </div>
-
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://m.media-amazon.com/images/I/71AuTPJ0veL._SX679_.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Lays</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              (5)
-            </div>
-
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://m.media-amazon.com/images/I/71AuTPJ0veL._SX679_.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Lays</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              (5)
-            </div>
-
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://m.media-amazon.com/images/I/71AuTPJ0veL._SX679_.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Lays</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              (5)
-            </div>
-
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-        </div>
-        <button className="text-white mt-5 ml-[930px] bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-          <Link href={"/honey"}>View Products</Link>
-        </button>
-        <div className="text-black mt-5 ml-[930px] focus:ring-4 focus:outline-none font-medium rounded-lg text-sm py-2.5">
-          GET WHAT YOU WANT
-        </div>
-        <div className="ml-[600px]">
+        <div className="relative mt-[-60px] bg-gray-200 min-h-screen">
+          {/* Honeybee image positioned absolutely */}
           <Image
-            width={200}
-            height={400}
-            alt=""
-            src="https://5.imimg.com/data5/VU/MR/MY-24751011/purple-grapes-1000x1000.jpg"
-            className="rounded-lg bg-gray-100"
+            width={600}
+            height={600}
+            src={honeybee}
+            alt="Honeybee"
+            className="absolute ml-[-70px] mt-[120px] inset-0 w-[1150px] h-[750px] object-cover opacity-100"
           />
-        </div>
-        <div className="mt-[-200px] ml-[850px]">
-          <Image
-            width={200}
-            height={400}
-            alt=""
-            src="https://cdn.shopaccino.com/rootz/products/picture1-12865436519083_l.jpg?v=492?param=1"
-            className="rounded-lg bg-gray-100"
-          />
-        </div>
-        <div className="mt-[-200px] ml-[1100px]">
-          <Image
-            width={200}
-            height={400}
-            alt=""
-            src="https://4.imimg.com/data4/XP/GY/MY-27758951/green-capsicum-1000x1000.jpg"
-            className="rounded-lg bg-gray-100"
-          />
-        </div>
-        <div className="ml-[700px]">
-          100% FRESH AND HEALTHY SPROUTS, VEGETABLES & lot more
-        </div>
-        <Sidebar />
-        <div className="grid grid-cols-3 gap-5 ml-[600px] mt-[-280px]">
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://www.chandigarhayurvedcentre.com/wp-content/uploads/2021/03/APPLE.png"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Apple</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
 
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-            </div>
-          </div>
+          <div className="relative z-10 mx-auto px-6 lg:px-12 py-16 sm:py-24">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Card 1 */}
+              <div className="border border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
+                <a href="/product-detail">
+                  <Image
+                    width={100}
+                    height={100}
+                    src={daburhoney}
+                    alt="Honey"
+                    className="h-48 object-cover rounded-md"
+                  />
+                  <h3 className="mt-4 text-xl font-bold text-gray-700">
+                    Honey
+                  </h3>
+                </a>
+                <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                  Add to Cart
+                </button>
+                <div className="mt-2 flex items-center space-x-1">
+                  {/* Stars */}
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 text-yellow-500"
+                    >
+                      <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                    </svg>
+                  ))}
+                  <div className="text-xl text-gray-600">(5)</div>
+                </div>
+                <p className="mt-2 text-xl font-bold text-gray-900">₹1000</p>
+              </div>
 
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://images.everydayhealth.com/images/diet-nutrition/how-many-calories-are-in-a-banana-1440x810.jpg?sfvrsn=be4504bc_4"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Banana</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://fruitboxco.com/cdn/shop/products/asset_19_400x.jpg?v=1594383262"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Guava</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://www.earthytales.in/uploads/products/3x/327c076eb2dc327535b959378a5d3624.jpg?v=031020241"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Cherry</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://www.bigbasket.com/media/uploads/p/l/40122445_6-fresho-grapes-green-residue-free.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Grape</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://www.fervalle.com/wp-content/uploads/2022/07/transparent-orange-apple5eacfeae85ac29.7815306015883956945475-300x300.png"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Orange</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://cdn.shopaccino.com/rootz/products/picture1-12865436519083_l.jpg?v=492?param=1"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Dragon Fruit</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://cdn.britannica.com/18/176518-050-5AB1E61D/lychee-fruits-Southeast-Asia.jpg?w=300"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Lychee</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://media.istockphoto.com/id/579754040/photo/red-berry-strawberry.jpg?s=612x612&w=0&k=20&c=o8m7UEe6NEVqyTO1bEZU5A6fKl3Zu43NLQ23JrlLQgM="
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Strawberry</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-            <div className="cursor-pointer flex gap-1 ml-5">
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
+              <div className="border border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
+                <a href="/product-detail">
+                  <Image
+                    width={100}
+                    height={100}
+                    src={daburhoney}
+                    alt="Honey"
+                    className="h-48 object-cover rounded-md"
+                  />
+                  <h3 className="mt-4 text-xl font-bold text-gray-700">
+                    Honey
+                  </h3>
+                </a>
+                <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                  Add to Cart
+                </button>
+                <div className="mt-2 flex items-center space-x-1">
+                  {/* Stars */}
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 text-yellow-500"
+                    >
+                      <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                    </svg>
+                  ))}
+                  <div className="text-xl text-gray-600">(5)</div>
+                </div>
+                <p className="mt-2 text-xl font-bold text-gray-900">₹1000</p>
+              </div>
+
+              <div className="border border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
+                <a href="/product-detail">
+                  <Image
+                    width={100}
+                    height={100}
+                    src={daburhoney}
+                    alt="Honey"
+                    className="h-48 object-cover rounded-md"
+                  />
+                  <h3 className="mt-4 text-xl font-bold text-gray-700">
+                    Honey
+                  </h3>
+                </a>
+                <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                  Add to Cart
+                </button>
+                <div className="mt-2 flex items-center space-x-1">
+                  {/* Stars */}
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 text-yellow-500"
+                    >
+                      <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                    </svg>
+                  ))}
+                  <div className="text-xl text-gray-600">(5)</div>
+                </div>
+                <p className="mt-2 text-xl font-bold text-gray-900">₹1000</p>
+              </div>
+
+              <div className="border border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
+                <a href="/product-detail">
+                  <Image
+                    width={100}
+                    height={100}
+                    src={daburhoney}
+                    alt="Honey"
+                    className="h-48 object-cover rounded-md"
+                  />
+                  <h3 className="mt-4 text-xl font-bold text-gray-700">
+                    Honey
+                  </h3>
+                </a>
+                <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                  Add to Cart
+                </button>
+                <div className="mt-2 flex items-center space-x-1">
+                  {/* Stars */}
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 text-yellow-500"
+                    >
+                      <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                    </svg>
+                  ))}
+                  <div className="text-xl text-gray-600">(5)</div>
+                </div>
+                <p className="mt-2 text-xl font-bold text-gray-900">₹1000</p>
+              </div>
+
+              <Image
+                width={600}
+                height={600}
+                src={honeybee2}
+                alt="Honeybee"
+                className="absolute ml-[800px] mt-[70px] inset-0 w-[1150px] h-[1050px] object-cover opacity-100"
+              />
+
+              <div className="border border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
+                <a href="/product-detail">
+                  <Image
+                    width={100}
+                    height={100}
+                    src={daburhoney}
+                    alt="Honey"
+                    className="h-48 object-cover rounded-md"
+                  />
+                  <h3 className="mt-4 text-xl font-bold text-gray-700">
+                    Honey
+                  </h3>
+                </a>
+                <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                  Add to Cart
+                </button>
+                <div className="mt-2 flex items-center space-x-1">
+                  {/* Stars */}
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 text-yellow-500"
+                    >
+                      <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                    </svg>
+                  ))}
+                  <div className="text-xl text-gray-600">(5)</div>
+                </div>
+                <p className="mt-2 text-xl font-bold text-gray-900">₹1000</p>
+              </div>
+
+              <div className="border border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
+                <a href="/product-detail">
+                  <Image
+                    width={100}
+                    height={100}
+                    src={daburhoney}
+                    alt="Honey"
+                    className="h-48 object-cover rounded-md"
+                  />
+                  <h3 className="mt-4 text-xl font-bold text-gray-700">
+                    Honey
+                  </h3>
+                </a>
+                <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                  Add to Cart
+                </button>
+                <div className="mt-2 flex items-center space-x-1">
+                  {/* Stars */}
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 text-yellow-500"
+                    >
+                      <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                    </svg>
+                  ))}
+                  <div className="text-xl text-gray-600">(5)</div>
+                </div>
+                <p className="mt-2 text-xl font-bold text-gray-900">₹1000</p>
+              </div>
+
+              <div className="border border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
+                <a href="/product-detail">
+                  <Image
+                    width={100}
+                    height={100}
+                    src={daburhoney}
+                    alt="Honey"
+                    className="h-48 object-cover rounded-md"
+                  />
+                  <h3 className="mt-4 text-xl font-bold text-gray-700">
+                    Honey
+                  </h3>
+                </a>
+                <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                  Add to Cart
+                </button>
+                <div className="mt-2 flex items-center space-x-1">
+                  {/* Stars */}
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 text-yellow-500"
+                    >
+                      <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                    </svg>
+                  ))}
+                  <div className="text-xl text-gray-600">(5)</div>
+                </div>
+                <p className="mt-2 text-xl font-bold text-gray-900">₹1000</p>
+              </div>
+
+              <div className="border border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
+                <a href="/product-detail">
+                  <Image
+                    width={100}
+                    height={100}
+                    src={daburhoney}
+                    alt="Honey"
+                    className="h-48 object-cover rounded-md"
+                  />
+                  <h3 className="mt-4 text-xl font-bold text-gray-700">
+                    Honey
+                  </h3>
+                </a>
+                <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                  Add to Cart
+                </button>
+                <div className="mt-2 flex items-center space-x-1">
+                  {/* Stars */}
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                      className="w-5 h-5 text-yellow-500"
+                    >
+                      <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                    </svg>
+                  ))}
+                  <div className="text-xl text-gray-600">(5)</div>
+                </div>
+                <p className="mt-2 text-xl font-bold text-gray-900">₹1000</p>
+              </div>
             </div>
           </div>
         </div>
+
+        <Link href="/honey">
+          <button className="text-white z-10 mt-[-1px] ml-[778px] text-xl bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg px-12 py-3">
+            View Products&gt;
+          </button>
+        </Link>
+
+        <div className="flex items-center justify-center ml-[-125px] mt-5">
+          <div className="mr-3">
+            <Image width={200} height={100} src={leaf} alt="leaf" />
+          </div>
+          <div className="text-black mt-[-23px] ml-[-95px] text-3xl focus:ring-4 focus:outline-none font-bold rounded-lg py-2.5">
+            GET WHAT YOU WANT
+          </div>
+        </div>
+
+        <div className="flex flex-row mt-[20px] gap-[150px] p-5 justify-center relative">
+          <div className="border-4 border-[#ACB631] bg-white w-[420px] relative  h-[420px] flex items-center justify-center">
+            <Image
+              width={600}
+              height={600}
+              src={blueberry}
+              alt=""
+              className="ml-[-245px] w-96"
+            />
+
+            <Image
+              width={185}
+              height={185}
+              src={greenleaf}
+              alt=""
+              className="absolute -top-[45px] right-[-120px] z-[50]"
+            />
+            <Image
+              width={130}
+              height={130}
+              src={anotherleaf}
+              alt=""
+              className="absolute top-[338px] right-[-77px] z-[50]"
+            />
+          </div>
+
+          <div className="border-4 border-[#ACB631] bg-white w-[420px] relative  h-[420px] flex items-center justify-center">
+            <Image
+              width={600}
+              height={600}
+              src={dragonfruit}
+              alt=""
+              className="ml-[-295px] w-[500px] mt-[-10px]"
+            />
+
+            <Image
+              width={185}
+              height={185}
+              src={greenleaf}
+              alt=""
+              className="absolute -top-[45px] right-[-120px] z-[50]"
+            />
+
+            <Image
+              width={130}
+              height={130}
+              src={anotherleaf}
+              alt=""
+              className="absolute top-[338px] right-[-77px] z-[50]"
+            />
+          </div>
+
+          <div className="border-4 border-[#ACB631] bg-white w-[420px] relative  h-[420px] flex items-center justify-center">
+            <Image
+              width={600}
+              height={600}
+              src={capsicum}
+              alt=""
+              className="ml-[-233px] mt-10 w-[330px]"
+            />
+
+            <Image
+              width={185}
+              height={185}
+              src={greenleaf}
+              alt=""
+              className="absolute overflow-hidden -top-[45px] right-[-120px] z-[50]"
+            />
+
+            <Image
+              width={130}
+              height={130}
+              src={anotherleaf}
+              alt=""
+              className="absolute top-[338px] right-[-77px] z-[50]"
+            />
+          </div>
+        </div>
+
+        <div className="ml-[678px] mt-[100px]">
+          <div className="text-[#ACB631] text-4xl font-semibold">
+            100% FRESH & HEALTHY
+          </div>
+          <div className="ml-0 text-4xl font-semibold">SPROUTS, VEGETABLES</div>
+          <div className="ml-[118px] text-4xl font-semibold">& lot more</div>
+        </div>
+
+        <div className="mt-[-50px]">
+          <div className="mx-auto px-6 lg:px-12 py-16 sm:py-24">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Card 1 */}
+              <div className="border-4 border-gray-300 bg-gray-200 p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className="border-[#ACB631] -mb-5 border-2 px-[126px] bg-white">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-300 bg-gray-200 p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className="border-[#ACB631] -mb-5 border-2 px-[126px] bg-white">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-300 bg-gray-200 p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className="border-[#ACB631] -mb-5 border-2 px-[126px] bg-white">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-300 bg-gray-200 p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className="border-[#ACB631] -mb-5 border-2 px-[126px] bg-white">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-300 bg-gray-200 p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className="border-[#ACB631] -mb-5 border-2 px-[126px] bg-white">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-300 bg-gray-200 p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className="border-[#ACB631] -mb-5 border-2 px-[126px] bg-white">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-300 bg-gray-200 p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className="border-[#ACB631] -mb-5 border-2 px-[126px] bg-white">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-300 bg-gray-200 p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className="border-[#ACB631] -mb-5 border-2 px-[126px] bg-white">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="relative mt-5 ml-[630px] w-[300px] h-[100px]">
           <Image
             width={300}
