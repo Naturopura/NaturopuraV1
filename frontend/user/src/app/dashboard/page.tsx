@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { ArrowRight, IndianRupee } from "lucide-react";
+// import { ArrowRight, IndianRupee } from "lucide-react";
 import img3 from "@/assets/file (2).png";
 import img1 from "@/assets/file (1).png";
 import img2 from "@/assets/Braeburn.jpg";
@@ -48,6 +48,38 @@ import anotherleaf from "@/assets/anotherleaf.png";
 import dragonfruit from "@/assets/dragonfruit.png";
 import capsicum from "@/assets/capsicum.png";
 import banana from "@/assets/banana.png";
+import veggies from "@/assets/veggies.png";
+import agriculture from "@/assets/agriculture.png";
+import organic from "@/assets/organic.png";
+import dairy from "@/assets/dairy.png";
+import mango from "@/assets/mango.png";
+import pineapple from "@/assets/pineapple.png";
+import cherry from "@/assets/cherry.png";
+import blackberry from "@/assets/blackberry.png";
+import fert from "@/assets/fert.png";
+import fert2 from "@/assets/fert2.png";
+import fert3 from "@/assets/fer3.png";
+import hand from "@/assets/hand.png";
+import soil from "@/assets/soil.png";
+import crop from "@/assets/crop.png";
+import leaf5 from "@/assets/leaf.png";
+import seeds from "@/assets/seeds.png";
+import seeds2 from "@/assets/seeds2.png";
+import greeneryleaf from "@/assets/greenery-leaf.png";
+import anothergreenleaf from "@/assets/anothergreenleaf.png";
+import farmingequipment from "@/assets/farmingequipment.png";
+import mugs from "@/assets/mugs.png";
+import leafy from "@/assets/leafy.png";
+import pizza from "@/assets/pizza.jpg";
+import pringles from "@/assets/pringles.jpg";
+import chanadal from "@/assets/chanadal.jpg";
+import handsoil from "@/assets/handsoil.png";
+import handsoil2 from "@/assets/handsoil2.png";
+import handsoil3 from "@/assets/handsoil3.png";
+import rectangle from "@/assets/Rectangle 60.png";
+import bottle1 from "@/assets/bottle1.png";
+import bottle2 from "@/assets/bottle2.png";
+import bottle3 from "@/assets/bottle3.png";
 
 const Dashboard = () => {
   return (
@@ -2679,506 +2711,938 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="relative mt-5 ml-[630px] w-[300px] h-[100px]">
-          <Image
-            width={300}
-            height={100}
-            alt=""
-            src="https://happyharvestfarms.com/blog/wp-content/uploads/2024/01/Vegetables-3.jpg"
-            className="rounded-lg bg-gray-100 object-cover"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white space-y-2 bg-black/50 rounded-lg">
-            <p className="text-sm font-semibold">
-              Fresh Vegetables Always get adiues nature day course for common
-            </p>
-            <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-3 py-2.5">
-              <Link href={"/vegetables"}>Shop now</Link>
-            </button>
+        <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 -mt-10" />
+
+        <div className="mt-[-60px]">
+          <div className="mx-auto px-6 lg:px-12 py-16 sm:py-24">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Card 1 */}
+              <div className="border border-gray-300 bg-white p-4 flex flex-col items-center">
+                <Image
+                  width={300}
+                  height={300}
+                  src={veggies}
+                  className="w-96"
+                  alt=""
+                />
+                <div className="text-[#9FA82B] font-semibold ml-[-160px] text-2xl">
+                  Fresh Vegetables
+                </div>
+                <div className="mt-3 ml-1 text-2xl">
+                  Always get adieus nature day course for common
+                </div>
+                <button className="border-[#98A02D] py-2 text-2xl border-[3px] rounded-xl px-5 ml-[-215px] mt-3">
+                  Shop now
+                </button>
+              </div>
+
+              <div className="border border-gray-300 bg-white p-4 flex flex-col items-center">
+                <div className="-mt-3">
+                  <Image
+                    width={300}
+                    height={300}
+                    src={agriculture}
+                    className="w-96"
+                    alt=""
+                  />
+                </div>
+
+                <div className="text-[#9FA82B] font-semibold ml-[-90px] text-2xl">
+                  Agricultural Vegetables
+                </div>
+                <div className="mt-3 ml-1 text-2xl">
+                  Always get adieus nature day course for common
+                </div>
+                <button className="border-[#98A02D] py-2 text-2xl border-[3px] rounded-xl px-5 ml-[-215px] mt-3">
+                  Shop now
+                </button>
+              </div>
+
+              <div className="border border-gray-300 bg-white p-4 flex flex-col items-center">
+                <Image
+                  width={300}
+                  height={300}
+                  src={organic}
+                  className="w-96"
+                  alt=""
+                />
+                <div className="text-[#9FA82B] font-semibold ml-[-153px] text-2xl">
+                  Oranic Vegetables
+                </div>
+                <div className="mt-3 ml-1 text-2xl">
+                  Always get adieus nature day course for common
+                </div>
+                <button className="border-[#98A02D] py-2 text-2xl border-[3px] rounded-xl px-5 ml-[-215px] mt-3">
+                  Shop now
+                </button>
+              </div>
+
+              <div className="border border-gray-300 bg-white p-4 flex flex-col items-center">
+                <Image
+                  width={300}
+                  height={300}
+                  src={dairy}
+                  className="w-72 mt-9"
+                  alt=""
+                />
+                <div className="text-[#9FA82B] font-semibold ml-[-165px] text-2xl">
+                  Dairy Vegetables
+                </div>
+                <div className="mt-3 ml-1 text-2xl">
+                  Always get adieus nature day course for common
+                </div>
+                <button className="border-[#98A02D] py-2 text-2xl border-[3px] rounded-xl px-5 ml-[-215px] mt-3">
+                  Shop now
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="relative mt-5 ml-[1000px] w-[300px] h-[100px]">
-          <Image
-            width={300}
-            height={100}
-            alt=""
-            src="https://healthybuddha.in/image/cache/catalog/Sooji/basmati-rice-500x515.jpeg"
-            className="rounded-lg bg-gray-100 object-cover"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white space-y-2 bg-black/50 rounded-lg">
-            <p className="text-sm font-semibold">
-              Agricultural Vegetables Always get adiues nature day course for
-              common
-            </p>
-            <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-3 py-2.5">
-              <Link href={"/agriculture"}>Shop now</Link>
-            </button>
+        <div className="mt-[-110px]">
+          <div className="mx-auto px-6 py-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+              <div className="border h-[450px] border-gray-300 bg-gray-50 p-4 flex flex-row items-center gap-6">
+                <Image
+                  width={500}
+                  height={500}
+                  src={mango}
+                  className="w-96 h-96 object-cover rounded-md"
+                  alt="Banana"
+                />
+                <div>
+                  <div className="font-semibold ml-[180px] text-2xl">
+                    Summer
+                  </div>
+                  <div className="mt-3 text-[#98A02D] ml-[135px] text-3xl font-semibold">
+                    Fresh Mango
+                  </div>
+                  <div className="text-xl mt-4 ml-5 font-semibold">
+                    Conveniently innovate user-centric benefits architectures
+                    rapidiously builmortar testing manufacture distinctively.
+                  </div>
+                  <button className="bg-[#ACB631] ml-[138px] font-medium text-white py-2 px-4 mt-7 text-xl rounded-xl">
+                    View Products{""}&gt;
+                  </button>
+                </div>
+              </div>
+
+              <div className="border border-gray-300 bg-gray-50 p-4 flex flex-row items-center gap-6">
+                <Image
+                  width={500}
+                  height={500}
+                  src={pineapple}
+                  className="w-96 h-96 object-cover rounded-md"
+                  alt="Banana"
+                />
+                <div>
+                  <div className="font-semibold ml-[180px] text-2xl">
+                    Winter
+                  </div>
+                  <div className="mt-3 text-[#98A02D] ml-[105px] text-3xl font-semibold">
+                    Fresh Pineapple
+                  </div>
+                  <div className="text-xl mt-4 font-semibold">
+                    Conveniently innovate user-centric benefits architectures
+                    rapidiously builmortar testing manufacture distinctively.
+                  </div>
+                  <button className="bg-[#ACB631] ml-[123px] font-medium text-white py-2 px-4 mt-7 text-xl rounded-xl">
+                    View Products{""}&gt;
+                  </button>
+                </div>
+              </div>
+
+              <div className="border h-[430px] border-gray-300 bg-gray-50 p-4 flex flex-row items-center gap-6">
+                <Image
+                  width={500}
+                  height={500}
+                  src={cherry}
+                  className="w-96 h-96 object-cover rounded-md"
+                  alt="Banana"
+                />
+                <div>
+                  <div className="font-semibold ml-[180px] text-2xl">
+                    Autumn
+                  </div>
+                  <div className="mt-3 text-[#98A02D] ml-[105px] text-3xl font-semibold">
+                    Fresh Strawberry
+                  </div>
+                  <div className="text-xl ml-4 mt-4 font-semibold">
+                    Conveniently innovate user-centric benefits architectures
+                    rapidiously builmortar testing manufacture distinctively.
+                  </div>
+                  <button className="bg-[#ACB631] ml-[138px] font-medium text-white py-2 px-4 mt-7 text-xl rounded-xl">
+                    View Products{""}&gt;
+                  </button>
+                </div>
+              </div>
+
+              <div className="border border-gray-300 bg-gray-50 p-4 flex flex-row items-center gap-6">
+                <Image
+                  width={500}
+                  height={500}
+                  src={blackberry}
+                  className="w-[440px] h-96 object-cover rounded-md"
+                  alt="Banana"
+                />
+                <div>
+                  <div className="font-semibold ml-[150px] text-2xl">
+                    Spring
+                  </div>
+                  <div className="mt-3 text-[#98A02D] ml-[83px] text-3xl font-semibold">
+                    Fresh Blackberry
+                  </div>
+                  <div className="text-xl ml-6 mt-4 font-semibold">
+                    Conveniently innovate user-centric benefits architectures
+                    rapidiously builmortar testing manufacture distinctively.
+                  </div>
+                  <button className="bg-[#ACB631] ml-[90px] font-medium text-white py-2 px-4 mt-7 text-xl rounded-xl">
+                    View Products{""}&gt;
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="relative mt-[300px] ml-[1000px] w-[300px] h-[100px]">
-          <Image
-            width={300}
-            height={100}
-            alt=""
-            src="https://simplyfresh.info/wp-content/uploads/2015/09/simply-handlingdairy-300x207.jpg"
-            className="rounded-lg bg-gray-100 object-cover"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white space-y-2 bg-black/50 rounded-lg">
-            <p className="text-sm font-semibold">
-              Dairy Vegetables Always get adiues nature day course for common
-            </p>
-            <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-3 py-2.5">
-              <Link href={"/dairy"}>Shop now</Link>
-            </button>
+        <div className="mt-[-50px]">
+          <Image width={200} height={100} src={leaf} alt="" />
+          <div className="text-3xl font-bold mt-[-90px] ml-[115px]">
+            Organic Fertilizer
+          </div>
+          <div className="relative mt-[-10px]">
+            <div className="">
+              <Image
+                width={600}
+                height={600}
+                src={hand}
+                alt=""
+                className="absolute bg-white inset-0 w-[1730px] ml-[33px] mt-9 px-16 h-[1293px] object-cover z-0"
+              />
+            </div>
+            {/* Background Image */}
+
+            {/* Soil Image - Positioned above the hand image but behind the cards */}
+            <Image
+              width={400}
+              height={400}
+              src={soil}
+              alt=""
+              className="absolute ml-[200px] inset-x-0 bottom-8 w-[2500px] px-16 h-[650px] object-cover z-10"
+            />
+
+            <div className="flex p-8 relative  z-20">
+              {/* First Card (Horizontal Mobile Screen) */}
+              <div className="w-[1400px] h-[1300px] border-[3px] border-gray-400 flex items-center justify-center relative">
+                <Image
+                  width={600}
+                  height={600}
+                  src={fert}
+                  alt=""
+                  className="w-3/4 h-[2000px] object-contain"
+                />
+                <button className="text-white bg-[#ACB631] rounded-md px-2 py-2 text-xl absolute bottom-[200px] left-[47%] transform -translate-x-1/2 font-bold">
+                  Know more
+                </button>
+              </div>
+
+              <div className="flex flex-col flex-grow">
+                {/* Second Card (Square) - Adjusted Size */}
+                <div className="aspect-square w-[900px] h-[650px] border-gray-400 border-[3px] flex items-center justify-center text-white text-xl font-bold">
+                  <Image
+                    width={600}
+                    height={600}
+                    src={fert2}
+                    alt=""
+                    className="w-3/4 object-contain"
+                  />
+                </div>
+
+                {/* Third Card (Square) - Adjusted Size */}
+                <div className="aspect-square w-[900px] h-[650px] border-gray-400 border-[3px] flex items-center justify-center text-white text-xl font-bold">
+                  <Image
+                    width={600}
+                    height={600}
+                    src={fert3}
+                    alt=""
+                    className="w-3/4 object-contain"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="relative mt-[-400px] ml-[630px] w-[300px] h-[100px]">
-          <Image
-            width={300}
-            height={100}
-            alt=""
-            src="https://blog.cabi.org/wp-content/uploads/sites/5/2018/01/spices-1024x783.jpg"
-            className="rounded-lg bg-gray-100 object-cover"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white space-y-2 bg-black/50 rounded-lg">
-            <p className="text-sm font-semibold">
-              Organic Vegetables Always get adiues nature day course for common
-            </p>
-            <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-3 py-2.5">
-              <Link href={"/spices"}>Shop now</Link>
-            </button>
-          </div>
-        </div>
-        <div className="relative mt-[425px] ml-[700px] w-[300px] h-[300px]">
-          <Image
-            width={300}
-            height={300}
-            alt=""
-            src="https://5.imimg.com/data5/SELLER/Default/2024/1/378879267/DJ/VN/VT/200058092/fresh-mango-1000x1000.jpeg"
-            className="object-cover rounded-lg"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white space-y-3 bg-black/40 rounded-lg p-4">
-            <p className="text-sm font-semibold">
-              Summer Fresh Mango Conveniently innovate user-centric benefits
-              architectures rapidly build mortar testing manufacture
-              distinctively
-            </p>
-            <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-4 py-2.5">
-              <Link href={"/mango"}>View products</Link>
-            </button>
-          </div>
-        </div>
+        <div className="mt-[-50px] ml-[330px]">
+          <div className="mx-auto px-6 lg:px-12 py-16 sm:py-24">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Card 1 */}
+              <div className="rounded-xl p-4 flex flex-col items-center relative">
+                {/* Rectangle Image - Positioned below */}
+                <Image
+                  width={200}
+                  height={200}
+                  src={rectangle}
+                  alt="Rectangle"
+                  className="absolute left-[10px] bottom-0 w-52 h-52 object-cover"
+                />
 
-        <div className="relative mt-[-290px] ml-[1030px] w-[300px] h-[300px]">
-          <Image
-            width={300}
-            height={300}
-            alt=""
-            src="https://www.healthxchange.sg/sites/hexassets/Assets/food-nutrition/pineapple-health-benefits-and-ways-to-enjoy.jpg"
-            className="object-cover rounded-lg"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white space-y-3 bg-black/50 rounded-lg p-4">
-            <p className="text-sm font-semibold">
-              Winter Fresh Pineapple Conveniently innovate user-centric benefits
-              architectures rapidly build mortar testing manufacture
-              distinctively
-            </p>
-            <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-4 py-2.5">
-              <Link href={"/pineapple"}>View products</Link>
-            </button>
-          </div>
-        </div>
+                {/* Handsoil Image - Positioned above */}
+                <Image
+                  width={280}
+                  height={280}
+                  src={handsoil}
+                  alt="Handsoil"
+                  className="relative z-10 ml-10"
+                />
+              </div>
 
-        <div className="relative mt-[100px] ml-[1030px] w-[300px] h-[300px]">
-          <Image
-            width={300}
-            height={300}
-            alt=""
-            src="https://media.istockphoto.com/id/579754040/photo/red-berry-strawberry.jpg?s=612x612&w=0&k=20&c=o8m7UEe6NEVqyTO1bEZU5A6fKl3Zu43NLQ23JrlLQgM="
-            className="object-cover rounded-lg"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white space-y-3 bg-black/50 rounded-lg p-4">
-            <p className="text-sm font-semibold">
-              Autumn Fresh Strawberry Conveniently innovate user-centric
-              benefits architectures rapidly build mortar testing manufacture
-              distinctively
-            </p>
-            <button className="text-white bg-[#ACB631] font-medium rounded-lg text-sm px-4 py-2.5 focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50">
-              <Link href={"/strawberry"}>View products</Link>
-            </button>
+              {/* Card 2 */}
+              <div className="rounded-xl p-4 flex flex-col items-center relative">
+                {/* Rectangle Image - Positioned below */}
+                <Image
+                  width={200}
+                  height={200}
+                  src={rectangle}
+                  alt="Rectangle"
+                  className="absolute left-[10px] bottom-0 w-52 h-52 object-cover"
+                />
+
+                {/* Handsoil Image - Positioned above */}
+                <Image
+                  width={280}
+                  height={280}
+                  src={handsoil2}
+                  alt="Handsoil 2"
+                  className="relative z-10 ml-10"
+                />
+              </div>
+
+              {/* Card 3 */}
+              <div className="rounded-xl p-4 flex flex-col items-center relative">
+                {/* Rectangle Image - Positioned below */}
+                <Image
+                  width={200}
+                  height={200}
+                  src={rectangle}
+                  alt="Rectangle"
+                  className="absolute left-[10px] bottom-0 w-52 h-52 object-cover"
+                />
+
+                {/* Handsoil Image - Positioned above */}
+                <Image
+                  width={280}
+                  height={280}
+                  src={handsoil3}
+                  alt="Handsoil 3"
+                  className="relative z-10 ml-10"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="relative mt-[-250px] ml-[700px] w-[300px] h-[300px]">
-          <Image
-            width={300}
-            height={300}
-            alt="Spring Fresh Blackberry"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Blackberries_%28Rubus_fruticosus%29.jpg/250px-Blackberries_%28Rubus_fruticosus%29.jpg"
-            className="object-cover rounded-lg"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white bg-black/50 space-y-3 rounded-lg p-4">
-            <p className="text-sm font-semibold">
-              Spring Fresh Blackberry Conveniently innovate user-centric
-              benefits architectures rapidly build mortar testing manufacture
-              distinctively
-            </p>
-            <button className="text-white bg-[#ACB631] font-medium rounded-lg text-sm px-4 py-2.5 focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50">
-              <Link href={"/blackberry"}>View products</Link>
-            </button>
+        <div className="text-[#9FA82B] ml-[765px] text-3xl font-semibold">
+          Soil Conditioner
+        </div>
+
+        <div className="mt-[-50px] ml-[330px]">
+          <div className="mx-auto px-6 lg:px-12 py-16 sm:py-24">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Card 1 */}
+              <div className="rounded-xl p-4 flex flex-col items-center relative">
+                {/* Rectangle Image - Positioned below */}
+                <Image
+                  width={200}
+                  height={200}
+                  src={rectangle}
+                  alt="Rectangle"
+                  className="absolute left-[10px] bottom-0 w-52 h-52 object-cover"
+                />
+
+                {/* Handsoil Image - Positioned above */}
+                <Image
+                  width={280}
+                  height={280}
+                  src={bottle1}
+                  alt="Handsoil"
+                  className="relative z-10 ml-10"
+                />
+              </div>
+
+              {/* Card 2 */}
+              <div className="rounded-xl p-4 flex flex-col items-center relative">
+                {/* Rectangle Image - Positioned below */}
+                <Image
+                  width={200}
+                  height={200}
+                  src={rectangle}
+                  alt="Rectangle"
+                  className="absolute left-[10px] bottom-0 w-52 h-52 object-cover"
+                />
+
+                {/* Handsoil Image - Positioned above */}
+                <Image
+                  width={280}
+                  height={280}
+                  src={bottle2}
+                  alt="Handsoil 2"
+                  className="relative z-10 ml-10"
+                />
+              </div>
+
+              {/* Card 3 */}
+              <div className="rounded-xl p-4 flex flex-col items-center relative">
+                {/* Rectangle Image - Positioned below */}
+                <Image
+                  width={200}
+                  height={200}
+                  src={rectangle}
+                  alt="Rectangle"
+                  className="absolute left-[10px] bottom-0 w-52 h-52 object-cover"
+                />
+
+                {/* Handsoil Image - Positioned above */}
+                <Image
+                  width={280}
+                  height={280}
+                  src={bottle3}
+                  alt="Handsoil 3"
+                  className="relative z-10 ml-10"
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="ml-[650px] mt-[50px]">Organic Fertilizer</div>
-        <div className="relative ml-[550px]">
-          <Image
-            width={500}
-            height={200}
-            alt="Fertilizers"
-            src="https://www.ecepl.com/wp-content/uploads/2024/04/Earthcare-41-1024x576.jpg"
-            className="rounded-lg h-[500px] bg-gray-100"
-          />
 
-          {/* Overlay content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2 bg-black/ rounded-lg">
-            <button
-              type="button"
-              className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-10 py-2.5"
-            >
-              <Link href="/fertilizers">Know more</Link>
-            </button>
-          </div>
+        <div className="text-[#9FA82B] ml-[800px] mt-16  text-3xl font-semibold">
+          Pesticides
         </div>
 
-        <div className="relative ml-[1060px] mt-[-500px]">
-          <Image
-            width={270}
-            height={200}
-            alt="Korean Ramen"
-            src="https://kellogggarden.com/wp-content/uploads/2018/06/Hands-Holding-Soil-300x200.jpg"
-            className="rounded-lg bg-gray-100"
-          />
-
-          {/* Overlay content */}
-        </div>
-
-        <div className="relative ml-[1060px] mt-[10px]">
-          <Image
-            width={275}
-            height={200}
-            alt="Korean Ramen"
-            src="https://media.istockphoto.com/id/637583458/photo/hands-holding-and-caring-a-green-young-plant.jpg?s=612x612&w=0&k=20&c=vayQ471oZW7dTCeDJos5h4wH7SZqL4cbD-F-pZxj114="
-            className="rounded-lg bg-gray-100"
-          />
-
-          {/* Overlay content */}
-        </div>
-        <div className="mt-[200px] ml-[600px]">
-          <Image
-            width={200}
-            height={200}
-            src="https://cdn.mos.cms.futurecdn.net/JvUBWzUho5ngxRNvK8Hf9i-1024-80.jpg.webp"
-            alt=""
-            className=""
-          />
-        </div>
-        <div className="mt-[-133px] ml-[830px]">
-          <Image
-            width={200}
-            height={200}
-            src="https://cdn.mos.cms.futurecdn.net/JvUBWzUho5ngxRNvK8Hf9i-1024-80.jpg.webp"
-            alt=""
-            className=""
-          />
-        </div>
-        <div className="mt-[-135px] ml-[1065px]">
-          <Image
-            width={200}
-            height={200}
-            src="https://cdn.mos.cms.futurecdn.net/JvUBWzUho5ngxRNvK8Hf9i-1024-80.jpg.webp"
-            alt=""
-            className=""
-          />
-        </div>
-        <div className="ml-[850px]">Soil Conditioner</div>
-        <div className="mt-5 ml-[600px]">
-          <Image
-            width={200}
-            height={200}
-            src="https://m.media-amazon.com/images/I/51CSqx1w9SS._SX300_SY300_QL70_FMwebp_.jpg"
-            alt=""
-            className=""
-          />
-        </div>
-        <div className="mt-[-185px] ml-[830px]">
-          <Image
-            width={200}
-            height={200}
-            src="https://m.media-amazon.com/images/I/51CSqx1w9SS._SX300_SY300_QL70_FMwebp_.jpg"
-            alt=""
-            className=""
-          />
-        </div>
-        <div className="mt-[-255px] ml-[1065px]">
-          <Image
-            width={200}
-            height={200}
-            src="https://m.media-amazon.com/images/I/51CSqx1w9SS._SX300_SY300_QL70_FMwebp_.jpg"
-            alt=""
-            className=""
-          />
-        </div>
-        <div className="mt-[80px] ml-[850px]">Pesticides</div>
-        <button
-          type="button"
-          className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-10 py-2.5 ml-[810px]"
-        >
-          <Link href="/pesticides">Know more</Link>
+        <button className="text-white mt-10 bg-[#ACB631] ml-[870px] rounded-md px-2 py-2 text-xl bottom-[50px]  transform -translate-x-1/2 font-medium">
+          Know more
         </button>
-        <div className="relative ml-[600px] mt-10 w-[400px] h-[350px]">
-          <Image
-            width={400}
-            height={350}
-            src="https://www.skorganicfarms.com/cdn/shop/collections/seeds_1296x.jpg?v=1550061858"
-            alt="Agriculture SEEDS"
-            className="object-cover rounded-lg"
-          />
-          <div className="absolute inset-0 flex items-center justify-center text-white bg-black/50 rounded-lg">
-            <h2 className="text-xl font-semibold">Agriculture SEEDS</h2>
+
+        <div className="w-full px-7 mt-5">
+          <div className="relative h-[1000px] bg-white border-[3px] shadow-xl border-gray-300 flex items-center justify-center text-black text-lg font-semibold">
+            {/* Crop Image in the background */}
+
+            <Image
+              width={700}
+              height={700}
+              src={crop}
+              alt=""
+              className="w-full h-full object-cover"
+            />
+
+            <Image
+              width={400}
+              height={400}
+              src={greeneryleaf}
+              className="absolute mt-[-660px] w-[450px] ml-[-1400px]"
+              alt=""
+            />
+
+            <Image
+              width={500}
+              height={500}
+              src={seeds2}
+              className="absolute mt-[-400px] w-[900px]"
+              alt=""
+            />
+            <Image
+              width={200}
+              height={200}
+              src={leaf5}
+              className="absolute mt-[-820px]"
+              alt=""
+            />
+            <div className="text-[#98A02D] text-6xl mt-[-750px] font-medium absolute">
+              Agriculture
+            </div>
+
+            <Image
+              width={400}
+              height={400}
+              src={anothergreenleaf}
+              className="absolute mt-[-650px] w-[450px] h-[450px] ml-[1355px]"
+              alt=""
+            />
+
+            {/* Seeds Image positioned at the bottom with a small margin on left and right */}
+            <Image
+              width={700}
+              height={700}
+              src={seeds}
+              alt=""
+              className="absolute -bottom-5 left-2 right-2 h-[1100px] w-full  object-cover"
+            />
           </div>
         </div>
 
-        <div className="relative ml-[1060px] mt-[-345px] w-[200px] h-[350px]">
-          <Image
-            width={200}
-            height={350}
-            src="https://www.alkarty.com/images/product/resized/500-500/03-07-2021industries-garden-sanitizer-chemical-pressure-sprayer-pump-original-imafwhzyzwsjgkzn.jpeg"
-            alt="Farming & Gardening"
-            className="object-cover rounded-lg"
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3 text-center text-white bg-black/50 rounded-lg p-4">
-            <h2 className="text-lg font-semibold">Farming & Gardening</h2>
-            <button
-              type="button"
-              className="text-black bg-[#ACB631] font-medium rounded-lg text-sm px-10 py-2.5 focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50"
-            >
-              <Link href="/farming">Know more</Link>
+        <div className="w-full px-7 mt-5">
+          <div className="relative h-[1000px] border-[3px] bg-gray-100 border-gray-200 shadow-xl flex items-center justify-center text-black text-lg font-semibold">
+            <Image
+              width={700}
+              height={700}
+              src={farmingequipment}
+              className="w-full h-full mt-[150px]"
+              alt=""
+            />
+
+            <Image
+              width={700}
+              height={700}
+              src={leafy}
+              className="absolute mt-[-500px] w-[2000px] h-[500px] ml-[30px]"
+              alt=""
+            />
+
+            <Image
+              width={200}
+              height={200}
+              src={leaf}
+              className="absolute mt-[-500px]"
+              alt=""
+            />
+
+            <div className="text-[#98A02D] mt-[-440px] absolute text-4xl">
+              Farming & Gardening
+            </div>
+
+            <div className=" mt-[-340px] font-normal absolute text-2xl">
+              Illustrations
+            </div>
+
+            <Image
+              width={400}
+              height={400}
+              src={mugs}
+              className="absolute w-[700px] ml-[450px]"
+              alt=""
+            />
+            <button className="text-white bg-[#ACB631] rounded-md px-2 py-2 text-xl absolute bottom-[50px] left-[92%] transform -translate-x-1/2 font-medium">
+              Know more
             </button>
           </div>
         </div>
-        <div className="ml-[650px] mt-[50px]">Recommendations</div>
-        <div className="ml-[650px] mt-[50px]">
+
+        <Image width={200} height={100} src={leaf} alt="" />
+        <div className="text-3xl font-bold mt-[-90px] ml-[115px]">
+          Recommendations
+        </div>
+
+        <div className="ml-[116px] mt-[50px] text-2xl">
           New arrival | Best Selling | Most popular | On Sales | All
         </div>
-        <div className="grid grid-cols-3 gap-5 ml-[600px] mt-5">
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://5.imimg.com/data5/SELLER/Default/2023/8/332766634/BV/LK/TV/119986806/500-gram-frozen-chicken-500x500.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Chicken</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
 
-            <div className="flex">
-              <IndianRupee /> 500
-            </div>
-          </div>
+        <div className="mt-[-50px]">
+          <div className="mx-auto px-6 lg:px-12 py-16 sm:py-24">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Card 1 */}
+              <div className="border-4 border-gray-200 bg-white p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
 
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://www.bluetribefoods.com/cdn/shop/products/Pepperonifront1500x1500whitebackground_1024x1024.jpg?v=1704718440"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Pepperoni</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 800
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://images-cdn.ubuy.co.in/663b390a85df32464c346e75-minute-maid-pink-lemonade-20-oz-bottle.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Minute Maid</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 50
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://www.earthytales.in/uploads/products/3x/327c076eb2dc327535b959378a5d3624.jpg?v=031020241"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Cherry</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://www.bigbasket.com/media/uploads/p/l/40122445_6-fresho-grapes-green-residue-free.jpg"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Grape</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://www.fervalle.com/wp-content/uploads/2022/07/transparent-orange-apple5eacfeae85ac29.7815306015883956945475-300x300.png"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Orange</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://cdn.shopaccino.com/rootz/products/picture1-12865436519083_l.jpg?v=492?param=1"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Dragon Fruit</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://cdn.britannica.com/18/176518-050-5AB1E61D/lychee-fruits-Southeast-Asia.jpg?w=300"
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Lychee</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
-            </div>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Image
-              width={150}
-              height={100}
-              alt=""
-              src="https://media.istockphoto.com/id/579754040/photo/red-berry-strawberry.jpg?s=612x612&w=0&k=20&c=o8m7UEe6NEVqyTO1bEZU5A6fKl3Zu43NLQ23JrlLQgM="
-              className="h-[150px] rounded-lg bg-gray-100"
-            />
-            <p className="text-center mt-[-20px]">Strawberry</p>
-            <div className="flex gap-4 mt-[-11px] ml-5">
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to cart
-              </button>
-              <button className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-1 py-2.5">
-                Add to wishlist
-              </button>
-            </div>
-            <div className="flex">
-              <IndianRupee /> 20
+                <div className=" -mb-5  px-[126px] ">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl  border-[3px] text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-200 bg-white p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className="-mb-5 px-[126px] ">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl  border-[3px] text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-200 bg-white p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className=" -mb-5  px-[126px] ">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl border-[3px] text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-200 bg-white p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className=" -mb-5 px-[126px] ">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl  border-[3px] text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-200 bg-white p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className=" -mb-5 px-[126px]">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl border-[3px] text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-200 bg-white p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className=" -mb-5  px-[126px] ">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl  border-[3px] text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-200 bg-white p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className=" -mb-5 px-[126px] ">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl  border-[3px] text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-4 border-gray-200 bg-white  p-4 flex flex-col items-center">
+                <Link href="/product-detail">
+                  {/* Image wrapper with gray background */}
+                  <div className="">
+                    <Image
+                      width={100}
+                      height={100}
+                      src={banana}
+                      alt="Banana"
+                      className="w-48 object-cover rounded-md"
+                    />
+                  </div>
+                </Link>
+
+                <div className=" -mb-5  px-[126px] ">
+                  <h3 className="mt-4 ml-8 text-xl font-bold text-gray-700">
+                    Banana
+                  </h3>
+
+                  <button className="mt-2 text-xl  border-[3px] text-black px-4 py-2 border-[#ACB631] rounded-md">
+                    Add to Cart
+                  </button>
+
+                  <p className="mt-2 ml-8 text-xl font-bold text-black">
+                    ₹1000
+                  </p>
+
+                  <div className="mt-2 flex items-center space-x-1">
+                    {/* Star icons */}
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        className="w-5 h-5 text-yellow-500"
+                      >
+                        <path d="M11.48 3.499a1.5 1.5 0 012.042 0l2.305 4.671 5.13.746a1.5 1.5 0 01.832 2.553l-3.71 3.614.875 5.1a1.5 1.5 0 01-2.176 1.578l-4.575-2.405-4.575 2.405a1.5 1.5 0 01-2.176-1.578l.875-5.1-3.71-3.614a1.5 1.5 0 01.832-2.553l5.13-.746 2.305-4.671z" />
+                      </svg>
+                    ))}
+                    <div className="text-xl text-gray-600">(5)</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="ml-[650px] mt-[50px]">Your Recent Viewed</div>
-        <div className="ml-[1250px] mt-[-25px] underline">
-          <Link href={""}>
-            View all
-            <ArrowRight className="ml-[55px] mt-[-25px]" />
-          </Link>
+
+        <div className="mt-[-90px]">
+          <Image width={200} height={100} src={leaf} alt="" />
+          <div className="text-3xl font-bold mt-[-90px] ml-[115px]">
+            Your Recent Viewed
+          </div>
+          <h2 className="text-2xl underline mt-[-30px] font-bold text-gray-900 ml-[1540px]">
+            <Link href="#">View all&gt;</Link>
+          </h2>
         </div>
-        <div className="ml-[680px] mt-5">
-          <Image
-            width={600}
-            height={400}
-            alt=""
-            src="https://www.bluetribefoods.com/cdn/shop/products/Pepperonifront1500x1500whitebackground_1024x1024.jpg?v=1704718440"
-            className="rounded-lg bg-gray-100"
-          />
+
+        <div className="min-h-screen ml-10 mt-[-100px]  flex items-center justify-center px-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10">
+            <div className="h-[500px] w-[500px] bg-white flex flex-col items-center justify-center shadow-lg ">
+              <Image width={500} height={500} src={pizza} alt="" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10">
+            <div className="h-[500px] w-[500px] bg-white flex flex-col items-center justify-center shadow-lg ">
+              <Image
+                width={500}
+                height={500}
+                src={pringles}
+                alt=""
+                className="h-96"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10">
+            <div className="h-[500px] w-[500px] bg-white flex flex-col items-center justify-center shadow-lg ">
+              <Image
+                width={500}
+                height={500}
+                src={chanadal}
+                alt=""
+                className=""
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>
