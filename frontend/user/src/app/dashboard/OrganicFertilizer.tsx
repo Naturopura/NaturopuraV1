@@ -1,8 +1,8 @@
 import Image from "next/image";
 import React from "react";
 import fert from "@/assets/fert.png";
-import fert2 from "@/assets/fert2.png";
-import fert3 from "@/assets/fer3.png";
+import fert2 from "@/assets/fert2.jpg";
+import fert3 from "@/assets/fert3.jpg";
 import hand from "@/assets/hand.png";
 import soil from "@/assets/soil.png";
 import leaf from "@/assets/leaf.png";
@@ -44,7 +44,7 @@ const OrganicFertilizer = () => {
                 height={600}
                 src={fert}
                 alt=""
-                className="w-3/4 h-[2000px] object-contain"
+                className="w-full h-full object-contain"
               />
               <button className="text-white bg-[#ACB631] rounded-md px-2 py-2 text-xl absolute bottom-[200px] left-[47%] transform -translate-x-1/2 font-bold">
                 Know more
@@ -59,7 +59,7 @@ const OrganicFertilizer = () => {
                   height={600}
                   src={fert2}
                   alt=""
-                  className="w-3/4 object-contain"
+                  className="w-[60%] h-[60%] rounded-full"
                 />
               </div>
 
@@ -70,7 +70,7 @@ const OrganicFertilizer = () => {
                   height={600}
                   src={fert3}
                   alt=""
-                  className="w-3/4 object-contain"
+                  className="w-[60%] h-[60%] rounded-full"
                 />
               </div>
             </div>

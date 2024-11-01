@@ -14,7 +14,7 @@ import img9 from "@/assets/file (10).png";
 const ProductCategory = () => {
   return (
     <div>
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen mt-[175px] flex items-center justify-center">
         {/* Unified Card Container */}
         <div className="relative mt-[-630px] shadow-xl rounded-lg overflow-hidden w-[1800px] p-10">
           {/* Background Image */}

@@ -3,7 +3,6 @@ import React from "react";
 import handsoil from "@/assets/handsoil.png";
 import handsoil2 from "@/assets/handsoil2.png";
 import handsoil3 from "@/assets/handsoil3.png";
-import rectangle from "@/assets/Rectangle 60.png";
 
 const SoilConditioner = () => {
   return (
@@ -14,13 +13,13 @@ const SoilConditioner = () => {
             {/* Card 1 */}
             <div className="rounded-xl p-4 flex flex-col items-center relative">
               {/* Rectangle Image - Positioned below */}
-              <Image
+              {/* <Image
                 width={200}
                 height={200}
                 src={rectangle}
                 alt="Rectangle"
                 className="absolute left-[10px] bottom-0 w-52 h-52 object-cover"
-              />
+              /> */}
 
               {/* Handsoil Image - Positioned above */}
               <Image
@@ -35,13 +34,13 @@ const SoilConditioner = () => {
             {/* Card 2 */}
             <div className="rounded-xl p-4 flex flex-col items-center relative">
               {/* Rectangle Image - Positioned below */}
-              <Image
+              {/* <Image
                 width={200}
                 height={200}
                 src={rectangle}
                 alt="Rectangle"
                 className="absolute left-[10px] bottom-0 w-52 h-52 object-cover"
-              />
+              /> */}
 
               {/* Handsoil Image - Positioned above */}
               <Image
@@ -56,13 +55,13 @@ const SoilConditioner = () => {
             {/* Card 3 */}
             <div className="rounded-xl p-4 flex flex-col items-center relative">
               {/* Rectangle Image - Positioned below */}
-              <Image
+              {/* <Image
                 width={200}
                 height={200}
                 src={rectangle}
                 alt="Rectangle"
                 className="absolute left-[10px] bottom-0 w-52 h-52 object-cover"
-              />
+              /> */}
 
               {/* Handsoil Image - Positioned above */}
               <Image

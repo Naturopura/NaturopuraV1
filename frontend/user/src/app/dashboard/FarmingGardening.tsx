@@ -19,10 +19,10 @@ const FarmingGardening = () => {
           />
 
           <Image
-            width={700}
-            height={700}
+            width={600}
+            height={450}
             src={leafy}
-            className="absolute mt-[-500px] w-[2000px] h-[500px] ml-[30px]"
+            className="absolute top-[2px] right-[-100px] w-[950px] h-[350px]" // Adjusted position and size
             alt=""
           />
 
@@ -38,7 +38,7 @@ const FarmingGardening = () => {
             Farming & Gardening
           </div>
 
-          <div className=" mt-[-340px] font-normal absolute text-2xl">
+          <div className="mt-[-340px] font-normal absolute text-2xl">
             Illustrations
           </div>
 
@@ -46,7 +46,7 @@ const FarmingGardening = () => {
             width={400}
             height={400}
             src={mugs}
-            className="absolute w-[700px] ml-[450px]"
+            className="absolute w-[400px] h-[350px] ml-[300px]"
             alt=""
           />
           <button className="text-white bg-[#ACB631] rounded-md px-2 py-2 text-xl absolute bottom-[50px] left-[92%] transform -translate-x-1/2 font-medium">

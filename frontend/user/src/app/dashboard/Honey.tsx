@@ -71,7 +71,7 @@ const Honey = () => {
               height={600}
               src={honeybottle}
               alt=""
-              className="absolute bottom-0 right-0 mb-0 mr-4 w-[620px] h-auto z-10"
+              className="absolute bottom-0 right-0 mb-[-65px] mr-4 w-[620px] h-auto z-10"
             />
 
             <div className="absolute inset-0 flex justify-center items-center z-50">

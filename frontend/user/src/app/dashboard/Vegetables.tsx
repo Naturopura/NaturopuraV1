@@ -25,11 +25,11 @@ const Vegetables = () => {
             {/* Vegetables Image on the Left */}
             <div className="">
               <Image
-                width={500}
-                height={500}
+                width={700}
+                height={700}
                 src={vegetables}
                 alt="Vegetables"
-                className="h-72 w-full mt-10 ml-8 object-cover z-10"
+                className="h-[460px] w-ful mt-0 ml-8 object-cover z-10"
               />
             </div>
 

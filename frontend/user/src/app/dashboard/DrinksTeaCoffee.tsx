@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import tea from "@/assets/Tea.png";
-import coffee from "@/assets/coffee.png";
-import lemon from "@/assets/Lemon.png";
+import tea from "@/assets/tea.jpeg";
+import coffee from "@/assets/coffee.jpeg";
+import lemon from "@/assets/lemon.jpg";
 import leaf from "@/assets/leaf.png";
 
 const DrinksTeaCoffee = () => {
@@ -29,7 +29,7 @@ const DrinksTeaCoffee = () => {
               alt="Snacks"
               className="w-full h-full object-cover"
             />
-            <div className="absolute ml-[650px] inset-0 flex flex-col items-center justify-center space-y-4 ">
+            <div className="absolute ml-[-650px] inset-0 flex flex-col items-center justify-center space-y-4 ">
               <div className="text-white text-xl ml-[-20px] bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-md px-12 py-3 mt-4">
                 100% fresh
               </div>
@@ -43,15 +43,15 @@ const DrinksTeaCoffee = () => {
         </div>
       </div>
 
-      <div className="mt-[-55px]">
+      <div className="mt-[155px]">
         <div className="flex items-center justify-center min-h-screen">
           <div className="w-[96vw] mt-[-65px] h-[90vh] bg-white relative">
             <Image
-              width={600}
-              height={600}
+              width={800}
+              height={800}
               src={coffee}
               alt="Snacks"
-              className="w-full h-full object-cover"
+              className="w-full h-[1040px] mt-[-200px]"
             />
             <div className="absolute ml-[-950px] inset-0 flex flex-col items-center justify-center space-y-4 ">
               <p className="text-black text-3xl">Coffee Offers</p>
@@ -70,7 +70,7 @@ const DrinksTeaCoffee = () => {
         </div>
       </div>
 
-      <div className="mt-[-55px]">
+      <div className="mt-[80px]">
         <div className="flex items-center justify-center min-h-screen">
           <div className="w-[96vw] mt-[-65px] h-[90vh] bg-white relative">
             <Image
@@ -81,10 +81,10 @@ const DrinksTeaCoffee = () => {
               className="w-full h-full object-cover"
             />
             <div className="absolute ml-[-950px] inset-0 flex flex-col items-center justify-center space-y-4 ">
-              <p className="text-black text-3xl">Soft Drinks</p>
+              <p className="text-white text-3xl">Soft Drinks</p>
               <h1 className="text-4xl font-bold text-black">
-                <span className="text-black">Lemon</span>{" "}
-                <span className="text-black">Juice</span> 500ml
+                <span className="text-white">Lemon</span>{" "}
+                <span className="text-white">Juice 500ml</span>
               </h1>
 
               <Link href={"/lemon-juice"}>

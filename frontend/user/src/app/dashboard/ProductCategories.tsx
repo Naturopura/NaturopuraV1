@@ -1,5 +1,5 @@
 import Image from "next/image";
-import veggies from "@/assets/veggies.png";
+import veggies from "@/assets/veggies.jpg";
 import agriculture from "@/assets/agriculture.png";
 import organic from "@/assets/organic.png";
 import dairy from "@/assets/dairy.png";
@@ -17,7 +17,7 @@ const ProductCategories = () => {
                 width={300}
                 height={300}
                 src={veggies}
-                className="w-96"
+                className="w-[1500px] mt-[-15px]"
                 alt=""
               />
               <div className="text-[#9FA82B] font-semibold ml-[-160px] text-2xl">
@@ -37,7 +37,7 @@ const ProductCategories = () => {
                   width={300}
                   height={300}
                   src={agriculture}
-                  className="w-96"
+                  className="w-96 h-[255px]"
                   alt=""
                 />
               </div>
@@ -77,7 +77,7 @@ const ProductCategories = () => {
                 width={300}
                 height={300}
                 src={dairy}
-                className="w-72 mt-9"
+                className="w-72 mt-2 h-[236px]"
                 alt=""
               />
               <div className="text-[#9FA82B] font-semibold ml-[-165px] text-2xl">

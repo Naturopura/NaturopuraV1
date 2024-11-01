@@ -2,8 +2,8 @@ import Image from "next/image";
 import React from "react";
 import mango from "@/assets/mango.png";
 import pineapple from "@/assets/pineapple.png";
-import cherry from "@/assets/cherry.png";
-import blackberry from "@/assets/blackberry.png";
+import strawberry from "@/assets/strawberry.png";
+import blackberry from "@/assets/blackberry.jpg";
 
 const SeasonalFruits = () => {
   return (
@@ -61,7 +61,7 @@ const SeasonalFruits = () => {
               <Image
                 width={500}
                 height={500}
-                src={cherry}
+                src={strawberry}
                 className="w-96 h-96 object-cover rounded-md"
                 alt="Banana"
               />

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import snacks from "@/assets/snacks.png";
+import snacks from "@/assets/snacks.jpeg";
 import snacks2 from "@/assets/snacks2.jpg";
 import leaf from "@/assets/leaf.png";
 
@@ -28,7 +28,7 @@ const FoodCupboard = () => {
               alt="Snacks"
               className="w-full h-full object-cover"
             />
-            <div className="absolute ml-[-950px] inset-0 flex flex-col items-center justify-center space-y-4 ">
+            <div className="absolute ml-[-1090px] inset-0 flex flex-col items-center justify-center space-y-4 ">
               <h1 className="text-4xl font-bold text-black">
                 Sweet <span className="text-[#ACB631]">Snacks</span> &{" "}
                 <span className="text-[#ACB631]">Nuts</span> Recipes
@@ -54,13 +54,13 @@ const FoodCupboard = () => {
             className="w-full h-full object-cover"
           />
 
-          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 mt-[200px] ml-[-300px]">
+          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 mt-[-20px] ml-[-400px]">
             <h1 className="text-4xl font-bold text-[#ACB631]">
-              Snacks <span className="text-white">For Your</span>
-              <span className="text-white ml-3">Summer</span>{" "}
+              Snacks <span className="text-black">For Your</span>
+              <span className="text-black ml-3">Summer</span>{" "}
               <span className="text-[#ACB631]">Party</span>
             </h1>
-            <p className="text-3xl text-white">Healthy Recipes</p>
+            <p className="text-3xl text-black">Healthy Recipes</p>
           </div>
 
           {/* Adjust the button's position to bottom-right inside the image */}

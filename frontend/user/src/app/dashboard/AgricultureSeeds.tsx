@@ -13,7 +13,6 @@ const AgricultureSeeds = () => {
       <div className="w-full px-7 mt-5">
         <div className="relative h-[1000px] bg-white border-[3px] shadow-xl border-gray-300 flex items-center justify-center text-black text-lg font-semibold">
           {/* Crop Image in the background */}
-
           <Image
             width={700}
             height={700}
@@ -56,13 +55,13 @@ const AgricultureSeeds = () => {
             alt=""
           />
 
-          {/* Seeds Image positioned at the bottom with a small margin on left and right */}
+          {/* Adjusted Seeds Image positioned within the border */}
           <Image
             width={700}
             height={700}
             src={seeds}
             alt=""
-            className="absolute -bottom-5 left-2 right-2 h-[1100px] w-full  object-cover"
+            className="absolute bottom-[-2px] left-[18%] right-[10%] h-[65%] w-[65%] object-cover"
           />
         </div>
       </div>
