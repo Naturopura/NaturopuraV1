@@ -1,6 +1,11 @@
-import lays from "@/assets/lays.jpg";
-import kurkure from "@/assets/kurkure.jpg";
-import wheat from "@/assets/wheat.png";
+import tea from "@/assets/tea.jpg";
+import coffee5 from "@/assets/coffee5.jpg";
+import water2 from "@/assets/water2.jpg";
+import juice5 from "@/assets/juice5.jpg";
+import juice10 from "@/assets/juice10.jpg";
+import coffee20 from "@/assets/coffee20.jpg";
+import masalatea from "@/assets/masalatea.jpg";
+import water30 from "@/assets/water30.jpg";
 import Image from "next/image";
 import Link from "next/link";
 import { StaticImageData } from "next/image";
@@ -27,9 +32,9 @@ const ProductCard = ({
         height={100}
         src={imageSrc}
         alt={title}
-        className="h-48 object-cover rounded-md"
+        className="h-48 -ml-1 object-cover rounded-md"
       />
-      <h3 className="mt-4 text-xl font-bold text-gray-700">{title}</h3>
+      <h3 className="mt-4 text-xl ml-3 font-bold text-gray-700">{title}</h3>
     </Link>
     <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
       Add to Cart
@@ -55,57 +60,57 @@ const ProductCard = ({
 const ProductGrid = () => {
   const products = [
     {
-      imageSrc: lays,
-      title: "Lays",
+      imageSrc: tea,
+      title: "Tea",
       price: 1000,
       link: "/product-detail",
       rating: 5,
     },
     {
-      imageSrc: kurkure,
-      title: "Kurkure",
+      imageSrc: coffee5,
+      title: "Coffee",
       price: 1200,
       link: "/product-detail",
       rating: 5,
     },
     {
-      imageSrc: wheat,
-      title: "Wheat",
+      imageSrc: water2,
+      title: "Water",
       price: 800,
       link: "/product-detail",
       rating: 5,
     },
     {
-      imageSrc: wheat,
-      title: "Wheat",
+      imageSrc: juice5,
+      title: "Juice",
       price: 800,
       link: "/product-detail",
       rating: 5,
     },
     {
-      imageSrc: kurkure,
-      title: "Kurkure",
+      imageSrc: juice10,
+      title: "Juice",
       price: 1200,
       link: "/product-detail",
       rating: 5,
     },
     {
-      imageSrc: lays,
-      title: "Lays",
+      imageSrc: coffee20,
+      title: "Coffee",
       price: 1000,
       link: "/product-detail",
       rating: 5,
     },
     {
-      imageSrc: wheat,
-      title: "Wheat",
+      imageSrc: masalatea,
+      title: "Tea",
       price: 800,
       link: "/product-detail",
       rating: 5,
     },
     {
-      imageSrc: kurkure,
-      title: "Kurkure",
+      imageSrc: water30,
+      title: "Water",
       price: 1200,
       link: "/product-detail",
       rating: 5,

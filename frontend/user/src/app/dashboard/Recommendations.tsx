@@ -1,5 +1,12 @@
 import Image, { StaticImageData } from "next/image";
-import banana from "@/assets/banana.png";
+import pepperoni from "@/assets/pepperoni.png";
+import chicken from "@/assets/chicken.png";
+import juice50 from "@/assets/juice50.jpg";
+import chips100 from "@/assets/chips100.png";
+import bread from "@/assets/bread.jpg";
+import jam from "@/assets/jam.jpg";
+import biscuit from "@/assets/biscuit.jpg";
+import potato from "@/assets/potato.jpg";
 import Link from "next/link";
 
 interface ProductProps {
@@ -24,14 +31,14 @@ const ProductCard = ({
           <Image
             src={imageSrc}
             alt={title}
-            width={100}
-            height={100}
-            className="object-cover"
+            width={200}
+            height={200}
+            className="object-cover -mt-5"
           />
         </div>
       </Link>
 
-      <h3 className="mt-[-25px] text-xl font-bold text-gray-700">{title}</h3>
+      <h3 className="mt-[-15px] text-xl font-bold text-gray-700">{title}</h3>
 
       <button className="mt-2 text-lg border-2 text-black px-6 py-2 border-[#ACB631] rounded-md hover:bg-[#ACB631] hover:text-white transition">
         Add to Cart
@@ -60,58 +67,58 @@ const ProductCard = ({
 const Recommendations = () => {
   const products = [
     {
-      imageSrc: banana,
-      title: "Banana",
+      imageSrc: pepperoni,
+      title: "Pepperoni",
       price: 1000,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: banana,
-      title: "Apple",
+      imageSrc: chicken,
+      title: "Frozen Chicken",
       price: 800,
       rating: 4,
       link: "/product-detail",
     },
     {
-      imageSrc: banana,
-      title: "Orange",
-      price: 600,
+      imageSrc: juice50,
+      title: "Juice",
+      price: 50,
       rating: 4,
       link: "/product-detail",
     },
     {
-      imageSrc: banana,
-      title: "Strawberry",
-      price: 1200,
+      imageSrc: chips100,
+      title: "Chips",
+      price: 30,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: banana,
-      title: "Strawberry",
-      price: 1200,
+      imageSrc: bread,
+      title: "Bread",
+      price: 40,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: banana,
-      title: "Strawberry",
-      price: 1200,
+      imageSrc: jam,
+      title: "Jam",
+      price: 100,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: banana,
-      title: "Strawberry",
-      price: 1200,
+      imageSrc: biscuit,
+      title: "Biscuit",
+      price: 50,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: banana,
-      title: "Strawberry",
-      price: 1200,
+      imageSrc: potato,
+      title: "Potato 1 kg",
+      price: 40,
       rating: 5,
       link: "/product-detail",
     },

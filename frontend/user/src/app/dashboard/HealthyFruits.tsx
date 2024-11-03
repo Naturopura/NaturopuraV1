@@ -1,5 +1,12 @@
 import Image, { StaticImageData } from "next/image";
 import banana from "@/assets/banana.png";
+import apple from "@/assets/apple.png";
+import grape from "@/assets/grape.png";
+import cherry from "@/assets/cherry.png";
+import pineapple2 from "@/assets/pineapple2.png";
+import blueberry2 from "@/assets/blueberry2.png";
+import blackberry2 from "@/assets/blackberry2.png";
+import mango2 from "@/assets/mango2.png";
 import Link from "next/link";
 
 interface ProductProps {
@@ -15,65 +22,65 @@ const products = [
   {
     id: 1,
     name: "Banana",
-    price: 1000,
+    price: 200,
     rating: 5,
     imageSrc: banana,
     link: "/product-detail",
   },
   {
     id: 1,
-    name: "Banana",
-    price: 1000,
+    name: "Apple",
+    price: 100,
     rating: 5,
-    imageSrc: banana,
+    imageSrc: apple,
     link: "/product-detail",
   },
   {
     id: 1,
-    name: "Banana",
-    price: 1000,
+    name: "Grape",
+    price: 100,
     rating: 5,
-    imageSrc: banana,
+    imageSrc: grape,
     link: "/product-detail",
   },
   {
     id: 1,
-    name: "Banana",
-    price: 1000,
+    name: "Cherry",
+    price: 300,
     rating: 5,
-    imageSrc: banana,
+    imageSrc: cherry,
     link: "/product-detail",
   },
   {
     id: 1,
-    name: "Banana",
-    price: 1000,
+    name: "Pineapple",
+    price: 100,
     rating: 5,
-    imageSrc: banana,
+    imageSrc: pineapple2,
     link: "/product-detail",
   },
   {
     id: 1,
-    name: "Banana",
-    price: 1000,
+    name: "Mango",
+    price: 400,
     rating: 5,
-    imageSrc: banana,
+    imageSrc: mango2,
     link: "/product-detail",
   },
   {
     id: 1,
-    name: "Banana",
-    price: 1000,
+    name: "Blueberry",
+    price: 100,
     rating: 5,
-    imageSrc: banana,
+    imageSrc: blueberry2,
     link: "/product-detail",
   },
   {
     id: 1,
-    name: "Banana",
+    name: "Blackberry",
     price: 1000,
     rating: 5,
-    imageSrc: banana,
+    imageSrc: blackberry2,
     link: "/product-detail",
   },
   // Add more products as needed

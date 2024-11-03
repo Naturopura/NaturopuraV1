@@ -1,5 +1,12 @@
 import React from "react";
 import honeybee from "@/assets/honeybee.png";
+import honey5 from "@/assets/honey5.jpg";
+import honey10 from "@/assets/honey10.png";
+import honey15 from "@/assets/honey15.png";
+import honey20 from "@/assets/honey20.png";
+import honey25 from "@/assets/honey25.png";
+import honey30 from "@/assets/honey30.png";
+import honey40 from "@/assets/honey40.png";
 import honeybee2 from "@/assets/honeybee2.png";
 import daburhoney from "@/assets/daburhoney.jpg";
 import Image from "next/image";
@@ -28,7 +35,7 @@ const ProductCard = ({
         height={100}
         src={imageSrc}
         alt={title}
-        className="h-48 object-cover rounded-md"
+        className="h-48 ml-7 object-cover rounded-md"
       />
       <h3 className="mt-4 text-xl font-bold text-gray-700">{title}</h3>
     </Link>
@@ -64,50 +71,50 @@ const HoneyProducts = () => {
       link: "/product-detail",
     },
     {
-      imageSrc: daburhoney,
-      title: "Honey",
+      imageSrc: honey5,
+      title: "Patanjali Honey",
       price: 1000,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: daburhoney,
-      title: "Honey",
+      imageSrc: honey10,
+      title: "Clover Honey",
       price: 1000,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: daburhoney,
-      title: "Honey",
+      imageSrc: honey15,
+      title: "Elias Honey",
       price: 1000,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: daburhoney,
-      title: "Honey",
+      imageSrc: honey20,
+      title: "Organic honey",
       price: 1000,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: daburhoney,
-      title: "Honey",
+      imageSrc: honey25,
+      title: "Small Bee Honey",
       price: 1000,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: daburhoney,
-      title: "Honey",
+      imageSrc: honey30,
+      title: "Honey Veda",
       price: 1000,
       rating: 5,
       link: "/product-detail",
     },
     {
-      imageSrc: daburhoney,
-      title: "Honey",
+      imageSrc: honey40,
+      title: "Indigenous Honey",
       price: 1000,
       rating: 5,
       link: "/product-detail",
