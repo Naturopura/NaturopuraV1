@@ -1,9 +1,9 @@
 "use client";
-import axios from 'axios';
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import '@rainbow-me/rainbowkit/styles.css';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
+import "@rainbow-me/rainbowkit/styles.css";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 import Login from "@/app/action/loginAuthAction";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -20,7 +20,7 @@ const AdminLogin = () => {
 
   useEffect(() => {
     if (address) {
-      const walletAddress = address.toLocaleLowerCase() || "" ;
+      const walletAddress = address.toLocaleLowerCase() || "";
       sendAddress(walletAddress);
     }
   }, [address]);
@@ -29,7 +29,7 @@ const AdminLogin = () => {
     if (nonce) {
       signMessage();
     }
-  }, [nonce]); 
+  }, [nonce]);
 
   const sendAddress = async (walletAddress: string | "") => {
     try {
@@ -58,7 +58,13 @@ const AdminLogin = () => {
         console.log("Signature:", signature);
         // Dispatch the signature, nonce, and wallet address to the backend
         console.log("request sent");
-        dispatch(Login({ signature: signature, nonce: nonce, walletAddress: address?.toLocaleLowerCase() }));
+        dispatch(
+          Login({
+            signature: signature,
+            nonce: nonce,
+            walletAddress: address?.toLocaleLowerCase() || "",
+          })
+        );
         console.log("response received");
       } catch (error) {
         console.error("Error signing message:", error);
@@ -72,18 +78,15 @@ const AdminLogin = () => {
   return (
     <div className="">
       <main className="main flex items-center flex-col">
-        <Image
-          src={img1}
-          height={"100"}
-          width={"200"}
-          alt=""
-          className="m-4"
-        />
+        <Image src={img1} height={"100"} width={"200"} alt="" className="m-4" />
         <button
           type="button"
           className="text-white bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mt-4"
         >
-          <Link href={"/signup"}> <b>Signup</b> </Link>
+          <Link href={"/signup"}>
+            {" "}
+            <b>Signup</b>{" "}
+          </Link>
         </button>
         <div className="mt-2">
           <ConnectButton label="Sign in with wallet" />

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userLogin = exports.userSignup = exports.adminSignup = exports.adminLogin = void 0;
+exports.adminSignup = exports.adminLogin = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const saltRounds = 10;
 const admin_model_1 = __importDefault(require("../models/admin.model"));
@@ -91,7 +91,9 @@ const adminLogin = (signature, nonce, walletAddress) => __awaiter(void 0, void 0
                 email: user.email,
             };
             // Generate a JWT for the user
-            const token = jsonwebtoken_1.default.sign(userData, process.env.TOKEN_SECRET || "QUOTUS", { expiresIn: "48h" });
+            const token = jsonwebtoken_1.default.sign(userData, process.env.TOKEN_SECRET || "QUOTUS", {
+                expiresIn: "48h",
+            });
             // Return a successful login response with the JWT token
             return ApiResponse_1.default.success(responses_1.ResponseDefinitions.OperationSuccessful.message, Object.assign({ message: "Successfully logged in.", token: token, expiresIn: "48h" }, userData), responses_1.ResponseDefinitions.OperationSuccessful.code);
         }
@@ -104,77 +106,13 @@ const adminLogin = (signature, nonce, walletAddress) => __awaiter(void 0, void 0
     }
 });
 exports.adminLogin = adminLogin;
-// export const adminLogin = async (signature: string, nonce: Number, walletAddress: string) => {
-//   // const { signature, key } = req.body;
-//   try {
-//     const user = await User.findOne({
-//       walletAddress: walletAddress,
-//       deletedAt: { $eq: null },
-//       isActive: 1,
-//     });
-//     console.log("userModel", user);
-//     if (!user) {
-//       return ApiResponse.error(
-//         ResponseDefinitions.UserNotExist.message,
-//         ResponseDefinitions.UserNotExist.code
-//       );
-//     }
-//     // if (user.role === "consumer") {
-//     //   return ApiResponse.error(
-//     //     "You are not authorized for this endpoint.",
-//     //     "USER_NOT_AUTHORIZED"
-//     //   );
-//     // }
-//     return await bcryptjs
-//       .compare(signature, user.signature)
-//       .then((resData: boolean) => {
-//         console.log("resData", resData);
-//         if (resData) {
-//           const newCustomer = {
-//             isActive: user.isActive,
-//             firstName: user.firstName,
-//             lastName: user.lastName,
-//             role: user.role,
-//             email: user.email,
-//           };
-//           console.log("newCustomer", newCustomer);
-//           const successResponse = ApiResponse.success(
-//             ResponseDefinitions.OperationSuccessful.message,
-//             {
-//               createSuccessResponse: "Successfully logged in.",
-//               token: jwt.sign(newCustomer, env.TOKEN_SECRET, {
-//                 expiresIn: "48h",
-//               }),
-//               ...newCustomer,
-//               expiresIn: "48h",
-//             },
-//             ResponseDefinitions.OperationSuccessful.code
-//           );
-//           console.log("successResponse", successResponse);
-//           return successResponse;
-//         } else {
-//           const errorResponse = ApiResponse.error(
-//             ResponseDefinitions.SignatureError.message,
-//             ResponseDefinitions.SignatureError.code
-//           );
-//           console.log("errorResponse", errorResponse);
-//           return errorResponse;
-//         }
-//       });
-//   } catch (error) {
-//     return ApiResponse.error(
-//       ResponseDefinitions.NotFound.message,
-//       ResponseDefinitions.NotFound.code
-//     );
-//   }
-// };
-const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode) => __awaiter(void 0, void 0, void 0, function* () {
+const adminSignup = (name, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check if email or phone already exists in the database
         const existingUser = yield admin_model_1.default.findOne({
             $or: [
                 { email, deletedAt: { $eq: null } },
-                { phone, deletedAt: { $eq: null } }
+                { phone, deletedAt: { $eq: null } },
             ],
         });
         if (existingUser) {
@@ -193,8 +131,7 @@ const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, s
         }))
             .then((hashedToken) => __awaiter(void 0, void 0, void 0, function* () {
             const customer = new admin_model_1.default({
-                firstName,
-                lastName,
+                name,
                 role,
                 email,
                 signature: hashedToken,
@@ -212,8 +149,7 @@ const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, s
             });
             yield customer.save();
             const newCustomer = {
-                firstName: customer.firstName,
-                lastName: customer.lastName,
+                name: customer.name,
                 role: customer.role,
                 email: customer.email,
                 signature: customer.signature,
@@ -244,95 +180,3 @@ const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, s
     }
 });
 exports.adminSignup = adminSignup;
-const userSignup = (firstName, lastName, email, signature, key, address, isRemember) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        // Check if user already exists with the given key
-        const user = yield admin_model_1.default.findOne({
-            key: key,
-            deletedAt: { $eq: null },
-        });
-        if (user) {
-            return ApiResponse_1.default.error(responses_1.ResponseDefinitions.UserExist.message, responses_1.ResponseDefinitions.UserExist.code);
-        }
-        else {
-            let hashPass = "";
-            // Generate salt and hash password
-            return bcryptjs_1.default
-                .genSalt(saltRounds)
-                .then((salt) => {
-                return bcryptjs_1.default.hash(signature, salt);
-            })
-                .then((hash) => __awaiter(void 0, void 0, void 0, function* () {
-                // Create a new user instance
-                const customer = new admin_model_1.default({
-                    firstName: firstName.toLowerCase(),
-                    lastName: lastName.toLowerCase(),
-                    role: "consumer",
-                    email: email.toLowerCase(),
-                    signature: hash,
-                    key: key,
-                    walletAddress: address,
-                });
-                // Save the user in the database
-                yield customer.save();
-                // Construct response object for the newly created user
-                const newCustomer = {
-                    isActive: customer.isActive,
-                    // id: customer.id,
-                    firstName: customer.firstName,
-                    lastName: customer.lastName,
-                    role: customer.role,
-                    email: customer.email,
-                };
-                // Return success response
-                return ApiResponse_1.default.success("Successfully registered.", Object.assign(Object.assign({ createSuccessResponse: "Successfully registered.", token: isRemember
-                        ? jsonwebtoken_1.default.sign(newCustomer, process.env.TOKEN_SECRET || environment_1.default.TOKEN_SECRET, { expiresIn: "48h" })
-                        : "" }, newCustomer), { expiresIn: "48h" }));
-            }))
-                .catch((err) => {
-                console.error(err.message);
-                return ApiResponse_1.default.error(responses_1.ResponseDefinitions.HashError.message, responses_1.ResponseDefinitions.HashError.code);
-            });
-        }
-    }
-    catch (error) {
-        // Catch and return any unexpected errors
-        return ApiResponse_1.default.error(responses_1.ResponseDefinitions.NotFound.message, responses_1.ResponseDefinitions.NotFound.code);
-    }
-});
-exports.userSignup = userSignup;
-const userLogin = (signature, key) => __awaiter(void 0, void 0, void 0, function* () {
-    // const { signature, key } = req.body;
-    try {
-        const user = yield admin_model_1.default.findOne({
-            key: key,
-            deletedAt: { $eq: null },
-            isActive: 1,
-        });
-        if (!user) {
-            return ApiResponse_1.default.error(responses_1.ResponseDefinitions.UserNotExist.message, responses_1.ResponseDefinitions.UserNotExist.code);
-        }
-        bcryptjs_1.default.compare(signature, user.signature).then((resData) => {
-            if (resData) {
-                const newCustomer = {
-                    isActive: user.isActive,
-                    // id: user._id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    role: user.role,
-                    email: user.email,
-                };
-                return ApiResponse_1.default.success("Successfully logged in.", Object.assign(Object.assign({ token: jsonwebtoken_1.default.sign(newCustomer, environment_1.default.TOKEN_SECRET, {
-                        expiresIn: "48h",
-                    }) }, newCustomer), { expiresIn: "48h" }), "USER_LOGIN_SUCCESS");
-            }
-            else {
-                return ApiResponse_1.default.error(responses_1.ResponseDefinitions.SignatureError.message, responses_1.ResponseDefinitions.SignatureError.code);
-            }
-        });
-    }
-    catch (error) {
-        return ApiResponse_1.default.error(responses_1.ResponseDefinitions.NotFound.message, responses_1.ResponseDefinitions.NotFound.code);
-    }
-});
-exports.userLogin = userLogin;

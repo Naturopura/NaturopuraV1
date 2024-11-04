@@ -1,8 +1,5 @@
 import { Request, Response, Router } from "express";
-import {
-  adminLogin,
-  adminSignup,
-} from "../controllers/auth";
+import { adminLogin, adminSignup } from "../controllers/auth";
 
 import Joi from "joi";
 import ApiResponse from "../../helper/ApiResponse";
@@ -14,8 +11,7 @@ router.post(
   "/admin/signup",
   async (req: Request, res: Response): Promise<any> => {
     const {
-      firstName,
-      lastName,
+      name,
       role,
       email,
       signature,
@@ -32,8 +28,7 @@ router.post(
       walletAddress,
     } = req.body;
     const schema = Joi.object({
-      firstName: Joi.string().min(3).max(30).required(),
-      lastName: Joi.string().min(3).max(30).required(),
+      name: Joi.string().min(3).max(30).required(),
       signature: Joi.string().required(),
       nonce: Joi.number(),
       isRemember: Joi.boolean().truthy("true").falsy("false"),
@@ -82,8 +77,7 @@ router.post(
     }
     try {
       const response = await adminSignup(
-        firstName,
-        lastName,
+        name,
         role,
         email,
         phone,

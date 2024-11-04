@@ -4,11 +4,15 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/store";
 import SignUp from "@/app/action/signupAuthAction";
+import { AiFillGoogleCircle, AiFillFacebook } from "react-icons/ai";
+import Image from "next/image";
+import Logo from "@/assets/Logo.png";
+import { useRouter } from "next/navigation";
 
 const AdminSignup = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     role: "",
     email: "",
     phone: "",
@@ -70,13 +74,10 @@ const AdminSignup = () => {
           params: [message, walletAddress],
         });
 
-        const key = walletAddress; // Replace with actual key if different
-
         // Dispatching sign-up action
-        dispatch(
+        await dispatch(
           SignUp({
-            firstName: formData.firstName,
-            lastName: formData.lastName,
+            name: formData.name,
             email: formData.email,
             isRemember: true,
             isActive: true,
@@ -92,11 +93,19 @@ const AdminSignup = () => {
             role: formData.role,
           })
         );
+
+        // Redirecting if the role is "farmer"
+        if (formData.role === "farmer") {
+          router.push("/farmer");
+        }
       } else {
         alert("MetaMask is not installed. Please install it to proceed.");
       }
     } catch (error) {
-      console.error("Error connecting to MetaMask or signing the message:", error);
+      console.error(
+        "Error connecting to MetaMask or signing the message:",
+        error
+      );
       alert("Failed to connect with MetaMask. Please try again.");
     }
   };
@@ -109,267 +118,154 @@ const AdminSignup = () => {
   }, []);
 
   return (
-    <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-      <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Registration Form
-        </h2>
-      </div>
-      <form onSubmit={handleSubmit} className="mx-auto mt-16 max-w-xl sm:mt-20">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-          <div>
-            <label
-              htmlFor="first-name"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              First Name
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="firstName"
-                name="firstName"
-                type="text"
-                value={formData.firstName}
-                onChange={handleChange}
-                required
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              />
-            </div>
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="w-full max-w-3xl p-8">
+        <div className="text-center mb-6">
+          <Image
+            width={200}
+            height={200}
+            src={Logo}
+            alt="Naturopura Logo"
+            className="mx-auto ml-[-550px] mt-[-110px]"
+          />
+          <h2 className="text-3xl font-bold text-gray-900">Create Account</h2>
+          <div className="flex justify-center items-center mt-4 space-x-4">
+            <button className="text-4xl">
+              <AiFillGoogleCircle />
+            </button>
+            <button className="text-4xl">
+              <AiFillFacebook />
+            </button>
           </div>
-          <div>
-            <label
-              htmlFor="last-name"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Last Name
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="lastName"
-                name="lastName"
-                type="text"
-                value={formData.lastName}
-                onChange={handleChange}
-                required
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Email
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="name@flowbite.com"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="phone-number"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Phone Number
-            </label>
-            <div className="relative mt-2.5">
-              <div className="absolute inset-y-0 left-0 flex items-center">
-                <select
-                  id="dialingCode"
-                  title="dialingCode"
-                  name="dialingCode"
-                  onChange={handleChange}
-                  value={formData.dialingCode}
-                  className="h-full rounded-md border-0 bg-transparent py-0 pl-2 text-black sm:text-sm"
-                >
-                  <option value="+91">+91</option>
-                  <option value="+1">+1</option>
-                  <option value="+44">+44</option>
-                  {/* Add more dialing codes as necessary */}
-                </select>
-              </div>
-
-              <input
-                id="phone"
-                name="phone"
-                title="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="wallet"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Wallet
-            </label>
-            <div className="relative mt-2.5">
-              <div className="">
-                <select
-                  id="walletName"
-                  name="walletName"
-                  title="walletName"
-                  required
-                  value={formData.walletName}
-                  onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                >
-                  <option value="MetaMask">MetaMask</option>
-                  {/* Other wallets can be added here if necessary */}
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className="sm:col-span-2">
-            <label
-              htmlFor="role"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Role
-            </label>
-            <div className="relative mt-2.5">
-              <div className="">
-                <select
-                  id="role"
-                  name="role"
-                  title="role"
-                  required
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                >
-                  <option value="" disabled>
-                    Select Role
-                  </option>
-                  {role.map((roleOption, index) => (
-                    <option key={index} value={roleOption}>
-                      {roleOption.charAt(0).toUpperCase() + roleOption.slice(1).replace(/_/g, ' ')}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-          <div>
-            <label
-              htmlFor="addressLine"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Address Line
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="addressLine"
-                name="addressLine"
-                type="text"
-                value={formData.addressLine}
-                onChange={handleChange}
-                required
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              htmlFor="country"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Country
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="country"
-                name="country"
-                type="text"
-                value={formData.country}
-                onChange={handleChange}
-                required
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              htmlFor="state"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              State
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="state"
-                name="state"
-                type="text"
-                value={formData.state}
-                onChange={handleChange}
-                required
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              htmlFor="city"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              City
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="city"
-                name="city"
-                type="text"
-                value={formData.city}
-                onChange={handleChange}
-                required
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              htmlFor="zipCode"
-              className="block text-sm font-semibold leading-6 text-gray-900"
-            >
-              Zip Code
-            </label>
-            <div className="mt-2.5">
-              <input
-                id="zipCode"
-                name="zipCode"
-                type="text"
-                value={formData.zipCode}
-                onChange={handleChange}
-                required
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
+          <p className="mt-4 text-black">—— Or ——</p>
         </div>
-        <button
-          type="submit"
-          className="mt-10 block w-full rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
-          Sign Up
-        </button>
-      </form>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full px-4 py-2 text-xl border placeholder:text-xl rounded-md placeholder:text-black"
+          />
+          <input
+            type="text"
+            name="addressLine"
+            placeholder="Address"
+            value={formData.addressLine}
+            onChange={handleChange}
+            className="w-full px-4 py-2 text-xl placeholder:text-xl border rounded-md placeholder:text-black"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-4 py-2 text-xl placeholder:text-xl border rounded-md placeholder:text-black"
+          />
+          <input
+            type="text"
+            name="country"
+            placeholder="Country"
+            value={formData.country}
+            onChange={handleChange}
+            className="w-full px-4 py-2 text-xl placeholder:text-xl border rounded-md placeholder:text-black"
+          />
+
+          <div className="relative mt-2.5">
+            <div className="absolute inset-y-0 left-0 flex items-center">
+              <select
+                id="dialingCode"
+                title="dialingCode"
+                name="dialingCode"
+                onChange={handleChange}
+                value={formData.dialingCode}
+                className="h-full rounded-md text-xl border-0 bg-transparent py-0 pl-2 text-black"
+              >
+                <option value="+91">+91</option>
+                <option value="+1">+1</option>
+                <option value="+44">+44</option>
+              </select>
+            </div>
+
+            <input
+              id="phone"
+              name="phone"
+              title="phone"
+              placeholder="Phone Number"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              className="w-full px-[77px] text-xl py-2 border rounded-md placeholder:text-black"
+            />
+          </div>
+
+          <select
+            name="wallet"
+            value={formData.walletName}
+            onChange={handleChange}
+            className="w-full px-4 py-2 text-xl border rounded-md placeholder:text-black"
+          >
+            <option value="MetaMask">MetaMask</option>
+          </select>
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="w-full px-4 py-2 text-xl placeholder:text-xl border rounded-md bg-white text-gray-900"
+          >
+            <option value="">Select Role</option>
+            {role.map((role, index) => (
+              <option key={index} value={role}>
+                {role}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            name="zipCode"
+            placeholder="Zip Code"
+            value={formData.zipCode}
+            onChange={handleChange}
+            className="w-full text-xl px-4 py-2 placeholder:text-xl border rounded-md placeholder:text-black"
+          />
+          <input
+            type="text"
+            name="state"
+            placeholder="State"
+            value={formData.state}
+            onChange={handleChange}
+            className="w-full px-4 text-xl py-2 placeholder:text-xl border rounded-md placeholder:text-black"
+          />
+          <input
+            type="text"
+            name="city"
+            placeholder="City"
+            value={formData.city}
+            onChange={handleChange}
+            className="w-full px-4 py-2 text-xl placeholder:text-xl border rounded-md placeholder:text-black"
+          />
+
+          <button
+            type="submit"
+            className="col-span-2 w-full py-3 bg-[#ACB631] text-white font-semibold rounded-lg"
+          >
+            Sign Up
+          </button>
+        </form>
+
+        <p className="mt-6 text-2xl text-center text-black">
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-600">
+            Login
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

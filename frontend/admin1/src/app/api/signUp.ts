@@ -2,8 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const SignUpAdmin = async (credentials: {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   isRemember: boolean;
   isActive: boolean;
@@ -37,8 +36,8 @@ const SignUpAdmin = async (credentials: {
       localStorage.setItem("accessToken", response?.data?.data?.token);
     }
 
-    return response.data;  // Ensure the response is returned properly
-
+    return response.data; // Ensure the response is returned properly
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (
       error.response?.data?.message === "Email or phone number already exists"

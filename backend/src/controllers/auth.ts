@@ -52,7 +52,7 @@ export const adminLogin = async (
 
       // Store nonce in Redis with 1-minute expiration
       await redisClient.set(walletAddress, randomNonce.toString(), { EX: 60 }); // EX sets expiration to 60 seconds
-      console.log(walletAddress,"setting wallet address");
+      console.log(walletAddress, "setting wallet address");
 
       // Send the generated nonce to the frontend
       return ApiResponse.success("Nonce generated", { nonce: randomNonce });
@@ -62,7 +62,7 @@ export const adminLogin = async (
     if (signature && nonce && walletAddress) {
       // Fetch the nonce from Redis
       const cachedNonce = await redisClient.get(walletAddress);
-      console.log(walletAddress,"got the available wallet address");
+      console.log(walletAddress, "got the available wallet address");
 
       if (!cachedNonce || cachedNonce !== nonce.toString()) {
         return ApiResponse.error(
@@ -73,8 +73,8 @@ export const adminLogin = async (
 
       // Recreate the message that was signed by the user
       // Backend: Change message to match frontend
-const message = `Please sign this message to authenticate: ${nonce}`;
-// Message signed by the wallet
+      const message = `Please sign this message to authenticate: ${nonce}`;
+      // Message signed by the wallet
 
       // Verify the signature using web3.js
       const recoveredAddress = web3.eth.accounts.recover(message, signature);
@@ -109,7 +109,9 @@ const message = `Please sign this message to authenticate: ${nonce}`;
       };
 
       // Generate a JWT for the user
-      const token = jwt.sign(userData, process.env.TOKEN_SECRET || "QUOTUS", { expiresIn: "48h" });
+      const token = jwt.sign(userData, process.env.TOKEN_SECRET || "QUOTUS", {
+        expiresIn: "48h",
+      });
 
       // Return a successful login response with the JWT token
       return ApiResponse.success(
@@ -138,80 +140,8 @@ const message = `Please sign this message to authenticate: ${nonce}`;
   }
 };
 
-
-// export const adminLogin = async (signature: string, nonce: Number, walletAddress: string) => {
-//   // const { signature, key } = req.body;
-//   try {
-//     const user = await User.findOne({
-//       walletAddress: walletAddress,
-//       deletedAt: { $eq: null },
-//       isActive: 1,
-//     });
-//     console.log("userModel", user);
-
-//     if (!user) {
-//       return ApiResponse.error(
-//         ResponseDefinitions.UserNotExist.message,
-//         ResponseDefinitions.UserNotExist.code
-//       );
-//     }
-
-//     // if (user.role === "consumer") {
-//     //   return ApiResponse.error(
-//     //     "You are not authorized for this endpoint.",
-//     //     "USER_NOT_AUTHORIZED"
-//     //   );
-//     // }
-   
-//     return await bcryptjs
-//       .compare(signature, user.signature)
-//       .then((resData: boolean) => {
-//         console.log("resData", resData);
-
-//         if (resData) {
-//           const newCustomer = {
-//             isActive: user.isActive,
-//             firstName: user.firstName,
-//             lastName: user.lastName,
-//             role: user.role,
-//             email: user.email,
-//           };
-//           console.log("newCustomer", newCustomer);
-
-//           const successResponse = ApiResponse.success(
-//             ResponseDefinitions.OperationSuccessful.message,
-//             {
-//               createSuccessResponse: "Successfully logged in.",
-//               token: jwt.sign(newCustomer, env.TOKEN_SECRET, {
-//                 expiresIn: "48h",
-//               }),
-//               ...newCustomer,
-//               expiresIn: "48h",
-//             },
-//             ResponseDefinitions.OperationSuccessful.code
-//           );
-//           console.log("successResponse", successResponse);
-//           return successResponse;
-//         } else {
-//           const errorResponse = ApiResponse.error(
-//             ResponseDefinitions.SignatureError.message,
-//             ResponseDefinitions.SignatureError.code
-//           );
-//           console.log("errorResponse", errorResponse);
-//           return errorResponse;
-//         }
-//       });
-//   } catch (error) {
-//     return ApiResponse.error(
-//       ResponseDefinitions.NotFound.message,
-//       ResponseDefinitions.NotFound.code
-//     );
-//   }
-// };
-
 export const adminSignup = async (
-  firstName: any,
-  lastName: any,
+  name: any,
   role: any,
   email: any,
   phone: any,
@@ -232,7 +162,7 @@ export const adminSignup = async (
     const existingUser = await User.findOne({
       $or: [
         { email, deletedAt: { $eq: null } },
-        { phone, deletedAt: { $eq: null } }
+        { phone, deletedAt: { $eq: null } },
       ],
     });
 
@@ -260,8 +190,7 @@ export const adminSignup = async (
       })
       .then(async (hashedToken) => {
         const customer = new User({
-          firstName,
-          lastName,
+          name,
           role,
           email,
           signature: hashedToken,
@@ -281,8 +210,7 @@ export const adminSignup = async (
         await customer.save();
 
         const newCustomer = {
-          firstName: customer.firstName,
-          lastName: customer.lastName,
+          name: customer.name,
           role: customer.role,
           email: customer.email,
           signature: customer.signature,
@@ -321,145 +249,6 @@ export const adminSignup = async (
           ResponseDefinitions.HashError.code
         );
       });
-  } catch (error) {
-    return ApiResponse.error(
-      ResponseDefinitions.NotFound.message,
-      ResponseDefinitions.NotFound.code
-    );
-  }
-};
-
-export const userSignup = async (
-  firstName: any,
-  lastName: any,
-  email: any,
-  signature: any,
-  key: any,
-  address: any,
-  isRemember: any
-) => {
-  try {
-    // Check if user already exists with the given key
-    const user = await User.findOne({
-      key: key,
-      deletedAt: { $eq: null },
-    });
-
-    if (user) {
-      return ApiResponse.error(
-        ResponseDefinitions.UserExist.message,
-        ResponseDefinitions.UserExist.code
-      );
-    } else {
-      let hashPass: string = "";
-
-      // Generate salt and hash password
-      return bcryptjs
-        .genSalt(saltRounds)
-        .then((salt: string) => {
-          return bcryptjs.hash(signature, salt);
-        })
-        .then(async (hash: string) => {
-          // Create a new user instance
-          const customer = new User({
-            firstName: firstName.toLowerCase(),
-            lastName: lastName.toLowerCase(),
-            role: "consumer",
-            email: email.toLowerCase(),
-            signature: hash,
-            key: key,
-            walletAddress: address,
-          });
-
-          // Save the user in the database
-          await customer.save();
-
-          // Construct response object for the newly created user
-          const newCustomer = {
-            isActive: customer.isActive,
-            // id: customer.id,
-            firstName: customer.firstName,
-            lastName: customer.lastName,
-            role: customer.role,
-            email: customer.email,
-          };
-
-          // Return success response
-          return ApiResponse.success("Successfully registered.", {
-            createSuccessResponse: "Successfully registered.",
-            token: isRemember
-              ? jwt.sign(
-                  newCustomer,
-                  process.env.TOKEN_SECRET || env.TOKEN_SECRET,
-                  { expiresIn: "48h" }
-                )
-              : "",
-            ...newCustomer,
-            expiresIn: "48h",
-          });
-        })
-        .catch((err: any) => {
-          console.error(err.message);
-          return ApiResponse.error(
-            ResponseDefinitions.HashError.message,
-            ResponseDefinitions.HashError.code
-          );
-        });
-    }
-  } catch (error) {
-    // Catch and return any unexpected errors
-    return ApiResponse.error(
-      ResponseDefinitions.NotFound.message,
-      ResponseDefinitions.NotFound.code
-    );
-  }
-};
-
-export const userLogin = async (signature: any, key: any) => {
-  // const { signature, key } = req.body;
-
-  try {
-    const user = await User.findOne({
-      key: key,
-      deletedAt: { $eq: null },
-      isActive: 1,
-    });
-
-    if (!user) {
-      return ApiResponse.error(
-        ResponseDefinitions.UserNotExist.message,
-        ResponseDefinitions.UserNotExist.code
-      );
-    }
-
-    bcryptjs.compare(signature, user.signature).then((resData: boolean) => {
-      if (resData) {
-        const newCustomer = {
-          isActive: user.isActive,
-          // id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          role: user.role,
-          email: user.email,
-        };
-        return ApiResponse.success(
-          "Successfully logged in.",
-          {
-            token: jwt.sign(newCustomer, env.TOKEN_SECRET, {
-              expiresIn: "48h",
-            }),
-            ...newCustomer,
-            expiresIn: "48h",
-          },
-          "USER_LOGIN_SUCCESS"
-        );
-      } else {
-        return ApiResponse.error(
-          ResponseDefinitions.SignatureError.message,
-          ResponseDefinitions.SignatureError.code
-        );
-      }
-    });
   } catch (error) {
     return ApiResponse.error(
       ResponseDefinitions.NotFound.message,

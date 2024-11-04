@@ -2,11 +2,7 @@ import mongoose from "mongoose";
 
 const adminSchema = new mongoose.Schema(
   {
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
+    name: {
       type: String,
       required: true,
     },
@@ -49,7 +45,7 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    nonce:{
+    nonce: {
       type: Number,
       unique: true,
     },

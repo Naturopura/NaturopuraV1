@@ -5,8 +5,7 @@ import SignUpAdmin from "../api/signUp";
 import { Dispatch } from "redux";
 
 export const SignUp = (credentials: {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   isRemember: boolean;
   isActive: boolean;
@@ -26,15 +25,14 @@ export const SignUp = (credentials: {
     try {
       const response = await SignUpAdmin(credentials);
       console.log("signup response is here", response);
-      
 
       if (typeof window !== "undefined") {
         localStorage.setItem("accessToken", response?.data.token);
       }
-      console.log("here >>>>>>> also")
+      console.log("here >>>>>>> also");
       const admin = response?.data;
       admin.token = response?.token;
-      
+
       dispatch(adminExist(admin));
 
       dispatch(setLoading(false));

@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 
 const LoginAdmin = async (credentials: {
   signature: string;
-  nonce: number | undefined ;
-  walletAddress: string | "" ;
+  nonce: number | undefined;
+  walletAddress: string | "";
 }) => {
   try {
     const response = await axios.post(
@@ -16,7 +16,7 @@ const LoginAdmin = async (credentials: {
     if (response.data.success === true) {
       toast.success("Sign in Successful");
     } else {
-      toast.error("Admin Account Not Found, Please Sign up");
+      toast.error("Account Not Found, Please Sign up");
     }
     localStorage.setItem("accessToken", response?.data?.data?.token);
     return response.data;
