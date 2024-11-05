@@ -60,7 +60,7 @@ const Sidebar = () => {
         <hr className="border-t w-[300px] border-black my-1 ml-[-17px]" />
 
         <Link
-          href="/farmer/manageproduct"
+          href="/farmer/news-blog"
           className="flex items-center space-x-2 px-4 py-2 text-2xl rounded-md cursor-pointer"
         >
           <Image
