@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/store";
 import SignUp from "@/app/action/signupAuthAction";
 import { AiFillGoogleCircle, AiFillFacebook } from "react-icons/ai";
 import Image from "next/image";
-import Logo from "@/assets/Logo.png";
+import Logo from "@/assets/logo 1.png";
 import { useRouter } from "next/navigation";
 
 const AdminSignup = () => {

@@ -18,7 +18,7 @@ export const listProduct = async (
       image,
       unit,
     } = req.body;
-    console.log("got the request", farmerId);
+    console.log("Received request to list product for farmer:", farmerId);
 
     // Ensure all required fields are provided
     if (
@@ -34,6 +34,12 @@ export const listProduct = async (
         error:
           "Please provide all required fields: farmerId, name, category, price, quantity, and image.",
       });
+    }
+
+    // Check if the farmer exists
+    const farmerExists = await Product.findById(farmerId);
+    if (!farmerExists) {
+      return res.status(404).json({ error: "Farmer does not exist." });
     }
 
     // Create a new product using the Product model
