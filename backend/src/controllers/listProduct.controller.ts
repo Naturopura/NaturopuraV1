@@ -4,11 +4,11 @@ import { Response, Request, NextFunction } from 'express';
 async function listProduct(req: Request, res: Response, next: NextFunction): Promise<any> {
   try {
     // Extract data from the request body
-    const { farmerId, name, category, price, quantity, description, image } = req.body;
+    const { farmerId, name, category, price, quantity, description, image, unit } = req.body;
     console.log("got the request", farmerId);
 
     // Ensure all required fields are provided
-    if (!farmerId || !name || !category || !price || !quantity || !image) {
+    if (!farmerId || !name || !category || !price || !quantity || !image || !unit) {
       return res.status(400).json({ error: "Please provide all required fields: farmerId, name, category, price, quantity, and image." });
     }
 
@@ -19,6 +19,7 @@ async function listProduct(req: Request, res: Response, next: NextFunction): Pro
       category,
       price,
       quantity,
+      unit,
       description,
       image,  // Assuming image is being sent as Buffer in the request body
     });

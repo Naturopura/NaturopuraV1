@@ -4,7 +4,7 @@ import { Response, Request, NextFunction } from 'express';
 async function updateProduct(req: Request, res: Response, next: NextFunction): Promise<any> {
   try {
     // Extract productId and the updated fields from the request body
-    const { productId, farmerId, name, category, price, quantity, description, image } = req.body;
+    const { productId, farmerId, name, category, price, quantity, description, image, unit } = req.body;
     console.log("Updating product:", productId);
 
     // Ensure productId and farmerId are provided
@@ -15,7 +15,7 @@ async function updateProduct(req: Request, res: Response, next: NextFunction): P
     // Locate and update the product using productId and farmerId
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: productId, farmerId }, // Ensure the product belongs to the farmer
-      { name, category, price, quantity, description, image }, // Fields to update
+      { name, category, price, quantity, description, image, unit }, // Fields to update
       { new: true, runValidators: true } // Options: return the updated document and run validators
     );
 

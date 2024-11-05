@@ -17,7 +17,7 @@ function updateProduct(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // Extract productId and the updated fields from the request body
-            const { productId, farmerId, name, category, price, quantity, description, image } = req.body;
+            const { productId, farmerId, name, category, price, quantity, description, image, unit } = req.body;
             console.log("Updating product:", productId);
             // Ensure productId and farmerId are provided
             if (!productId || !farmerId) {
@@ -25,7 +25,7 @@ function updateProduct(req, res, next) {
             }
             // Locate and update the product using productId and farmerId
             const updatedProduct = yield admin_farmer_model_1.default.findOneAndUpdate({ _id: productId, farmerId }, // Ensure the product belongs to the farmer
-            { name, category, price, quantity, description, image }, // Fields to update
+            { name, category, price, quantity, description, image, unit }, // Fields to update
             { new: true, runValidators: true } // Options: return the updated document and run validators
             );
             // Check if the product was found and updated
