@@ -7,7 +7,10 @@ import { connectDB } from "./utils/features";
 import apiRouter from "./routes/api";
 import { config } from "dotenv";
 // import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
-import listProduct from "./controllers/listProduct.controller";
+import listProductRoute from "./routes/listProduct.route";
+import getProductRoute from "./routes/getProducts";
+import updateProductRoute from "./routes/updateProduct.route";
+import deleteProductRoute from "./routes/deleteProduct.route";
 // Load environment variables from .env file
 config({
   path: "./.env",
@@ -22,7 +25,7 @@ const app = express();
 
 // Middleware to handle CORS
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3002"); // Adjust the allowed origin as needed
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3002"); 
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
@@ -49,7 +52,13 @@ app.get("/", (req: Request, res: Response) => {
 // Use API router for authentication
 app.use("/auth", apiRouter);
 // app.use('/api',farmerUploadImageRoute)
-app.use('/api',listProduct)
+app.use('/api',listProductRoute)
+
+app.use('/api',getProductRoute)
+
+app.use('/api',updateProductRoute)
+
+app.use('/api',deleteProductRoute)
 
 // Set the port and start the server
 const port = Number(process.env.PORT) || 3001;
