@@ -149,20 +149,10 @@ const adminSignup = (name, role, email, phone, isActive, nonce, signature, walle
             });
             yield customer.save();
             const newCustomer = {
-                name: customer.name,
+                id: customer._id,
                 role: customer.role,
                 email: customer.email,
-                signature: customer.signature,
-                isActive: customer.isActive,
                 isRemember: customer.isRemember,
-                nonce: customer.nonce,
-                dialingCode: customer.dialingCode,
-                phone: customer.phone,
-                addressLine: customer.addressLine,
-                country: customer.country,
-                state: customer.state,
-                city: customer.city,
-                zipCode: customer.zipCode,
                 walletAddress: customer.walletAddress,
             };
             const responseSuccess = ApiResponse_1.default.success(responses_1.ResponseDefinitions.OperationSuccessful.message, Object.assign(Object.assign({ createSuccessResponse: "Successfully registered.", token: isRemember

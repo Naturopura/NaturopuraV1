@@ -1,25 +1,26 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import env from '../environment/environment';  // Import the env object
+import env from '../environment/environment';
 
 interface AuthenticatedRequest extends Request {
   user?: string | object; 
 }
 
-const authenticateJWT = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const token = req.header('Authorization')?.split(' ')[1]; 
+const authenticateJWT = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+  const token = req.header('Authorization')?.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ message: 'Access token required' });
+    res.status(401).json({ message: 'Access token required' });
+    return; 
   }
 
   try {
-    // Use env.TOKEN_SECRET to verify the token
+    
     const decoded = jwt.verify(token, env.TOKEN_SECRET);
     req.user = decoded;
-    next();
+    next(); 
   } catch (error) {
-    return res.status(403).json({ message: 'Invalid or expired token' });
+    res.status(403).json({ message: 'Invalid or expired token' });
   }
 };
 

@@ -1,4 +1,4 @@
-import Product from "../models/admin.farmer.model"; // Adjust this import based on your structure
+import Product from "../models/admin.farmer.model"; 
 import { Response, Request, NextFunction } from "express";
 
 export const listProduct = async (

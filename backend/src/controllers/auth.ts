@@ -210,20 +210,10 @@ export const adminSignup = async (
         await customer.save();
 
         const newCustomer = {
-          name: customer.name,
+          id: customer._id,
           role: customer.role,
           email: customer.email,
-          signature: customer.signature,
-          isActive: customer.isActive,
           isRemember: customer.isRemember,
-          nonce: customer.nonce,
-          dialingCode: customer.dialingCode,
-          phone: customer.phone,
-          addressLine: customer.addressLine,
-          country: customer.country,
-          state: customer.state,
-          city: customer.city,
-          zipCode: customer.zipCode,
           walletAddress: customer.walletAddress,
         };
 

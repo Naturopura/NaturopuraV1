@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProduct = exports.updateProduct = exports.getProductsByFarmer = exports.listProduct = void 0;
-const admin_farmer_model_1 = __importDefault(require("../models/admin.farmer.model")); // Adjust this import based on your structure
+const admin_farmer_model_1 = __importDefault(require("../models/admin.farmer.model"));
 const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Extract data from the request body
