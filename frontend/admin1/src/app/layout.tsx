@@ -15,10 +15,13 @@ import { Toaster } from "react-hot-toast";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultConfig, lightTheme } from "@rainbow-me/rainbowkit";
 import { WagmiProvider, http } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
+import { mainnet } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import Navbar from "./(components)/Navbar/navbar";
 import Footer from "./(components)/Footer/footer";
+import ProtectedRoute from "@/auth/ProtectedRoute";
+import { usePathname } from "next/navigation";
+import Sidebar from "./(components)/Sidebar/sidebar";
 
 const config = getDefaultConfig({
   appName: "RainbowKit demo",
@@ -56,33 +59,36 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isAuthPage = pathname === "/login" || pathname === "/signup";
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReduxProvider>
-          {/* <ProtectedRoute> */}
-          <WagmiProvider config={config}>
-            <QueryClientProvider client={queryClient}>
-              <RainbowKitProvider
-                theme={lightTheme({
-                  accentColor: "#acb631",
-                  accentColorForeground: "white",
-                  borderRadius: "medium",
-                  fontStack: "system",
-                })}
-              >
-                {/* <MeshProvider> */}
-                <Toaster position="top-center" />
-                <Navbar />
-                {children}
-                <Footer />
-                {/* </MeshProvider> */}
-              </RainbowKitProvider>
-            </QueryClientProvider>
-          </WagmiProvider>
-          {/* </ProtectedRoute> */}
+          <ProtectedRoute>
+            <WagmiProvider config={config}>
+              <QueryClientProvider client={queryClient}>
+                <RainbowKitProvider
+                  theme={lightTheme({
+                    accentColor: "#acb631",
+                    accentColorForeground: "white",
+                    borderRadius: "medium",
+                    fontStack: "system",
+                  })}
+                >
+                  {/* <MeshProvider> */}
+                  <Toaster position="top-center" />
+                  {!isAuthPage && <Navbar />}
+                  {!isAuthPage && <Sidebar />}
+                  {children}
+                  {!isAuthPage && <Footer />}
+                  {/* </MeshProvider> */}
+                </RainbowKitProvider>
+              </QueryClientProvider>
+            </WagmiProvider>
+          </ProtectedRoute>
         </ReduxProvider>
       </body>
     </html>

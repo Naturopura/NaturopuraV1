@@ -1,34 +1,64 @@
 "use client";
 
-import React, { useState } from "react";
-import image from "@/assets/image (2).png";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import Image from "next/image";
-import Sidebar from "@/app/(components)/Sidebar/sidebar";
+import { useListProductMutation } from "@/state/farmerApi";
+import toast from "react-hot-toast";
+// import { useRouter } from "next/navigation";
+import imageCompression from "browser-image-compression";
+
+type ImageBuffer = {
+  type: "Buffer";
+  data: number[];
+};
+
+type ProductFormData = {
+  farmerId: string;
+  name: string;
+  category: string;
+  price: number;
+  quantity: number;
+  description: string;
+  unit: string;
+  image: ImageBuffer;
+};
 
 const NewProduct = () => {
-  type FormDataKey =
-    | "name"
-    | "price"
-    | "quantity"
-    | "unit"
-    | "category"
-    | "description";
-  // Define form fields dynamically
   const formFields = [
     { id: "name", label: "Name", type: "text", placeholder: "Name" },
-    { id: "price", label: "Price", type: "text", placeholder: "Price" },
+    { id: "price", label: "Price", type: "number", placeholder: "Price" },
     {
       id: "quantity",
       label: "Quantity",
-      type: "text",
+      type: "number",
       placeholder: "Quantity",
     },
-    { id: "unit", label: "Unit", type: "text", placeholder: "Unit" },
+    {
+      id: "unit",
+      label: "Unit",
+      type: "select",
+      options: ["Select Unit", "g", "kg", "ml", "L"],
+      placeholder: "Unit",
+    },
     {
       id: "category",
       label: "Category",
       type: "select",
-      options: ["Select Category", "Category 1", "Category 2"],
+      options: [
+        "Select Category",
+        "vegetables",
+        "fruits",
+        "staples",
+        "chips",
+        "bakery",
+        "snacks",
+        "chocolates",
+        "biscuits",
+        "tea",
+        "coffee",
+        "juices",
+        "honey",
+      ],
     },
     {
       id: "description",
@@ -38,34 +68,79 @@ const NewProduct = () => {
     },
   ];
 
-  const initialFormData: { [key in FormDataKey]: string } = {
-    name: "",
-    price: "",
-    quantity: "",
-    unit: "",
-    category: "",
-    description: "",
+  const [createProduct] = useListProductMutation();
+  // const router = useRouter();
+
+  const initialImage: ImageBuffer = {
+    type: "Buffer",
+    data: [],
   };
 
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState<ProductFormData>({
+    farmerId: "",
+    name: "",
+    category: "",
+    price: 0,
+    quantity: 0,
+    description: "",
+    unit: "",
+    image: initialImage,
+  });
 
-  // Handle change for inputs
+  // Handle form field changes
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+    setFormData((prevData) => ({ ...prevData, [id]: value }));
+  };
+
+  // Handle file input change for image upload
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Compress the image
+      const options = {
+        maxSizeMB: 1, // Set the maximum size in MB
+        maxWidthOrHeight: 1920, // Set a max width or height
+        useWebWorker: true,
+      };
+      try {
+        const compressedFile = await imageCompression(file, options);
+        const buffer = await compressedFile.arrayBuffer();
+        setFormData((prevData) => ({
+          ...prevData,
+          image: {
+            type: "Buffer",
+            data: Array.from(new Uint8Array(buffer)),
+          },
+        }));
+      } catch (error) {
+        console.error("Image compression failed:", error);
+      }
+    }
+  };
+
+  console.log("Payload size:", JSON.stringify(formData).length / 1024, "KB");
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await createProduct(formData);
+      toast.success("Product created successfully");
+      // router.push("/farmer/manageproduct");
+    } catch (error) {
+      console.error("Failed to create product:", error);
+      toast.error("Failed to create product");
+    }
   };
 
   return (
     <>
-      <Sidebar />
-      <div className=" flex items-center ml-32 mt-[-835px] justify-center py-10 h-[950px]">
+      <div className="flex items-center ml-32 mt-[-835px] justify-center py-10 h-full">
         <div className="w-[1000px] bg-white shadow-2xl p-6">
           <h2 className="text-center text-2xl font-bold mb-6">NEW PRODUCT</h2>
-          <form className="">
+          <form onSubmit={handleSubmit}>
             {formFields.map((field) => (
               <div className="mb-4" key={field.id}>
                 <label
@@ -78,32 +153,65 @@ const NewProduct = () => {
                   <input
                     type="text"
                     id={field.id}
-                    className="w-full border placeholder:text-xl border-black p-2"
+                    className="w-full border text-xl placeholder:text-xl border-black p-2"
                     placeholder={field.placeholder}
-                    value={formData[field.id as keyof typeof formData]}
+                    value={
+                      formData[field.id as keyof ProductFormData] as string
+                    }
+                    onChange={handleChange}
+                  />
+                )}
+                {field.type === "number" && (
+                  <input
+                    type="number"
+                    id={field.id}
+                    className="w-full border text-xl placeholder:text-xl border-black p-2"
+                    placeholder={field.placeholder}
+                    value={
+                      formData[field.id as keyof ProductFormData] as number
+                    }
                     onChange={handleChange}
                   />
                 )}
                 {field.type === "textarea" && (
                   <textarea
                     id={field.id}
-                    className="w-full border placeholder:text-xl border-black p-2"
+                    className="w-full border text-xl placeholder:text-xl border-black p-2"
                     placeholder={field.placeholder}
-                    value={formData[field.id as keyof typeof formData]}
+                    value={
+                      formData[field.id as keyof ProductFormData] as string
+                    }
                     onChange={handleChange}
                   />
                 )}
-                {field.type === "select" && (
+                {field.type === "select" && field.id === "category" && (
                   <select
                     id={field.id}
-                    className="w-full border text-xl text-gray-500 border-black p-2"
-                    value={formData[field.id as keyof typeof formData]}
+                    className="w-full border text-xl text-black border-black p-2"
+                    value={formData.category}
                     onChange={handleChange}
                   >
                     {field.options?.map((option, index) => (
                       <option
                         key={index}
                         value={option === "Select Category" ? "" : option}
+                      >
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                )}
+                {field.type === "select" && field.id === "unit" && (
+                  <select
+                    id={field.id}
+                    className="w-full border text-xl text-black border-black p-2"
+                    value={formData.unit}
+                    onChange={handleChange}
+                  >
+                    {field.options?.map((option, index) => (
+                      <option
+                        key={index}
+                        value={option === "Select Unit" ? "" : option}
                       >
                         {option}
                       </option>
@@ -120,11 +228,21 @@ const NewProduct = () => {
                 <Image
                   width={100}
                   height={100}
-                  src={image}
-                  alt="Feature"
+                  src={
+                    formData.image.data.length > 0
+                      ? `data:image/jpeg;base64,${Buffer.from(
+                          formData.image.data
+                        ).toString("base64")}`
+                      : ""
+                  }
+                  alt=""
                   className="h-12 w-12 object-cover rounded-md mr-4"
                 />
-                <input type="file" className="text-xl ml-5 text-gray-500" />
+                <input
+                  type="file"
+                  className="text-xl ml-5 text-gray-500"
+                  onChange={handleImageChange}
+                />
               </div>
             </div>
             <button

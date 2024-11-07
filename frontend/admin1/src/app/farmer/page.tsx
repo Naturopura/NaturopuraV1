@@ -1,12 +1,7 @@
 import React from "react";
-import Sidebar from "../(components)/Sidebar/sidebar";
 
 const Farmer = () => {
-  return (
-    <div>
-      <Sidebar />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Farmer;
