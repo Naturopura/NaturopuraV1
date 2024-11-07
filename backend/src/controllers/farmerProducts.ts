@@ -15,8 +15,8 @@ export const listProduct = async (
       price,
       quantity,
       description,
-      image,
       unit,
+      image,
     } = req.body;
     console.log("Received request to list product for farmer:", farmerId);
 

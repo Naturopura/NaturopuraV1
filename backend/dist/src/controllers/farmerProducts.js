@@ -17,7 +17,7 @@ const admin_farmer_model_1 = __importDefault(require("../models/admin.farmer.mod
 const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Extract data from the request body
-        const { farmerId, name, category, price, quantity, description, image, unit, } = req.body;
+        const { farmerId, name, category, price, quantity, description, unit, image, } = req.body;
         console.log("Received request to list product for farmer:", farmerId);
         // Ensure all required fields are provided
         if (!farmerId ||

@@ -3,6 +3,7 @@ import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { persistReducer } from "redux-persist";
 import { adminReducer } from "./adminSlice";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+import { farmerApi } from "@/state/farmerApi";
 
 const createNoopStorage = () => {
   return {
@@ -36,9 +37,11 @@ const rootReducer = combineReducers({
 });
 
 export const store = configureStore({
-  reducer: { rootReducer },
+  reducer: { rootReducer, [farmerApi.reducerPath]: farmerApi.reducer },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
+    getDefaultMiddleware({ serializableCheck: false }).concat(
+      farmerApi.middleware
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
