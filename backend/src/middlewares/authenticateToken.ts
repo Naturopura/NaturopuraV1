@@ -28,7 +28,9 @@ const authenticateJWT = (
   }
 
   try {
+    console.log("going inside ");
     const decoded = jwt.verify(token, env.TOKEN_SECRET);
+    console.log("decoding success");
     req.user = decoded as AuthenticatedRequest["user"];
     console.log("going to next", req.user);
     next();

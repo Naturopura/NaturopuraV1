@@ -14,7 +14,9 @@ const authenticateJWT = (req, res, next) => {
         return;
     }
     try {
+        console.log("going inside ");
         const decoded = jsonwebtoken_1.default.verify(token, environment_1.default.TOKEN_SECRET);
+        console.log("decoding success");
         req.user = decoded;
         console.log("going to next", req.user);
         next();
