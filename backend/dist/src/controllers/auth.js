@@ -12,7 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+<<<<<<< HEAD
 exports.userLogin = exports.userSignup = exports.adminSignup = exports.adminLogin = void 0;
+=======
+exports.adminSignup = exports.adminLogin = void 0;
+>>>>>>> rakesh-bin
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const saltRounds = 10;
 const admin_model_1 = __importDefault(require("../models/admin.model"));
@@ -91,7 +95,13 @@ const adminLogin = (signature, nonce, walletAddress) => __awaiter(void 0, void 0
                 email: user.email,
             };
             // Generate a JWT for the user
+<<<<<<< HEAD
             const token = jsonwebtoken_1.default.sign(userData, process.env.TOKEN_SECRET || "QUOTUS", { expiresIn: "48h" });
+=======
+            const token = jsonwebtoken_1.default.sign(userData, process.env.TOKEN_SECRET || "QUOTUS", {
+                expiresIn: "48h",
+            });
+>>>>>>> rakesh-bin
             // Return a successful login response with the JWT token
             return ApiResponse_1.default.success(responses_1.ResponseDefinitions.OperationSuccessful.message, Object.assign({ message: "Successfully logged in.", token: token, expiresIn: "48h" }, userData), responses_1.ResponseDefinitions.OperationSuccessful.code);
         }
@@ -104,6 +114,7 @@ const adminLogin = (signature, nonce, walletAddress) => __awaiter(void 0, void 0
     }
 });
 exports.adminLogin = adminLogin;
+<<<<<<< HEAD
 // export const adminLogin = async (signature: string, nonce: Number, walletAddress: string) => {
 //   // const { signature, key } = req.body;
 //   try {
@@ -169,12 +180,19 @@ exports.adminLogin = adminLogin;
 //   }
 // };
 const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode) => __awaiter(void 0, void 0, void 0, function* () {
+=======
+const adminSignup = (name, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode) => __awaiter(void 0, void 0, void 0, function* () {
+>>>>>>> rakesh-bin
     try {
         // Check if email or phone already exists in the database
         const existingUser = yield admin_model_1.default.findOne({
             $or: [
                 { email, deletedAt: { $eq: null } },
+<<<<<<< HEAD
                 { phone, deletedAt: { $eq: null } }
+=======
+                { phone, deletedAt: { $eq: null } },
+>>>>>>> rakesh-bin
             ],
         });
         if (existingUser) {
@@ -193,8 +211,12 @@ const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, s
         }))
             .then((hashedToken) => __awaiter(void 0, void 0, void 0, function* () {
             const customer = new admin_model_1.default({
+<<<<<<< HEAD
                 firstName,
                 lastName,
+=======
+                name,
+>>>>>>> rakesh-bin
                 role,
                 email,
                 signature: hashedToken,
@@ -212,6 +234,7 @@ const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, s
             });
             yield customer.save();
             const newCustomer = {
+<<<<<<< HEAD
                 firstName: customer.firstName,
                 lastName: customer.lastName,
                 role: customer.role,
@@ -227,6 +250,12 @@ const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, s
                 state: customer.state,
                 city: customer.city,
                 zipCode: customer.zipCode,
+=======
+                id: customer._id,
+                role: customer.role,
+                email: customer.email,
+                isRemember: customer.isRemember,
+>>>>>>> rakesh-bin
                 walletAddress: customer.walletAddress,
             };
             const responseSuccess = ApiResponse_1.default.success(responses_1.ResponseDefinitions.OperationSuccessful.message, Object.assign(Object.assign({ createSuccessResponse: "Successfully registered.", token: isRemember
@@ -244,6 +273,7 @@ const adminSignup = (firstName, lastName, role, email, phone, isActive, nonce, s
     }
 });
 exports.adminSignup = adminSignup;
+<<<<<<< HEAD
 const userSignup = (firstName, lastName, email, signature, key, address, isRemember) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check if user already exists with the given key
@@ -336,3 +366,5 @@ const userLogin = (signature, key) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.userLogin = userLogin;
+=======
+>>>>>>> rakesh-bin

@@ -19,10 +19,16 @@ const ApiResponse_1 = __importDefault(require("../../helper/ApiResponse"));
 const responses_1 = require("../responses");
 const router = (0, express_1.Router)();
 router.post("/admin/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
     const { firstName, lastName, role, email, signature, isActive, isRemember, nonce, dialingCode, phone, addressLine, country, state, city, zipCode, walletAddress, } = req.body;
     const schema = joi_1.default.object({
         firstName: joi_1.default.string().min(3).max(30).required(),
         lastName: joi_1.default.string().min(3).max(30).required(),
+=======
+    const { name, role, email, signature, isActive, isRemember, nonce, dialingCode, phone, addressLine, country, state, city, zipCode, walletAddress, } = req.body;
+    const schema = joi_1.default.object({
+        name: joi_1.default.string().min(3).max(30).required(),
+>>>>>>> rakesh-bin
         signature: joi_1.default.string().required(),
         nonce: joi_1.default.number(),
         isRemember: joi_1.default.boolean().truthy("true").falsy("false"),
@@ -50,7 +56,11 @@ router.post("/admin/signup", (req, res) => __awaiter(void 0, void 0, void 0, fun
             .json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.InvalidInput.message, responses_1.ResponseDefinitions.InvalidInput.code, error.details));
     }
     try {
+<<<<<<< HEAD
         const response = yield (0, auth_1.adminSignup)(firstName, lastName, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode);
+=======
+        const response = yield (0, auth_1.adminSignup)(name, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode);
+>>>>>>> rakesh-bin
         return res.status(201).json(response);
     }
     catch (error) {

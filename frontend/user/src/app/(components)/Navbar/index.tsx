@@ -4,16 +4,26 @@ import Link from "next/link";
 import { Search, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import img2 from "@/assets/logo 1.png";
+<<<<<<< HEAD
 import '@rainbow-me/rainbowkit/styles.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import React, { useEffect, useState } from "react";
 import { useAccount } from 'wagmi';
 import toast from "react-hot-toast";
 import axios from 'axios';
+=======
+import "@rainbow-me/rainbowkit/styles.css";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import React, { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import toast from "react-hot-toast";
+import axios from "axios";
+>>>>>>> rakesh-bin
 import { BrowserProvider } from "ethers";
 
 const Navbar = () => {
   const { address, isConnected } = useAccount();
+<<<<<<< HEAD
   const [nonce, setNonce] = useState<string>(""); 
   const [message, setMessage] = useState<string>("");
 
@@ -21,6 +31,14 @@ const Navbar = () => {
   useEffect(() => {
     if (address) {
       const walletAddress = address.toLocaleLowerCase() || "" ;
+=======
+  const [nonce, setNonce] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+
+  useEffect(() => {
+    if (address) {
+      const walletAddress = address.toLocaleLowerCase() || "";
+>>>>>>> rakesh-bin
       sendAddress(walletAddress);
     }
   }, [address]);
@@ -29,15 +47,25 @@ const Navbar = () => {
     if (nonce) {
       signMessage();
     }
+<<<<<<< HEAD
   }, [nonce]); 
+=======
+  }, [nonce]);
+>>>>>>> rakesh-bin
 
   const sendAddress = async (walletAddress: string | "") => {
     try {
       console.log("sendAddress called");
+<<<<<<< HEAD
       const response = await axios.post(
         "http://localhost:3000/auth/signin",
         { walletAddress }
       );
+=======
+      const response = await axios.post("http://localhost:3000/auth/signin", {
+        walletAddress,
+      });
+>>>>>>> rakesh-bin
       const nonce = response.data.data.nonce;
       console.log("Nonce received:", nonce);
       setNonce(nonce); // Set the nonce state
@@ -58,10 +86,18 @@ const Navbar = () => {
         console.log("Signature:", signature);
         const walletAddress = address;
         console.log("request sent");
+<<<<<<< HEAD
         const response = await axios.post(
           "http://localhost:3000/auth/signin",
           { walletAddress, nonce, signature }
         );
+=======
+        const response = await axios.post("http://localhost:3000/auth/signin", {
+          walletAddress,
+          nonce,
+          signature,
+        });
+>>>>>>> rakesh-bin
         console.log("response received", response);
         toast.success("SignIn successful");
       } catch (error) {
@@ -77,7 +113,17 @@ const Navbar = () => {
     <nav className="bg-white border-b-2 border-gray-200 px-[250px] py-3 z-50 relative">
       <div className="container mx-auto flex justify-between items-center">
         <Link href={"/"}>
+<<<<<<< HEAD
           <Image src={img2} width={100} height={100} alt="" />
+=======
+          <Image
+            src={img2}
+            className="ml-[-20px]"
+            width={200}
+            height={200}
+            alt=""
+          />
+>>>>>>> rakesh-bin
         </Link>
         {/* Left Side - Search Input */}
         <div className="relative w-full md:w-60 mr-4">
@@ -91,11 +137,24 @@ const Navbar = () => {
           </div>
         </div>
         {/* Right Side - Logo/Brand */}
+<<<<<<< HEAD
          <ConnectButton label="Sign in with wallet" />
         <Link href={"/cart"}>
           <ShoppingCart />
           Cart
         </Link>
+=======
+        <div className="relative w-full md:w-60 mt-[2px] mr-4">
+          <ConnectButton label="Sign in with wallet" />
+        </div>
+
+        <div className="mt-2">
+          <Link href={"/cart"}>
+            <ShoppingCart />
+            Cart
+          </Link>
+        </div>
+>>>>>>> rakesh-bin
       </div>
     </nav>
   );

@@ -6,6 +6,19 @@ const productSchema = new mongoose.Schema({
     name: { type: String, required: [true, "Please enter Name"] },
     category: { type: String, required: [true, "Please enter category"] },
     price: { type: Number, required: [true, "Please enter price"] },
+<<<<<<< HEAD
+=======
+    unit: {
+        type: String,
+        required: [true, "Please select a unit"],
+        enum: [
+            "g", // gram
+            "kg", // kilogram
+            "ml", // milliliter
+            "L", // liter
+        ]
+    },
+>>>>>>> rakesh-bin
     quantity: { type: Number, required: [true, "Please enter quantity"] },
     description: { type: String },
     image: { type: Buffer, required: true },

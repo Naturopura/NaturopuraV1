@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+<<<<<<< HEAD
 import { ArrowRight, IndianRupee, Star } from "lucide-react";
 import Sidebar from "../(components)/Sidebar";
 import img3 from "@/assets/file (2).png";
@@ -40,10 +41,37 @@ import greenbg from "@/assets/green-bg.png";
 import honeynest from "@/assets/honeynest.png";
 import honeybottle from "@/assets/honeybottle.png";
 import honeynest2 from "@/assets/honeynest2.png";
+=======
+import leaf from "@/assets/leaf.png";
+import ProductCategory from "./ProductCategory";
+import FeaturedCategories from "./FeaturedCategories";
+import FoodCupboard from "./FoodCupboard";
+import ProductCategoryList from "./ProductCategoryList";
+import ProductGrid from "./ProductGrid";
+import Fruits from "./Fruits";
+import Vegetables from "./Vegetables";
+import DrinksTeaCoffee from "./DrinksTeaCoffee";
+import ProductCategoryLists from "./ProductCategoryLists";
+import Honey from "./Honey";
+import HoneyProducts from "./HoneyProducts";
+import Gallery from "./Gallery";
+import HealthyFruits from "./HealthyFruits";
+import ProductCategories from "./ProductCategories";
+import SeasonalFruits from "./SeasonalFruits";
+import OrganicFertilizer from "./OrganicFertilizer";
+import SoilConditioner from "./SoilConditioner";
+import Pesticides from "./Pesticides";
+import AgricultureSeeds from "./AgricultureSeeds";
+import FarmingGardening from "./FarmingGardening";
+import Recommendations from "./Recommendations";
+import RecentViewed from "./RecentViewed";
+import Carousel from "./Carousel";
+>>>>>>> rakesh-bin
 
 const Dashboard = () => {
   return (
     <>
+<<<<<<< HEAD
       <div className="bg-gray-200">
         <div className="relative mt-[-197px]">
           <Image
@@ -518,6 +546,14 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+=======
+      <div className="bg-gray-200 overflow-x-hidden">
+        <Carousel />
+        <ProductCategory />
+        <FeaturedCategories />
+        <FoodCupboard />
+        <ProductCategoryList />
+>>>>>>> rakesh-bin
 
         <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-10" />
 
@@ -527,6 +563,7 @@ const Dashboard = () => {
 
         <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-8" />
 
+<<<<<<< HEAD
         <div className="bg-gray-200">
           <div className="mx-auto px-6 lg:px-12 py-16 sm:py-24">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -1280,6 +1317,13 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+=======
+        <ProductGrid />
+        <Fruits />
+        <Vegetables />
+        <DrinksTeaCoffee />
+        <ProductCategoryLists />
+>>>>>>> rakesh-bin
 
         <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-10" />
 
@@ -1289,6 +1333,7 @@ const Dashboard = () => {
 
         <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-8" />
 
+<<<<<<< HEAD
         <div className="bg-gray-200">
           <div className="mx-auto px-6 lg:px-12 py-16 sm:py-24">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -2960,6 +3005,77 @@ const Dashboard = () => {
             className="rounded-lg bg-gray-100"
           />
         </div>
+=======
+        <ProductGrid />
+
+        <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-[-28px]" />
+
+        <Honey />
+        <HoneyProducts />
+
+        <Link href="/honey">
+          <button className="text-white z-10 mt-[-1px] ml-[778px] text-xl bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg px-12 py-3">
+            View Products&gt;
+          </button>
+        </Link>
+
+        <div className="flex items-center justify-center ml-[-125px] mt-5">
+          <div className="mr-3">
+            <Image width={200} height={100} src={leaf} alt="leaf" />
+          </div>
+          <div className="text-black mt-[-23px] ml-[-95px] text-3xl focus:ring-4 focus:outline-none font-bold rounded-lg py-2.5">
+            GET WHAT YOU WANT
+          </div>
+        </div>
+
+        <Gallery />
+
+        <div className="ml-[678px] mt-[100px]">
+          <div className="text-[#ACB631] text-4xl font-semibold">
+            100% FRESH & HEALTHY
+          </div>
+          <div className="ml-0 text-4xl font-semibold">SPROUTS, VEGETABLES</div>
+          <div className="ml-[118px] text-4xl font-semibold">& lot more</div>
+        </div>
+
+        <HealthyFruits />
+
+        <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 -mt-10" />
+
+        <ProductCategories />
+        <SeasonalFruits />
+        <OrganicFertilizer />
+        <SoilConditioner />
+
+        <div className="text-[#9FA82B] ml-[765px] text-3xl font-semibold">
+          Soil Conditioner
+        </div>
+
+        <Pesticides />
+
+        <div className="text-[#9FA82B] ml-[800px] -mt-10  text-3xl font-semibold">
+          Pesticides
+        </div>
+
+        <button className="text-white mt-10 bg-[#ACB631] ml-[870px] rounded-md px-2 py-2 text-xl bottom-[50px]  transform -translate-x-1/2 font-medium">
+          Know more
+        </button>
+
+        <AgricultureSeeds />
+        <FarmingGardening />
+
+        <Image width={200} height={100} src={leaf} alt="" />
+        <div className="text-3xl font-bold mt-[-90px] ml-[115px]">
+          Recommendations
+        </div>
+
+        <div className="ml-[116px] mt-[50px] text-2xl">
+          New arrival | Best Selling | Most popular | On Sales | All
+        </div>
+
+        <Recommendations />
+        <RecentViewed />
+>>>>>>> rakesh-bin
       </div>
     </>
   );

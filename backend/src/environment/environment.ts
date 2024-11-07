@@ -10,7 +10,11 @@ const env = cleanEnv(process.env, {
   //   PRODUCT_SERVICE_DATABASE_NAME:str(),
   //   PRODUCT_DATABASE_USER_NAME:str(),
   //   PRODUCT_DATABASE_USER_PASSWORD:str(),
+<<<<<<< HEAD
   TOKEN_SECRET: str({
+=======
+  TOKEN_SECRET: str({      
+>>>>>>> rakesh-bin
     default:
       "7ef521015a24ccf37363fedaf978bd2b7845b47e6c8301d91e866ae474726b8296aba5040e42773c3bd17c0f77971fd7a43488e8f7a994e297bad95d746b4d9d",
   }),

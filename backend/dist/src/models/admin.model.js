@@ -5,11 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const adminSchema = new mongoose_1.default.Schema({
+<<<<<<< HEAD
     firstName: {
         type: String,
         required: true,
     },
     lastName: {
+=======
+    name: {
+>>>>>>> rakesh-bin
         type: String,
         required: true,
     },

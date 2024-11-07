@@ -5,8 +5,12 @@ import SignUpAdmin from "../api/signUp";
 import { Dispatch } from "redux";
 
 export const SignUp = (credentials: {
+<<<<<<< HEAD
   firstName: string;
   lastName: string;
+=======
+  name: string;
+>>>>>>> rakesh-bin
   email: string;
   isRemember: boolean;
   isActive: boolean;
@@ -26,15 +30,25 @@ export const SignUp = (credentials: {
     try {
       const response = await SignUpAdmin(credentials);
       console.log("signup response is here", response);
+<<<<<<< HEAD
       
+=======
+>>>>>>> rakesh-bin
 
       if (typeof window !== "undefined") {
         localStorage.setItem("accessToken", response?.data.token);
       }
+<<<<<<< HEAD
       console.log("here >>>>>>> also")
       const admin = response?.data;
       admin.token = response?.token;
       
+=======
+      console.log("here >>>>>>> also");
+      const admin = response?.data;
+      admin.token = response?.token;
+
+>>>>>>> rakesh-bin
       dispatch(adminExist(admin));
 
       dispatch(setLoading(false));

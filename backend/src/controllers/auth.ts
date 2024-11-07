@@ -1,7 +1,11 @@
 import bcryptjs from "bcryptjs";
 const saltRounds = 10;
 import User from "../models/admin.model";
+<<<<<<< HEAD
 import env from "../environment/environment"; 
+=======
+import env from "../environment/environment"; // Assuming you have environment setup
+>>>>>>> rakesh-bin
 import jwt from "jsonwebtoken";
 import ApiResponse from "../../helper/ApiResponse";
 import { ResponseDefinitions } from "../responses";
@@ -52,7 +56,11 @@ export const adminLogin = async (
 
       // Store nonce in Redis with 1-minute expiration
       await redisClient.set(walletAddress, randomNonce.toString(), { EX: 60 }); // EX sets expiration to 60 seconds
+<<<<<<< HEAD
       console.log(walletAddress,"setting wallet address");
+=======
+      console.log(walletAddress, "setting wallet address");
+>>>>>>> rakesh-bin
 
       // Send the generated nonce to the frontend
       return ApiResponse.success("Nonce generated", { nonce: randomNonce });
@@ -62,7 +70,11 @@ export const adminLogin = async (
     if (signature && nonce && walletAddress) {
       // Fetch the nonce from Redis
       const cachedNonce = await redisClient.get(walletAddress);
+<<<<<<< HEAD
       console.log(walletAddress,"got the available wallet address");
+=======
+      console.log(walletAddress, "got the available wallet address");
+>>>>>>> rakesh-bin
 
       if (!cachedNonce || cachedNonce !== nonce.toString()) {
         return ApiResponse.error(
@@ -73,8 +85,13 @@ export const adminLogin = async (
 
       // Recreate the message that was signed by the user
       // Backend: Change message to match frontend
+<<<<<<< HEAD
 const message = `Please sign this message to authenticate: ${nonce}`;
 // Message signed by the wallet
+=======
+      const message = `Please sign this message to authenticate: ${nonce}`;
+      // Message signed by the wallet
+>>>>>>> rakesh-bin
 
       // Verify the signature using web3.js
       const recoveredAddress = web3.eth.accounts.recover(message, signature);
@@ -109,7 +126,13 @@ const message = `Please sign this message to authenticate: ${nonce}`;
       };
 
       // Generate a JWT for the user
+<<<<<<< HEAD
       const token = jwt.sign(userData, process.env.TOKEN_SECRET || "QUOTUS", { expiresIn: "48h" });
+=======
+      const token = jwt.sign(userData, process.env.TOKEN_SECRET || "QUOTUS", {
+        expiresIn: "48h",
+      });
+>>>>>>> rakesh-bin
 
       // Return a successful login response with the JWT token
       return ApiResponse.success(
@@ -138,6 +161,7 @@ const message = `Please sign this message to authenticate: ${nonce}`;
   }
 };
 
+<<<<<<< HEAD
 
 // export const adminLogin = async (signature: string, nonce: Number, walletAddress: string) => {
 //   // const { signature, key } = req.body;
@@ -212,6 +236,10 @@ const message = `Please sign this message to authenticate: ${nonce}`;
 export const adminSignup = async (
   firstName: any,
   lastName: any,
+=======
+export const adminSignup = async (
+  name: any,
+>>>>>>> rakesh-bin
   role: any,
   email: any,
   phone: any,
@@ -232,7 +260,11 @@ export const adminSignup = async (
     const existingUser = await User.findOne({
       $or: [
         { email, deletedAt: { $eq: null } },
+<<<<<<< HEAD
         { phone, deletedAt: { $eq: null } }
+=======
+        { phone, deletedAt: { $eq: null } },
+>>>>>>> rakesh-bin
       ],
     });
 
@@ -260,8 +292,12 @@ export const adminSignup = async (
       })
       .then(async (hashedToken) => {
         const customer = new User({
+<<<<<<< HEAD
           firstName,
           lastName,
+=======
+          name,
+>>>>>>> rakesh-bin
           role,
           email,
           signature: hashedToken,
@@ -281,6 +317,7 @@ export const adminSignup = async (
         await customer.save();
 
         const newCustomer = {
+<<<<<<< HEAD
           firstName: customer.firstName,
           lastName: customer.lastName,
           role: customer.role,
@@ -296,6 +333,12 @@ export const adminSignup = async (
           state: customer.state,
           city: customer.city,
           zipCode: customer.zipCode,
+=======
+          id: customer._id,
+          role: customer.role,
+          email: customer.email,
+          isRemember: customer.isRemember,
+>>>>>>> rakesh-bin
           walletAddress: customer.walletAddress,
         };
 
@@ -328,6 +371,7 @@ export const adminSignup = async (
     );
   }
 };
+<<<<<<< HEAD
 
 export const userSignup = async (
   firstName: any,
@@ -467,3 +511,5 @@ export const userLogin = async (signature: any, key: any) => {
     );
   }
 };
+=======
+>>>>>>> rakesh-bin

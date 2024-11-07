@@ -36,7 +36,11 @@ const rootReducer = combineReducers({
 });
 
 export const store = configureStore({
+<<<<<<< HEAD
   reducer: rootReducer,
+=======
+  reducer: { rootReducer },
+>>>>>>> rakesh-bin
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
 });

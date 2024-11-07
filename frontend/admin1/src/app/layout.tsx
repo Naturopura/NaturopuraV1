@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client'
 // import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -7,11 +8,23 @@ import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next
 import "./globals.css";
 import { MeshProvider } from "@meshsdk/react";
 import ProtectedRoute from "@/auth/ProtectedRoute";
+=======
+"use client";
+// import type { Metadata } from "next";
+import localFont from "next/font/local";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+// import { SessionProvider } from "next-auth/react";
+// import { RainbowKitSiweNextAuthProvider } from "@rainbow-me/rainbowkit-siwe-next-auth";
+import "./globals.css";
+// import { MeshProvider } from "@meshsdk/react";
+// import ProtectedRoute from "@/auth/ProtectedRoute";
+>>>>>>> rakesh-bin
 import dynamic from "next/dynamic";
 import { Toaster } from "react-hot-toast";
 // import ReduxProvider from "@/store/redux-provider";
 // import { wrapper } from "./redux";
 // import ClientProvider from "./ClientProvider";
+<<<<<<< HEAD
 import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultConfig, lightTheme
@@ -33,13 +46,32 @@ import {
 const config = getDefaultConfig({
   appName: 'RainbowKit demo',
   projectId: 'YOUR_PROJECT_ID',
+=======
+import "@rainbow-me/rainbowkit/styles.css";
+import { getDefaultConfig, lightTheme } from "@rainbow-me/rainbowkit";
+import { WagmiProvider, http } from "wagmi";
+import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import Navbar from "./(components)/Navbar/navbar";
+import Footer from "./(components)/Footer/footer";
+
+const config = getDefaultConfig({
+  appName: "RainbowKit demo",
+  projectId: "YOUR_PROJECT_ID",
+>>>>>>> rakesh-bin
   chains: [mainnet],
   transports: {
     [mainnet.id]: http(),
   },
+<<<<<<< HEAD
 })
 
 const queryClient = new QueryClient()
+=======
+});
+
+const queryClient = new QueryClient();
+>>>>>>> rakesh-bin
 
 const ReduxProvider = dynamic(() => import("@/store/redux-provider"), {
   ssr: false,
@@ -72,6 +104,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReduxProvider>
+<<<<<<< HEAD
           <ProtectedRoute>
             <WagmiProvider config={config}>
               <QueryClientProvider client={queryClient} >
@@ -89,6 +122,29 @@ export default function RootLayout({
               </QueryClientProvider>
             </WagmiProvider>
           </ProtectedRoute>
+=======
+          {/* <ProtectedRoute> */}
+          <WagmiProvider config={config}>
+            <QueryClientProvider client={queryClient}>
+              <RainbowKitProvider
+                theme={lightTheme({
+                  accentColor: "#acb631",
+                  accentColorForeground: "white",
+                  borderRadius: "medium",
+                  fontStack: "system",
+                })}
+              >
+                {/* <MeshProvider> */}
+                <Toaster position="top-center" />
+                <Navbar />
+                {children}
+                <Footer />
+                {/* </MeshProvider> */}
+              </RainbowKitProvider>
+            </QueryClientProvider>
+          </WagmiProvider>
+          {/* </ProtectedRoute> */}
+>>>>>>> rakesh-bin
         </ReduxProvider>
       </body>
     </html>

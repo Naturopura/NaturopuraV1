@@ -2,11 +2,15 @@ import mongoose from "mongoose";
 
 const adminSchema = new mongoose.Schema(
   {
+<<<<<<< HEAD
     firstName: {
       type: String,
       required: true,
     },
     lastName: {
+=======
+    name: {
+>>>>>>> rakesh-bin
       type: String,
       required: true,
     },
@@ -49,7 +53,11 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+<<<<<<< HEAD
     nonce:{
+=======
+    nonce: {
+>>>>>>> rakesh-bin
       type: Number,
       unique: true,
     },

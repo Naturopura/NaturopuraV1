@@ -12,7 +12,11 @@ const features_1 = require("./utils/features");
 const api_1 = __importDefault(require("./routes/api"));
 const dotenv_1 = require("dotenv");
 // import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
+<<<<<<< HEAD
 const listProduct_controller_1 = __importDefault(require("./controllers/listProduct.controller"));
+=======
+const farmerProducts_1 = __importDefault(require("./routes/farmerProducts"));
+>>>>>>> rakesh-bin
 // Load environment variables from .env file
 (0, dotenv_1.config)({
     path: "./.env",
@@ -23,7 +27,11 @@ const mongoURI = process.env.MONGODB_URI || "";
 const app = (0, express_1.default)();
 // Middleware to handle CORS
 app.use((req, res, next) => {
+<<<<<<< HEAD
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3002"); // Adjust the allowed origin as needed
+=======
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3002");
+>>>>>>> rakesh-bin
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
@@ -45,9 +53,15 @@ app.get("/", (req, res) => {
 // Use API router for authentication
 app.use("/auth", api_1.default);
 // app.use('/api',farmerUploadImageRoute)
+<<<<<<< HEAD
 app.use('/api', listProduct_controller_1.default);
 // Set the port and start the server
 const port = Number(process.env.PORT) || 3000;
+=======
+app.use("/auth", farmerProducts_1.default);
+// Set the port and start the server
+const port = Number(process.env.PORT) || 3001;
+>>>>>>> rakesh-bin
 app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on port ${port}`);
 });
