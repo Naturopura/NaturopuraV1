@@ -4,7 +4,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import Image from "next/image";
 import { useListProductMutation } from "@/state/farmerApi";
 import toast from "react-hot-toast";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import imageCompression from "browser-image-compression";
 
 type ImageBuffer = {
@@ -13,7 +13,7 @@ type ImageBuffer = {
 };
 
 type ProductFormData = {
-  farmerId: string;
+  id: string;
   name: string;
   category: string;
   price: number;
@@ -69,7 +69,7 @@ const NewProduct = () => {
   ];
 
   const [createProduct] = useListProductMutation();
-  // const router = useRouter();
+  const router = useRouter();
 
   const initialImage: ImageBuffer = {
     type: "Buffer",
@@ -77,7 +77,7 @@ const NewProduct = () => {
   };
 
   const [formData, setFormData] = useState<ProductFormData>({
-    farmerId: "",
+    id: "",
     name: "",
     category: "",
     price: 0,
@@ -128,7 +128,7 @@ const NewProduct = () => {
     try {
       await createProduct(formData);
       toast.success("Product created successfully");
-      // router.push("/farmer/manageproduct");
+      router.push("/farmer/manageproduct");
     } catch (error) {
       console.error("Failed to create product:", error);
       toast.error("Failed to create product");

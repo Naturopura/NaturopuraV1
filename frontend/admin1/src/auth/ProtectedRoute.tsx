@@ -6,7 +6,8 @@ import { jwtDecode, JwtPayload } from "jwt-decode"; // Importing jwt-decode
 import { useAppSelector } from "@/store"; // Adjust based on your store
 
 interface DecodedUser extends JwtPayload {
-  role?: string; // Assuming role is part of the JWT payload
+  role?: string;
+  id: string; // Assuming role is part of the JWT payload
 }
 
 interface ProtectedRouteProps {
@@ -24,6 +25,12 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
       try {
         // Decode the JWT token
         const decodedToken = jwtDecode<DecodedUser>(token);
+        console.log(decodedToken, "here is data");
+        const farmerId = decodedToken.id;
+        const role = decodedToken.role; // This is the MongoDB ID from the token
+
+        console.log("MongoDB Farmer ID:", farmerId);
+        console.log("MongoDB Farmer role:", role);
 
         // Check if the token has expired (you can do this using the 'exp' field in the token)
         if (decodedToken.exp && Date.now() / 1000 > decodedToken.exp) {

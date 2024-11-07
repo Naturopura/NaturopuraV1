@@ -1,11 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+// Define the ImageBuffer type
 type ImageBuffer = {
   type: "Buffer";
   data: number[];
 };
 
+// Define Product and NewProduct interfaces
 export interface Product {
+  id: string;
   name: string;
   category: string;
   price: number;
@@ -16,7 +19,7 @@ export interface Product {
 }
 
 export interface NewProduct {
-  farmerId: string;
+  id: string;
   name: string;
   category: string;
   price: number;
@@ -26,22 +29,21 @@ export interface NewProduct {
   image: ImageBuffer;
 }
 
+// Configure API with token handling in baseQuery
 export const farmerApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   reducerPath: "farmerApi",
   tagTypes: ["DashboardMetrics", "Products", "Users", "Expenses"],
   endpoints: (build) => ({
-    //   getDashboardMetrics: build.query<DashboardMetrics, void>({
-    //     query: () => "/dashboard",
-    //     providesTags: ["DashboardMetrics"],
-    //   }),
-    //   getProduct: build.query<Product[], string | void>({
-    //     query: (search) => ({
-    //       url: "/products",
-    //       params: search ? { search } : {},
-    //     }),
-    //     providesTags: ["Products"],
-    //   }),
     listProduct: build.mutation<Product, NewProduct>({
       query: (newProduct) => ({
         url: "/auth/listproduct",
@@ -50,21 +52,8 @@ export const farmerApi = createApi({
       }),
       invalidatesTags: ["Products"],
     }),
-    //   getUsers: build.query<User[], void>({
-    //     query: () => "/users",
-    //     providesTags: ["Users"],
-    //   }),
-    //   getExpensesByCategory: build.query<ExpenseByCategorySummary[], void>({
-    //     query: () => "/expenses",
-    //     providesTags: ["Expenses"],
-    //   }),
   }),
 });
 
-export const {
-  // useGetDashboardMetricsQuery,
-  // useGetProductQuery,
-  useListProductMutation,
-  // useGetUsersQuery,
-  // useGetExpensesByCategoryQuery,
-} = farmerApi;
+// Export hooks for API endpoints
+export const { useListProductMutation } = farmerApi;

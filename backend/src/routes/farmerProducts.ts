@@ -1,4 +1,5 @@
 import express from "express";
+import authenticateJWT from './../middlewares/authenticateToken';
 import {
   deleteProduct,
   getProductsByFarmer,
@@ -8,9 +9,9 @@ import {
 
 const router = express.Router();
 
-router.post("/listproduct", listProduct);
-router.get("/getProduct", getProductsByFarmer);
-router.put("/updateProduct", updateProduct);
-router.delete("/deleteProduct", deleteProduct);
+router.post("/listproduct",authenticateJWT, listProduct);
+router.get("/getProduct",authenticateJWT, getProductsByFarmer);
+router.put("/updateProduct",authenticateJWT, updateProduct);
+router.delete("/deleteProduct",authenticateJWT, deleteProduct);
 
 export default router;

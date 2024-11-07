@@ -13,11 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProduct = exports.updateProduct = exports.getProductsByFarmer = exports.listProduct = void 0;
-const admin_farmer_model_1 = __importDefault(require("../models/admin.farmer.model")); // Adjust this import based on your structure
+const admin_farmer_model_1 = __importDefault(require("../models/admin.farmer.model"));
+const admin_model_1 = __importDefault(require("../models/admin.model"));
 const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         // Extract data from the request body
-        const { farmerId, name, category, price, quantity, description, unit, image, } = req.body;
+        const { name, category, price, quantity, description, unit, image } = req.body;
+        const farmerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id; // Use req.user from AuthenticatedRequest
         console.log("Received request to list product for farmer:", farmerId);
         // Ensure all required fields are provided
         if (!farmerId ||
@@ -28,11 +31,12 @@ const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             !image ||
             !unit) {
             return res.status(400).json({
-                error: "Please provide all required fields: farmerId, name, category, price, quantity, and image.",
+                error: "Please provide all required fields: name, category, price, quantity, and image.",
             });
         }
         // Check if the farmer exists
-        const farmerExists = yield admin_farmer_model_1.default.findById(farmerId);
+        console.log("Checking if farmer exists...");
+        const farmerExists = yield admin_model_1.default.findById(farmerId);
         if (!farmerExists) {
             return res.status(404).json({ error: "Farmer does not exist." });
         }
@@ -45,9 +49,10 @@ const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             quantity,
             unit,
             description,
-            image, // Assuming image is being sent as Buffer in the request body
+            image,
         });
         // Save the product to the database
+        console.log("Saving product to database...");
         const savedProduct = yield newProduct.save();
         // Return the saved product as the response
         res.status(201).json(savedProduct);
@@ -58,23 +63,21 @@ const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.listProduct = listProduct;
 const getProductsByFarmer = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        // Extract farmerId from the request body
-        const { farmerId } = req.body;
+        const farmerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         console.log("Fetching products for farmer:", farmerId);
-        // Ensure farmerId is provided
         if (!farmerId) {
-            return res.status(400).json({ error: "Please provide the farmerId." });
+            return res
+                .status(400)
+                .json({ error: "Farmer ID is missing in the token." });
         }
-        // Retrieve all products listed by the farmer
         const farmerProducts = yield admin_farmer_model_1.default.find({ farmerId });
-        // Check if any products are found
         if (farmerProducts.length === 0) {
             return res
                 .status(404)
                 .json({ message: "No products found for this farmer." });
         }
-        // Return the products as the response
         res.status(200).json(farmerProducts);
     }
     catch (error) {
@@ -83,28 +86,22 @@ const getProductsByFarmer = (req, res, next) => __awaiter(void 0, void 0, void 0
 });
 exports.getProductsByFarmer = getProductsByFarmer;
 const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        // Extract productId and the updated fields from the request body
-        const { productId, farmerId, name, category, price, quantity, description, image, unit, } = req.body;
+        const { productId, name, category, price, quantity, description, image, unit, } = req.body;
+        const farmerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         console.log("Updating product:", productId);
-        // Ensure productId and farmerId are provided
         if (!productId || !farmerId) {
             return res
                 .status(400)
                 .json({ error: "Please provide both productId and farmerId." });
         }
-        // Locate and update the product using productId and farmerId
-        const updatedProduct = yield admin_farmer_model_1.default.findOneAndUpdate({ _id: productId, farmerId }, // Ensure the product belongs to the farmer
-        { name, category, price, quantity, description, image, unit }, // Fields to update
-        { new: true, runValidators: true } // Options: return the updated document and run validators
-        );
-        // Check if the product was found and updated
+        const updatedProduct = yield admin_farmer_model_1.default.findOneAndUpdate({ _id: productId, farmerId }, { name, category, price, quantity, description, image, unit }, { new: true, runValidators: true });
         if (!updatedProduct) {
             return res
                 .status(404)
                 .json({ message: "Product not found or not authorized to update." });
         }
-        // Return the updated product as the response
         res.status(200).json(updatedProduct);
     }
     catch (error) {
@@ -113,28 +110,25 @@ const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 exports.updateProduct = updateProduct;
 const deleteProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        // Extract productId and farmerId from the request body
-        const { productId, farmerId } = req.body;
+        const { productId } = req.body;
+        const farmerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         console.log("Deleting product:", productId);
-        // Ensure productId and farmerId are provided
         if (!productId || !farmerId) {
             return res
                 .status(400)
                 .json({ error: "Please provide both productId and farmerId." });
         }
-        // Find and delete the product by productId and farmerId
         const deletedProduct = yield admin_farmer_model_1.default.findOneAndDelete({
             _id: productId,
             farmerId,
         });
-        // Check if the product was found and deleted
         if (!deletedProduct) {
             return res
                 .status(404)
                 .json({ message: "Product not found or not authorized to delete." });
         }
-        // Return success message as the response
         res
             .status(200)
             .json({ message: "Product deleted successfully", deletedProduct });

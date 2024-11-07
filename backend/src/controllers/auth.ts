@@ -8,6 +8,7 @@ import { ResponseDefinitions } from "../responses";
 import { createClient } from "redis";
 import crypto from "crypto";
 import Web3 from "web3"; // Import web3.js
+import { log } from "console";
 
 const web3 = new Web3(); // Initialize web3 without a provider for signature verification
 
@@ -210,22 +211,14 @@ export const adminSignup = async (
         await customer.save();
 
         const newCustomer = {
-          name: customer.name,
+          id: customer._id,
           role: customer.role,
           email: customer.email,
-          signature: customer.signature,
-          isActive: customer.isActive,
           isRemember: customer.isRemember,
-          nonce: customer.nonce,
-          dialingCode: customer.dialingCode,
-          phone: customer.phone,
-          addressLine: customer.addressLine,
-          country: customer.country,
-          state: customer.state,
-          city: customer.city,
-          zipCode: customer.zipCode,
           walletAddress: customer.walletAddress,
         };
+
+        console.log(customer._id, "gggggggg");
 
         const responseSuccess = ApiResponse.success(
           ResponseDefinitions.OperationSuccessful.message,

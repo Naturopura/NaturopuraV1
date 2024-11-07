@@ -5,7 +5,6 @@ import { FaStar, FaEdit, FaTrash } from "react-icons/fa";
 import apple from "@/assets/apple.png";
 import Image from "next/image";
 import Link from "next/link";
-import { TrashIcon } from "lucide-react";
 
 const products = Array(12).fill({
   name: "Apple",

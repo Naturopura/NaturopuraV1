@@ -1,23 +1,19 @@
-import Product from "../models/admin.farmer.model"; // Adjust this import based on your structure
-import { Response, Request, NextFunction } from "express";
+import Product from "../models/admin.farmer.model";
+import Admin from "../models/admin.model";
+import { Response, NextFunction } from "express";
+import { AuthenticatedRequest } from "../middlewares/authenticateToken"; // Adjust this import path as necessary
 
 export const listProduct = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
   try {
     // Extract data from the request body
-    const {
-      farmerId,
-      name,
-      category,
-      price,
-      quantity,
-      description,
-      unit,
-      image,
-    } = req.body;
+    const { name, category, price, quantity, description, unit, image } =
+      req.body;
+    const farmerId = req.user?.id; // Use req.user from AuthenticatedRequest
+
     console.log("Received request to list product for farmer:", farmerId);
 
     // Ensure all required fields are provided
@@ -32,12 +28,13 @@ export const listProduct = async (
     ) {
       return res.status(400).json({
         error:
-          "Please provide all required fields: farmerId, name, category, price, quantity, and image.",
+          "Please provide all required fields: name, category, price, quantity, and image.",
       });
     }
 
     // Check if the farmer exists
-    const farmerExists = await Product.findById(farmerId);
+    console.log("Checking if farmer exists...");
+    const farmerExists = await Admin.findById(farmerId);
     if (!farmerExists) {
       return res.status(404).json({ error: "Farmer does not exist." });
     }
@@ -51,10 +48,11 @@ export const listProduct = async (
       quantity,
       unit,
       description,
-      image, // Assuming image is being sent as Buffer in the request body
+      image,
     });
 
     // Save the product to the database
+    console.log("Saving product to database...");
     const savedProduct = await newProduct.save();
 
     // Return the saved product as the response
@@ -65,31 +63,28 @@ export const listProduct = async (
 };
 
 export const getProductsByFarmer = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
   try {
-    // Extract farmerId from the request body
-    const { farmerId } = req.body;
+    const farmerId = req.user?.id;
     console.log("Fetching products for farmer:", farmerId);
 
-    // Ensure farmerId is provided
     if (!farmerId) {
-      return res.status(400).json({ error: "Please provide the farmerId." });
+      return res
+        .status(400)
+        .json({ error: "Farmer ID is missing in the token." });
     }
 
-    // Retrieve all products listed by the farmer
     const farmerProducts = await Product.find({ farmerId });
 
-    // Check if any products are found
     if (farmerProducts.length === 0) {
       return res
         .status(404)
         .json({ message: "No products found for this farmer." });
     }
 
-    // Return the products as the response
     res.status(200).json(farmerProducts);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
@@ -97,15 +92,13 @@ export const getProductsByFarmer = async (
 };
 
 export const updateProduct = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
   try {
-    // Extract productId and the updated fields from the request body
     const {
       productId,
-      farmerId,
       name,
       category,
       price,
@@ -114,30 +107,27 @@ export const updateProduct = async (
       image,
       unit,
     } = req.body;
+    const farmerId = req.user?.id;
     console.log("Updating product:", productId);
 
-    // Ensure productId and farmerId are provided
     if (!productId || !farmerId) {
       return res
         .status(400)
         .json({ error: "Please provide both productId and farmerId." });
     }
 
-    // Locate and update the product using productId and farmerId
     const updatedProduct = await Product.findOneAndUpdate(
-      { _id: productId, farmerId }, // Ensure the product belongs to the farmer
-      { name, category, price, quantity, description, image, unit }, // Fields to update
-      { new: true, runValidators: true } // Options: return the updated document and run validators
+      { _id: productId, farmerId },
+      { name, category, price, quantity, description, image, unit },
+      { new: true, runValidators: true }
     );
 
-    // Check if the product was found and updated
     if (!updatedProduct) {
       return res
         .status(404)
         .json({ message: "Product not found or not authorized to update." });
     }
 
-    // Return the updated product as the response
     res.status(200).json(updatedProduct);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
@@ -145,36 +135,32 @@ export const updateProduct = async (
 };
 
 export const deleteProduct = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
   try {
-    // Extract productId and farmerId from the request body
-    const { productId, farmerId } = req.body;
+    const { productId } = req.body;
+    const farmerId = req.user?.id;
     console.log("Deleting product:", productId);
 
-    // Ensure productId and farmerId are provided
     if (!productId || !farmerId) {
       return res
         .status(400)
         .json({ error: "Please provide both productId and farmerId." });
     }
 
-    // Find and delete the product by productId and farmerId
     const deletedProduct = await Product.findOneAndDelete({
       _id: productId,
       farmerId,
     });
 
-    // Check if the product was found and deleted
     if (!deletedProduct) {
       return res
         .status(404)
         .json({ message: "Product not found or not authorized to delete." });
     }
 
-    // Return success message as the response
     res
       .status(200)
       .json({ message: "Product deleted successfully", deletedProduct });
