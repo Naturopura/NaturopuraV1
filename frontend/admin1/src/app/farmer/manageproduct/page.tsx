@@ -1,38 +1,72 @@
 "use client";
 
-import { SetStateAction, useState } from "react";
-import { FaStar, FaEdit, FaTrash } from "react-icons/fa";
-import apple from "@/assets/apple.png";
+import { useState } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+// import apple from "@/assets/apple.png";
 import Image from "next/image";
 import Link from "next/link";
-
-const products = Array(12).fill({
-  name: "Apple",
-  image: apple,
-  price: "₹30.00",
-  quantity: 2,
-  unit: "KG",
-  category: "Chemical",
-  description: "Use fertilizer to ...",
-});
+import { useGetProductsQuery } from "@/state/farmerApi";
 
 const ManageProduct = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  // const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleDeleteClick = (product: SetStateAction<null>) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
+  const { data: products, isError, isLoading } = useGetProductsQuery();
+  console.log(products, "farmer products");
+
+  if (isLoading) {
+    return <div className="py-4">Loading...</div>;
+  }
+
+  if (isError || !products) {
+    return (
+      <div className="text-center text-red-500 py-4">
+        Failed to fetch products
+      </div>
+    );
+  }
+
+  // const handleDeleteClick = (product: SetStateAction<null>) => {
+  //   setSelectedProduct(product);
+  //   setIsModalOpen(true);
+  // };
 
   const confirmDelete = () => {
     // Handle the deletion logic here, e.g., update state or make an API call
-    console.log("Deleted product:", selectedProduct);
+    // console.log("Deleted product:", selectedProduct);
     setIsModalOpen(false);
   };
 
   const cancelDelete = () => {
     setIsModalOpen(false);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getImageSrc = (image: any) => {
+    // Check if the image is already a URL string
+    if (
+      typeof image === "string" &&
+      (image.startsWith("http://") || image.startsWith("https://"))
+    ) {
+      return image;
+    }
+
+    // Check if the image is a Buffer with data
+    if (image && image.data && Array.isArray(image.data)) {
+      try {
+        return `data:image/png;base64,${Buffer.from(image.data).toString(
+          "base64"
+        )}`;
+      } catch (error) {
+        console.error("Failed to convert Buffer to Base64:", error);
+      }
+    }
+
+    // Log an error if no valid image source is found
+    console.warn("No valid image source found:", image);
+
+    // Return a placeholder image as a fallback
+    return "/default-image.png"; // Ensure this placeholder exists in your public folder
   };
 
   return (
@@ -64,57 +98,59 @@ const ManageProduct = () => {
         <table className="min-w-full table-fixed">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-4 py-2 text-xl text-left w-1/8">NAME</th>
-              <th className="px-4 py-2 text-xl text-left w-1/8">IMAGE</th>
-              <th className="px-4 py-2 text-xl text-left w-1/8">PRICE</th>
-              <th className="px-4 py-2 text-xl text-left w-1/8">QUANTITY</th>
-              <th className="px-4 py-2 text-xl text-left w-1/8">UNIT</th>
-              <th className="px-4 py-2 text-xl text-left w-1/8">CATEGORY</th>
-              <th className="px-4 py-2 text-xl text-left w-2/8">DESCRIPTION</th>
-              <th className="px-4 py-2 text-xl text-left w-1/8">ACTION</th>
+              <th className="px-4 py-2 text-xl text-center w-1/8">NAME</th>
+              <th className="px-4 py-2 text-xl text-center w-1/8">IMAGE</th>
+              <th className="px-4 py-2 text-xl text-center w-1/8">PRICE</th>
+              <th className="px-4 py-2 text-xl text-center w-1/8">QUANTITY</th>
+              <th className="px-4 py-2 text-xl text-center w-1/8">UNIT</th>
+              <th className="px-4 py-2 text-xl text-center w-1/8">CATEGORY</th>
+              <th className="px-4 py-2 text-xl text-center w-2/8">
+                DESCRIPTION
+              </th>
+              <th className="px-4 py-2 text-xl text-center w-1/8">ACTION</th>
             </tr>
           </thead>
           <tbody>
             {products.map((product, index) => (
-              <tr key={index} className="border-t border-gray-300">
-                <td className="px-4 text-xl py-2 text-left">{product.name}</td>
-                <td className="px-4 py-2 text-left">
+              <tr key={index} className="border-t  border-gray-300">
+                <td className="px-4 text-xl py-2 text-center">
+                  {product.name}
+                </td>
+                <td className="px-4 py-2 text-center">
                   <Image
                     width={100}
                     height={100}
-                    src={product.image}
-                    alt="Product"
-                    className="h-8 w-8"
+                    src={getImageSrc(product.image)}
+                    alt={product.name || "Product"}
+                    className="h-8 w-8 ml-8"
                   />
                 </td>
-                <td className="px-4 py-2 text-xl text-left">{product.price}</td>
-                <td className="px-4 py-2 text-xl text-left">
+                <td className="px-4 py-2 text-xl text-center">
+                  {product.price}
+                </td>
+                <td className="px-4 py-2 text-xl text-center">
                   {product.quantity}
                 </td>
-                <td className="px-4 py-2 text-xl text-left">{product.unit}</td>
-                <td className="px-4 py-2 text-xl text-left">
+                <td className="px-4 py-2 text-xl text-center">
+                  {product.unit}
+                </td>
+                <td className="px-4 py-2 text-xl text-center">
                   {product.category}
                 </td>
-                <td className="px-4 py-2 text-xl text-left truncate">
+                <td className="px-4 py-2 text-xl text-center truncate">
                   {product.description}
                 </td>
-                <td className="px-4 py-2 flex gap-2 text-left">
-                  <FaStar className="text-yellow-500 text-4xl cursor-pointer" />
+                <td className="px-4 py-2 ml-20 flex gap-2 text-right">
                   <FaEdit className="text-green-500 text-4xl cursor-pointer" />
                   <FaTrash
                     className="text-red-500 text-4xl cursor-pointer"
-                    onClick={() => handleDeleteClick(product)}
+                    // onClick={() => handleDeleteClick("")}
                   />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* View More */}
-      <div className="text-center -ml-32 mt-4">
-        <button className="text-black text-xl">View More</button>
       </div>
 
       {/* Confirmation Modal */}

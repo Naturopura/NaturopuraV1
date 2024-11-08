@@ -17,6 +17,7 @@ type ProductFormData = {
   name: string;
   category: string;
   price: number;
+  currency: string;
   quantity: number;
   description: string;
   unit: string;
@@ -39,6 +40,13 @@ const NewProduct = () => {
       type: "select",
       options: ["Select Unit", "g", "kg", "ml", "L"],
       placeholder: "Unit",
+    },
+    {
+      id: "currency",
+      label: "",
+      type: "select",
+      options: ["INR", "USD"],
+      placeholder: "Currency",
     },
     {
       id: "category",
@@ -81,6 +89,7 @@ const NewProduct = () => {
     name: "",
     category: "",
     price: 0,
+    currency: "",
     quantity: 0,
     description: "",
     unit: "",
@@ -149,7 +158,32 @@ const NewProduct = () => {
                 >
                   {field.label}
                 </label>
-                {field.type === "text" && (
+
+                {/* Price Field with Currency Select */}
+                {field.id === "price" && (
+                  <div className="flex items-center">
+                    <input
+                      type="number"
+                      id={field.id}
+                      className="w-full border text-xl placeholder:text-xl border-black p-2"
+                      placeholder={field.placeholder}
+                      value={formData.price}
+                      onChange={handleChange}
+                    />
+                    <select
+                      id="currency"
+                      className="-ml-1 w-[100px] border text-xl text-black border-black py-[10.7px]"
+                      value={formData.currency}
+                      onChange={handleChange}
+                    >
+                      <option value="INR">INR</option>
+                      <option value="USD">USD</option>
+                    </select>
+                  </div>
+                )}
+
+                {/* Other Text Fields */}
+                {field.type === "text" && field.id !== "price" && (
                   <input
                     type="text"
                     id={field.id}
@@ -161,7 +195,9 @@ const NewProduct = () => {
                     onChange={handleChange}
                   />
                 )}
-                {field.type === "number" && (
+
+                {/* Number Fields */}
+                {field.type === "number" && field.id !== "price" && (
                   <input
                     type="number"
                     id={field.id}
@@ -173,6 +209,8 @@ const NewProduct = () => {
                     onChange={handleChange}
                   />
                 )}
+
+                {/* Textarea Fields */}
                 {field.type === "textarea" && (
                   <textarea
                     id={field.id}
@@ -184,6 +222,8 @@ const NewProduct = () => {
                     onChange={handleChange}
                   />
                 )}
+
+                {/* Category Select */}
                 {field.type === "select" && field.id === "category" && (
                   <select
                     id={field.id}
@@ -201,6 +241,8 @@ const NewProduct = () => {
                     ))}
                   </select>
                 )}
+
+                {/* Unit Select */}
                 {field.type === "select" && field.id === "unit" && (
                   <select
                     id={field.id}
@@ -220,6 +262,7 @@ const NewProduct = () => {
                 )}
               </div>
             ))}
+
             <div className="mb-6">
               <label className="block text-xl font-semibold mb-2">
                 Feature Image
