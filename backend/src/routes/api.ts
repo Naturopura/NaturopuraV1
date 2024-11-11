@@ -14,10 +14,8 @@ router.post(
       name,
       role,
       email,
-      signature,
       isActive,
       isRemember,
-      nonce,
       dialingCode,
       phone,
       addressLine,
@@ -29,7 +27,6 @@ router.post(
     } = req.body;
     const schema = Joi.object({
       name: Joi.string().min(3).max(30).required(),
-      signature: Joi.string().required(),
       nonce: Joi.number(),
       isRemember: Joi.boolean().truthy("true").falsy("false"),
       isActive: Joi.boolean().truthy("true").falsy("false"),
@@ -82,8 +79,6 @@ router.post(
         email,
         phone,
         isActive,
-        nonce,
-        signature,
         walletAddress,
         isRemember,
         dialingCode,

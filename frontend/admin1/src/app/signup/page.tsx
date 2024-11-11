@@ -82,7 +82,6 @@ const AdminSignup = () => {
             isRemember: true,
             isActive: true,
             walletAddress: walletAddress, // Ensure wallet address is string
-            signature: signature, // Adding signature to the payload
             dialingCode: formData.dialingCode,
             addressLine: formData.addressLine,
             phone: formData.phone,

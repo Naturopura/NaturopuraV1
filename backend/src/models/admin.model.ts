@@ -41,14 +41,6 @@ const adminSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    signature: {
-      type: String,
-      required: true,
-    },
-    nonce: {
-      type: Number,
-      unique: true,
-    },
     walletAddress: {
       type: String,
       required: true,

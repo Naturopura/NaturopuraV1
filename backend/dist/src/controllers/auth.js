@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.adminSignup = exports.adminLogin = void 0;
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const saltRounds = 10;
 const admin_model_1 = __importDefault(require("../models/admin.model"));
 const environment_1 = __importDefault(require("../environment/environment")); // Assuming you have environment setup
@@ -106,7 +105,7 @@ const adminLogin = (signature, nonce, walletAddress) => __awaiter(void 0, void 0
     }
 });
 exports.adminLogin = adminLogin;
-const adminSignup = (name, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode) => __awaiter(void 0, void 0, void 0, function* () {
+const adminSignup = (name, role, email, phone, isActive, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check if email or phone already exists in the database
         const existingUser = yield admin_model_1.default.findOne({
@@ -118,55 +117,37 @@ const adminSignup = (name, role, email, phone, isActive, nonce, signature, walle
         if (existingUser) {
             return ApiResponse_1.default.error("Email or phone number already exists", responses_1.ResponseDefinitions.InvalidInput.code);
         }
-        else if (!signature ||
-            typeof signature !== "string" ||
-            signature.trim() === "") {
-            return ApiResponse_1.default.error(responses_1.ResponseDefinitions.SignatureError.message, responses_1.ResponseDefinitions.SignatureError.code);
-        }
-        return yield bcryptjs_1.default
-            .genSalt(saltRounds)
-            .then((salt) => __awaiter(void 0, void 0, void 0, function* () {
-            const hashedToken = yield bcryptjs_1.default.hash(signature, salt);
-            return hashedToken;
-        }))
-            .then((hashedToken) => __awaiter(void 0, void 0, void 0, function* () {
-            const customer = new admin_model_1.default({
-                name,
-                role,
-                email,
-                signature: hashedToken,
-                isActive,
-                isRemember,
-                nonce,
-                dialingCode,
-                phone,
-                addressLine,
-                country,
-                state,
-                city,
-                zipCode,
-                walletAddress,
-            });
-            yield customer.save();
-            const newCustomer = {
-                id: customer._id,
-                role: customer.role,
-                email: customer.email,
-                isRemember: customer.isRemember,
-                walletAddress: customer.walletAddress,
-            };
-            console.log(customer._id, "gggggggg");
-            const responseSuccess = ApiResponse_1.default.success(responses_1.ResponseDefinitions.OperationSuccessful.message, Object.assign(Object.assign({ createSuccessResponse: "Successfully registered.", token: isRemember
-                    ? jsonwebtoken_1.default.sign(newCustomer, environment_1.default.TOKEN_SECRET, { expiresIn: "48h" })
-                    : "" }, newCustomer), { expiresIn: "48h" }), responses_1.ResponseDefinitions.OperationSuccessful.code);
-            return responseSuccess;
-        }))
-            .catch((err) => {
-            console.log(err, "console");
-            return ApiResponse_1.default.error(responses_1.ResponseDefinitions.HashError.message, responses_1.ResponseDefinitions.HashError.code);
+        const customer = new admin_model_1.default({
+            name,
+            role,
+            email,
+            isActive,
+            isRemember,
+            dialingCode,
+            phone,
+            addressLine,
+            country,
+            state,
+            city,
+            zipCode,
+            walletAddress,
         });
+        yield customer.save();
+        const newCustomer = {
+            id: customer._id,
+            role: customer.role,
+            email: customer.email,
+            isRemember: customer.isRemember,
+            walletAddress: customer.walletAddress,
+        };
+        console.log(customer._id, "gggggggg");
+        const responseSuccess = ApiResponse_1.default.success(responses_1.ResponseDefinitions.OperationSuccessful.message, Object.assign(Object.assign({ createSuccessResponse: "Successfully registered.", token: isRemember
+                ? jsonwebtoken_1.default.sign(newCustomer, environment_1.default.TOKEN_SECRET, { expiresIn: "48h" })
+                : "" }, newCustomer), { expiresIn: "48h" }), responses_1.ResponseDefinitions.OperationSuccessful.code);
+        return responseSuccess;
     }
     catch (error) {
+        console.error("Error in adminSignup:", error);
         return ApiResponse_1.default.error(responses_1.ResponseDefinitions.NotFound.message, responses_1.ResponseDefinitions.NotFound.code);
     }
 });
