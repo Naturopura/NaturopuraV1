@@ -1,0 +1,77 @@
+version: "3.8"
+
+services:
+  admin_node_server:
+    container_name: admin_node_server
+    restart: unless-stopped
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: admin_node_server:1.0.0
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./admin_node_server:/app/
+      - /app/node_modules
+    networks:
+      - naturopura
+
+  user_node_server:
+    container_name: user_node_server
+    restart: unless-stopped
+    build:
+      context: ./backend-user1
+      dockerfile: Dockerfile
+    image: user_node_server:1.0.0
+    ports:
+      - "3000:3000"
+    depends_on:
+      - node_server
+    volumes:
+      - ./user_node_server:/app/
+      - /app/node_modules
+    networks:
+      - naturopura
+
+  admin_frontend:
+    container_name: admin-frontend
+    restart: unless-stopped
+    build:
+      context: ./frontend/admin1
+      dockerfile: Dockerfile
+    image: admin-frontend:1.0.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./admin-frontend:/app/
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - naturopura
+
+  user_frontend: 
+    container_name: user-frontend
+    restart: unless-stopped
+    build:
+      context: ./frontend/user
+      dockerfile: Dockerfile
+    image: user-frontend:1.0.0
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./admin-frontend:/app/
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - naturopura
+
+  redis:
+    image: "redis:7.0.15"
+    command: ["redis-server"]
+    networks:
+      - naturopura
+
+
+networks:
+  naturopura:
+    driver: bridge
