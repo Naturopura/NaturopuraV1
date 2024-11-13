@@ -21,6 +21,7 @@ export interface Product {
 
 export interface getProduct {
   _id: string;
+  id: string;
   name: string;
   category: string;
   price: number;
@@ -37,6 +38,19 @@ export interface NewProduct {
   category: string;
   price: number;
   currency: string;
+  quantity: number;
+  description: string;
+  unit: string;
+  image: ImageBuffer;
+}
+
+export interface UpdateProduct {
+  _id: string;
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  // currency: string;
   quantity: number;
   description: string;
   unit: string;
@@ -70,8 +84,20 @@ export const farmerApi = createApi({
       query: () => "/auth/getProduct",
       providesTags: ["Products"],
     }),
+    updateProduct: build.mutation<Product, UpdateProduct>({
+      query: (updateProduct) => ({
+        url: "/auth/updateProduct",
+        method: "PUT",
+        body: updateProduct,
+      }),
+      invalidatesTags: ["Products"],
+    }),
   }),
 });
 
 // Export hooks for API endpoints
-export const { useListProductMutation, useGetProductsQuery } = farmerApi;
+export const {
+  useListProductMutation,
+  useGetProductsQuery,
+  useUpdateProductMutation,
+} = farmerApi;

@@ -264,9 +264,7 @@ const NewProduct = () => {
             ))}
 
             <div className="mb-6">
-              <label className="block text-xl font-semibold mb-2">
-                Feature Image
-              </label>
+              <label className="block text-xl font-semibold mb-2">Image</label>
               <div className="flex items-center">
                 <Image
                   width={100}

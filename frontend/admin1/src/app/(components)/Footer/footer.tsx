@@ -5,7 +5,7 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-gray-800 via-blue-900 to-gray-800 text-white py-8">
+    <footer className="bg-gradient-to-r from-gray-800 via-blue-900 to-gray-800 text-white py-8  bottom-0 left-0 w-full z-50">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* About Section */}
