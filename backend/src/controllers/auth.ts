@@ -93,6 +93,7 @@ export const adminLogin = async (
         deletedAt: { $eq: null },
         isActive: 1,
       });
+      console.log(user, "got the user");
 
       if (!user) {
         return ApiResponse.error(
@@ -102,6 +103,7 @@ export const adminLogin = async (
       }
 
       const userData = {
+        id: user._id,
         isActive: user.isActive,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -170,7 +172,7 @@ export const adminSignup = async (
         "Email or phone number already exists",
         ResponseDefinitions.InvalidInput.code
       );
-    }  
+    }
 
     const customer = new User({
       name,
@@ -222,4 +224,3 @@ export const adminSignup = async (
     );
   }
 };
-

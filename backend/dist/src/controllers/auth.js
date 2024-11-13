@@ -79,10 +79,12 @@ const adminLogin = (signature, nonce, walletAddress) => __awaiter(void 0, void 0
                 deletedAt: { $eq: null },
                 isActive: 1,
             });
+            console.log(user, "got the user");
             if (!user) {
                 return ApiResponse_1.default.error(responses_1.ResponseDefinitions.UserNotExist.message, responses_1.ResponseDefinitions.UserNotExist.code);
             }
             const userData = {
+                id: user._id,
                 isActive: user.isActive,
                 firstName: user.firstName,
                 lastName: user.lastName,
