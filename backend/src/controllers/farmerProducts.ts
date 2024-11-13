@@ -10,7 +10,7 @@ export const listProduct = async (
 ): Promise<any> => {
   try {
     // Extract data from the request body
-    const { name, category, price, quantity, description, unit, image } =
+    const { name, category, price, quantity, description, unit, image, currency } =
       req.body;
     const farmerId = req.user?.id; // Use req.user from AuthenticatedRequest
 
@@ -24,7 +24,8 @@ export const listProduct = async (
       !price ||
       !quantity ||
       !image ||
-      !unit
+      !unit ||
+      !currency
     ) {
       return res.status(400).json({
         error:
@@ -49,6 +50,7 @@ export const listProduct = async (
       unit,
       description,
       image,
+      currency
     });
 
     // Save the product to the database
@@ -106,6 +108,7 @@ export const updateProduct = async (
       description,
       image,
       unit,
+      currency
     } = req.body;
     const farmerId = req.user?.id;
     console.log("Updating product:", productId);
@@ -118,7 +121,7 @@ export const updateProduct = async (
 
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: productId, farmerId },
-      { name, category, price, quantity, description, image, unit },
+      { name, category, price, quantity, description, image, unit, currency },
       { new: true, runValidators: true }
     );
 

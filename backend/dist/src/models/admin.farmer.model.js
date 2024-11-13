@@ -27,6 +27,7 @@ const productSchema = new mongoose.Schema({
         ],
     },
     price: { type: Number, required: [true, "Please enter price"] },
+    currency: { type: String, required: true, enum: ["INR", "USD"] },
     unit: {
         type: String,
         required: [true, "Please select a unit"],

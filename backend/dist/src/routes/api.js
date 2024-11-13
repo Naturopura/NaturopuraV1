@@ -19,10 +19,9 @@ const ApiResponse_1 = __importDefault(require("../../helper/ApiResponse"));
 const responses_1 = require("../responses");
 const router = (0, express_1.Router)();
 router.post("/admin/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, role, email, signature, isActive, isRemember, nonce, dialingCode, phone, addressLine, country, state, city, zipCode, walletAddress, } = req.body;
+    const { name, role, email, isActive, isRemember, dialingCode, phone, addressLine, country, state, city, zipCode, walletAddress, } = req.body;
     const schema = joi_1.default.object({
         name: joi_1.default.string().min(3).max(30).required(),
-        signature: joi_1.default.string().required(),
         nonce: joi_1.default.number(),
         isRemember: joi_1.default.boolean().truthy("true").falsy("false"),
         isActive: joi_1.default.boolean().truthy("true").falsy("false"),
@@ -49,7 +48,7 @@ router.post("/admin/signup", (req, res) => __awaiter(void 0, void 0, void 0, fun
             .json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.InvalidInput.message, responses_1.ResponseDefinitions.InvalidInput.code, error.details));
     }
     try {
-        const response = yield (0, auth_1.adminSignup)(name, role, email, phone, isActive, nonce, signature, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode);
+        const response = yield (0, auth_1.adminSignup)(name, role, email, phone, isActive, walletAddress, isRemember, dialingCode, addressLine, country, state, city, zipCode);
         return res.status(201).json(response);
     }
     catch (error) {

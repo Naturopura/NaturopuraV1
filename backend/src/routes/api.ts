@@ -4,9 +4,7 @@ import { adminLogin, adminSignup } from "../controllers/auth";
 import Joi from "joi";
 import ApiResponse from "../../helper/ApiResponse";
 import { ResponseDefinitions } from "../responses";
-
 const router: Router = Router();
-
 router.post(
   "/admin/signup",
   async (req: Request, res: Response): Promise<any> => {
@@ -14,10 +12,8 @@ router.post(
       name,
       role,
       email,
-      signature,
       isActive,
       isRemember,
-      nonce,
       dialingCode,
       phone,
       addressLine,
@@ -29,8 +25,8 @@ router.post(
     } = req.body;
     const schema = Joi.object({
       name: Joi.string().min(3).max(30).required(),
-      signature: Joi.string().required(),
       nonce: Joi.number(),
+      
       isRemember: Joi.boolean().truthy("true").falsy("false"),
       isActive: Joi.boolean().truthy("true").falsy("false"),
       email: Joi.string()
@@ -82,8 +78,6 @@ router.post(
         email,
         phone,
         isActive,
-        nonce,
-        signature,
         walletAddress,
         isRemember,
         dialingCode,

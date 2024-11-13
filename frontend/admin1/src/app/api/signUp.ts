@@ -6,7 +6,6 @@ const SignUpAdmin = async (credentials: {
   email: string;
   isRemember: boolean;
   isActive: boolean;
-  signature: string;
   walletAddress: string;
   dialingCode: string;
   addressLine: string;

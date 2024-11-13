@@ -147,8 +147,6 @@ export const adminSignup = async (
   email: any,
   phone: any,
   isActive: any,
-  nonce: any,
-  signature: any,
   walletAddress: any,
   isRemember: any,
   dialingCode: any,
@@ -172,80 +170,56 @@ export const adminSignup = async (
         "Email or phone number already exists",
         ResponseDefinitions.InvalidInput.code
       );
-    } else if (
-      !signature ||
-      typeof signature !== "string" ||
-      signature.trim() === ""
-    ) {
-      return ApiResponse.error(
-        ResponseDefinitions.SignatureError.message,
-        ResponseDefinitions.SignatureError.code
-      );
-    }
+    }  
 
-    return await bcryptjs
-      .genSalt(saltRounds)
-      .then(async (salt: string) => {
-        const hashedToken = await bcryptjs.hash(signature, salt);
-        return hashedToken;
-      })
-      .then(async (hashedToken) => {
-        const customer = new User({
-          name,
-          role,
-          email,
-          signature: hashedToken,
-          isActive,
-          isRemember,
-          nonce,
-          dialingCode,
-          phone,
-          addressLine,
-          country,
-          state,
-          city,
-          zipCode,
-          walletAddress,
-        });
+    const customer = new User({
+      name,
+      role,
+      email,
+      isActive,
+      isRemember,
+      dialingCode,
+      phone,
+      addressLine,
+      country,
+      state,
+      city,
+      zipCode,
+      walletAddress,
+    });
 
-        await customer.save();
+    await customer.save();
 
-        const newCustomer = {
-          id: customer._id,
-          role: customer.role,
-          email: customer.email,
-          isRemember: customer.isRemember,
-          walletAddress: customer.walletAddress,
-        };
+    const newCustomer = {
+      id: customer._id,
+      role: customer.role,
+      email: customer.email,
+      isRemember: customer.isRemember,
+      walletAddress: customer.walletAddress,
+    };
 
-        console.log(customer._id, "gggggggg");
+    console.log(customer._id, "gggggggg");
 
-        const responseSuccess = ApiResponse.success(
-          ResponseDefinitions.OperationSuccessful.message,
-          {
-            createSuccessResponse: "Successfully registered.",
-            token: isRemember
-              ? jwt.sign(newCustomer, env.TOKEN_SECRET, { expiresIn: "48h" })
-              : "",
-            ...newCustomer,
-            expiresIn: "48h",
-          },
-          ResponseDefinitions.OperationSuccessful.code
-        );
+    const responseSuccess = ApiResponse.success(
+      ResponseDefinitions.OperationSuccessful.message,
+      {
+        createSuccessResponse: "Successfully registered.",
+        token: isRemember
+          ? jwt.sign(newCustomer, env.TOKEN_SECRET, { expiresIn: "48h" })
+          : "",
+        ...newCustomer,
+        expiresIn: "48h",
+      },
+      ResponseDefinitions.OperationSuccessful.code
+    );
 
-        return responseSuccess;
-      })
-      .catch((err: any) => {
-        console.log(err, "console");
-        return ApiResponse.error(
-          ResponseDefinitions.HashError.message,
-          ResponseDefinitions.HashError.code
-        );
-      });
+    return responseSuccess;
   } catch (error) {
+    console.error("Error in adminSignup:", error);
     return ApiResponse.error(
       ResponseDefinitions.NotFound.message,
       ResponseDefinitions.NotFound.code
     );
   }
 };
+

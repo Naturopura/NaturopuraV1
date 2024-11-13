@@ -9,7 +9,6 @@ export const SignUp = (credentials: {
   email: string;
   isRemember: boolean;
   isActive: boolean;
-  signature: string;
   dialingCode: string;
   addressLine: string;
   phone: string;
