@@ -6,6 +6,7 @@ import { useListProductMutation } from "@/state/farmerApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import imageCompression from "browser-image-compression";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 type ImageBuffer = {
   type: "Buffer";
@@ -25,6 +26,10 @@ type ProductFormData = {
 };
 
 const NewProduct = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isFetchBaseQueryError = (error: any): error is FetchBaseQueryError => {
+    return typeof error === "object" && error !== null && "status" in error;
+  };
   const formFields = [
     { id: "name", label: "Name", type: "text", placeholder: "Name" },
     { id: "price", label: "Price", type: "number", placeholder: "Price" },
@@ -89,7 +94,7 @@ const NewProduct = () => {
     name: "",
     category: "",
     price: 0,
-    currency: "",
+    currency: "INR",
     quantity: 0,
     description: "",
     unit: "",
@@ -134,13 +139,43 @@ const NewProduct = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
-      await createProduct(formData);
+      // Send the request using the mutation function with .unwrap()
+      const res = await createProduct(formData).unwrap();
+
+      // If successful, show success toast
       toast.success("Product created successfully");
       router.push("/farmer/manageproduct");
+      console.log(res, "listing response");
     } catch (error) {
       console.error("Failed to create product:", error);
-      toast.error("Failed to create product");
+
+      // Use type guards to handle specific error types
+      if (isFetchBaseQueryError(error)) {
+        const status = error.status;
+
+        if (status === 400) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          toast.error((error.data as any)?.error || "Invalid product data.");
+        } else if (status === 404) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          toast.error((error.data as any)?.error || "Farmer does not exist.");
+        } else if (status === 500) {
+          toast.error(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (error.data as any)?.error ||
+              "Internal server error. Please try again."
+          );
+        } else {
+          toast.error("Failed to create product");
+        }
+      } else if (error instanceof Error) {
+        // Handle SerializedError (network issues or other errors)
+        toast.error(error.message || "An unexpected error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     }
   };
 

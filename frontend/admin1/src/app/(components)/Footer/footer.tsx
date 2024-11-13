@@ -1,11 +1,14 @@
 import Link from "next/link";
 import React from "react";
-
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import facebook from "@/assets/facebook 3.png";
+import twitter from "@/assets/twitter 1.png";
+import instagram from "@/assets/social 1.png";
+import linkedin from "@/assets/linkedin 1.png";
+import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-gray-800 via-blue-900 to-gray-800 text-white py-8  bottom-0 left-0 w-full z-50">
+    <footer className="bg-gradient-to-r bg-[#282F40] text-white py-8 w-full mt-72">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* About Section */}
@@ -105,16 +108,16 @@ const Footer = () => {
           <p className="text-sm">&copy; 2024 Naturopura.com</p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <Link href="#" className="hover:text-blue-400">
-              <FaFacebook />
+              <Image src={facebook} width={40} height={40} alt="Facebook" />
             </Link>
             <Link href="#" className="hover:text-blue-300">
-              <FaTwitter />
+              <Image src={twitter} width={40} height={40} alt="Twitter" />
             </Link>
             <Link href="#" className="hover:text-pink-400">
-              <FaInstagram />
+              <Image src={instagram} width={40} height={40} alt="Instagram" />
             </Link>
             <Link href="#" className="hover:text-blue-500">
-              <FaLinkedin />
+              <Image src={linkedin} width={40} height={40} alt="LinkedIn" />
             </Link>
           </div>
         </div>

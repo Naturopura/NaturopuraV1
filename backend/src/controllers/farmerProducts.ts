@@ -10,8 +10,16 @@ export const listProduct = async (
 ): Promise<any> => {
   try {
     // Extract data from the request body
-    const { name, category, price, quantity, description, unit, image, currency } =
-      req.body;
+    const {
+      name,
+      category,
+      price,
+      quantity,
+      description,
+      unit,
+      image,
+      currency,
+    } = req.body;
     const farmerId = req.user?.id; // Use req.user from AuthenticatedRequest
 
     console.log("Received request to list product for farmer:", farmerId);
@@ -36,6 +44,7 @@ export const listProduct = async (
     // Check if the farmer exists
     console.log("Checking if farmer exists...");
     const farmerExists = await Admin.findById(farmerId);
+    console.log("here is farmerid", farmerExists);
     if (!farmerExists) {
       return res.status(404).json({ error: "Farmer does not exist." });
     }
@@ -50,7 +59,7 @@ export const listProduct = async (
       unit,
       description,
       image,
-      currency
+      currency,
     });
 
     // Save the product to the database
@@ -108,7 +117,7 @@ export const updateProduct = async (
       description,
       image,
       unit,
-      currency
+      currency,
     } = req.body;
     const farmerId = req.user?.id;
     console.log("Updating product:", productId);

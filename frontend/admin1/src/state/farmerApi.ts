@@ -7,17 +7,6 @@ type ImageBuffer = {
 };
 
 // Define Product and NewProduct interfaces
-export interface Product {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  currency: string;
-  quantity: number;
-  description: string;
-  unit: string;
-  image: ImageBuffer;
-}
 
 export interface getProduct {
   _id: string;
@@ -45,16 +34,19 @@ export interface NewProduct {
 }
 
 export interface UpdateProduct {
-  _id: string;
-  id: string;
+  productId: string;
   name: string;
   category: string;
   price: number;
-  // currency: string;
+  currency: string;
   quantity: number;
   description: string;
   unit: string;
   image: ImageBuffer;
+}
+
+export interface DeleteProduct {
+  productId: string;
 }
 
 // Configure API with token handling in baseQuery
@@ -72,7 +64,7 @@ export const farmerApi = createApi({
   reducerPath: "farmerApi",
   tagTypes: ["DashboardMetrics", "Products", "Users", "Expenses"],
   endpoints: (build) => ({
-    listProduct: build.mutation<Product, NewProduct>({
+    listProduct: build.mutation<NewProduct, NewProduct>({
       query: (newProduct) => ({
         url: "/auth/listproduct",
         method: "POST",
@@ -84,11 +76,19 @@ export const farmerApi = createApi({
       query: () => "/auth/getProduct",
       providesTags: ["Products"],
     }),
-    updateProduct: build.mutation<Product, UpdateProduct>({
+    updateProduct: build.mutation<UpdateProduct, UpdateProduct>({
       query: (updateProduct) => ({
         url: "/auth/updateProduct",
         method: "PUT",
         body: updateProduct,
+      }),
+      invalidatesTags: ["Products"],
+    }),
+    deleteProduct: build.mutation<DeleteProduct, DeleteProduct>({
+      query: (deleteProduct) => ({
+        url: "/auth/deleteProduct",
+        method: "DELETE",
+        body: deleteProduct,
       }),
       invalidatesTags: ["Products"],
     }),
@@ -100,4 +100,5 @@ export const {
   useListProductMutation,
   useGetProductsQuery,
   useUpdateProductMutation,
+  useDeleteProductMutation,
 } = farmerApi;

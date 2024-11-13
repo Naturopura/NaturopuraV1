@@ -19,7 +19,7 @@ const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     var _a;
     try {
         // Extract data from the request body
-        const { name, category, price, quantity, description, unit, image, currency } = req.body;
+        const { name, category, price, quantity, description, unit, image, currency, } = req.body;
         const farmerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id; // Use req.user from AuthenticatedRequest
         console.log("Received request to list product for farmer:", farmerId);
         // Ensure all required fields are provided
@@ -38,6 +38,7 @@ const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         // Check if the farmer exists
         console.log("Checking if farmer exists...");
         const farmerExists = yield admin_model_1.default.findById(farmerId);
+        console.log("here is farmerid", farmerExists);
         if (!farmerExists) {
             return res.status(404).json({ error: "Farmer does not exist." });
         }
@@ -51,7 +52,7 @@ const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             unit,
             description,
             image,
-            currency
+            currency,
         });
         // Save the product to the database
         console.log("Saving product to database...");
@@ -90,7 +91,7 @@ exports.getProductsByFarmer = getProductsByFarmer;
 const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const { productId, name, category, price, quantity, description, image, unit, currency } = req.body;
+        const { productId, name, category, price, quantity, description, image, unit, currency, } = req.body;
         const farmerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         console.log("Updating product:", productId);
         if (!productId || !farmerId) {
