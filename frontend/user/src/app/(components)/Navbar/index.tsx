@@ -33,7 +33,7 @@ const Navbar = () => {
   const sendAddress = async (walletAddress: string | "") => {
     try {
       console.log("sendAddress called");
-      const response = await axios.post("http://localhost:3000/auth/signin", {
+      const response = await axios.post("http://localhost:4000/auth/signin", {
         walletAddress,
       });
       const nonce = response.data.data.nonce;
@@ -73,7 +73,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-b-2 border-gray-200 px-[250px] py-3 z-50 relative">
+    <nav className="bg-gray-100 border-b-2 border-gray-200 px-[250px] py-3 z-50 relative">
       <div className="container mx-auto flex justify-between items-center">
         <Link href={"/"}>
           <Image

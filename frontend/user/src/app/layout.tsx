@@ -52,8 +52,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname(); // Get the current pathname
-  const isDashboardPage = pathname === "/"; // Check if the current route is the home page
+  // const pathname = usePathname(); // Get the current pathname
+  // const isDashboardPage = pathname === "/"; // Check if the current route is the home page
 
   return (
     <html lang="en">
@@ -72,10 +72,10 @@ export default function RootLayout({
                 })}
               >
                 {/* <Navbar /> */}
-                {isDashboardPage && <Navbar />}
+                <Navbar />
                 {/* Conditionally render the Sidebar */}
                 {children}
-                {isDashboardPage && <Footer />}
+                <Footer />
               </RainbowKitProvider>
             </QueryClientProvider>
           </WagmiProvider>
