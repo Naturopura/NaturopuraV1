@@ -4,6 +4,7 @@ import arrowup from "@/assets/arrow-up-01-512.jpg";
 import Image from "next/image";
 import { useGetProductsQuery } from "@/state/farmerApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import Link from "next/link";
 
 type SidebarProps = {
   title: string;
@@ -131,16 +132,18 @@ const Juices = () => {
             .filter((product) => product.category === "juices")
             .map((product, index) => (
               <div key={index} className="p-4">
-                <Image
-                  src={getImageSrc(product.image)}
-                  width={100}
-                  height={100}
-                  alt={product.name}
-                  className="w-full h-[70%] object-cover mb-4"
-                />
-                <h4 className="font-semibold text-xl text-center">
-                  {product.name}
-                </h4>
+                <Link href={`/products/${product._id}`}>
+                  <Image
+                    src={getImageSrc(product.image)}
+                    width={100}
+                    height={100}
+                    alt={product.name}
+                    className="w-full h-[70%] object-cover mb-4"
+                  />
+                  <h4 className="font-semibold text-xl text-center">
+                    {product.name}
+                  </h4>
+                </Link>
                 <p className="text-xl font-bold text-center">
                   {product.currency} {product.price}
                 </p>
