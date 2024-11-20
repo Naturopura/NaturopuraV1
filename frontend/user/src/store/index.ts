@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { persistReducer } from "redux-persist";
-import { userReducer } from "./adminSlice";
+import { userReducer } from "./userSlice";
+import { cartReducer } from "./cartSlice";
+import { wishlistReducer } from "./wishlistSlice";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-import { farmerApi } from "@/state/farmerApi";
+import { userApi } from "@/state/userApi";
 
 const createNoopStorage = () => {
   return {
@@ -34,13 +36,15 @@ const persistedReducer = persistReducer(userPersistConfig, userReducer);
 
 const rootReducer = combineReducers({
   auth: persistedReducer,
+  cart: cartReducer,
+  wishlist: wishlistReducer,
 });
 
 export const store = configureStore({
-  reducer: { rootReducer, [farmerApi.reducerPath]: farmerApi.reducer },
+  reducer: { rootReducer, [userApi.reducerPath]: userApi.reducer },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
-      farmerApi.middleware
+      userApi.middleware
     ),
 });
 

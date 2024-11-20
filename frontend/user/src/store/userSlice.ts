@@ -14,13 +14,13 @@ interface Error {
   responseType: string;
 }
 
-export interface adminReducerInitialState {
+export interface userReducerInitialState {
   user: User | null;
   loading: boolean;
   error: Error | null;
 }
 
-const initialState: adminReducerInitialState = {
+const initialState: userReducerInitialState = {
   user: null,
   loading: false,
   error: null,

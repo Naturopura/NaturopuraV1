@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ShoppingCart } from "lucide-react";
+import { Search, ShoppingCart, UserCircleIcon } from "lucide-react";
 import Image from "next/image";
 import img2 from "@/assets/logo 1.png";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -11,8 +11,16 @@ import { useAccount } from "wagmi";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { BrowserProvider } from "ethers";
+import { useAppSelector } from "@/store";
 
 const Navbar = () => {
+  const { cartItems } = useAppSelector((state) => state.rootReducer.cart);
+
+  const totalQuantity = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
   const { address, isConnected } = useAccount();
   const [nonce, setNonce] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -72,8 +80,14 @@ const Navbar = () => {
     }
   };
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
-    <nav className="bg-gray-100 border-b-2 border-gray-200 px-[250px] py-3 z-50 relative">
+    <nav className="bg-gray-100 border-b-2 border-gray-200 px-[15.63rem] py-3 z-50 top-0 w-full">
       <div className="container mx-auto flex justify-between items-center">
         <Link href={"/"}>
           <Image
@@ -102,10 +116,51 @@ const Navbar = () => {
 
         <div className="mt-2">
           <Link href={"/cart"}>
-            <ShoppingCart />
-            Cart
+            <ShoppingCart className="h-10 w-10 -mt-2" />
+            <div className="text-2xl ml-11 -mt-9">Cart</div>
+
+            {totalQuantity > 0 && (
+              <span className="absolute top-6 right-[28.3rem] bg-red-500 text-white rounded-full text-sm w-5 h-5 flex items-center justify-center">
+                {totalQuantity}
+              </span>
+            )}
           </Link>
         </div>
+
+        <div className="" onClick={toggleDropdown}>
+          <UserCircleIcon className="h-10 w-10 mt-1 cursor-pointer" />
+        </div>
+
+        {isDropdownOpen && (
+          <div className="absolute right-44 mt-52 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+            <ul className="text-sm text-gray-700">
+              <li>
+                <Link
+                  href="/profile"
+                  className="block px-4 py-2 text-xl hover:bg-gray-100"
+                >
+                  My Profile
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/wishlist"
+                  className="block px-4 py-2 text-xl hover:bg-gray-100"
+                >
+                  Wishlist
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/orders"
+                  className="block px-4 py-2 text-xl hover:bg-gray-100"
+                >
+                  Orders
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </nav>
   );

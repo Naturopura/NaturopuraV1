@@ -2,23 +2,18 @@
 
 import arrowup from "@/assets/arrow-up-01-512.jpg";
 import Image from "next/image";
-import { useGetProductsQuery } from "@/state/farmerApi";
+import { useGetAllProductsQuery } from "@/state/userApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Link from "next/link";
+import { addToCart, CartItem } from "@/store/cartSlice";
+import { useAppDispatch } from "@/store";
+import toast from "react-hot-toast";
+import { addToWishlist, WishlistItem } from "@/store/wishlistSlice";
 
 type SidebarProps = {
   title: string;
   items: (string | number)[];
 };
-
-// const products = [
-//   { name: "Mango Juice", price: "₹200", img: mangojuice },
-//   { name: "Pineapple Juice", price: "₹300", img: pineapplejuice },
-//   { name: "Orange Juice", price: "₹100", img: orangejuice },
-//   { name: "Apple Juice", price: "₹200", img: applejuice },
-//   { name: "Strawberry Juice", price: "₹300", img: strawberryjuice },
-//   { name: "Mixed Fruit Juice", price: "₹400", img: mixedfruit },
-// ];
 
 const filters = {
   brand: ["Rita", "Paper Boat", "Tropicana"],
@@ -55,12 +50,13 @@ const CheckboxGroup = ({ title, items }: SidebarProps) => (
 );
 
 const Juices = () => {
+  const dispatch = useAppDispatch();
   const {
     data: products = [],
     isError,
     isLoading,
     error,
-  } = useGetProductsQuery();
+  } = useGetAllProductsQuery();
 
   if (isLoading) return <div className="py-4">Loading...</div>;
 
@@ -80,8 +76,44 @@ const Juices = () => {
     );
   }
 
+  if (!products) return <div>Failed to fetch products</div>;
+
   if (products.length === 0)
     return <div className="text-center text-black py-4">No products yet</div>;
+
+  const handleAddToCart = (product: any) => {
+    const cartItem: CartItem = {
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      quantity: 1, // Default quantity when adding to cart
+      image: product.image,
+      description: product.description,
+      currency: product.currency,
+      unit: product.unit,
+      category: product.category,
+    };
+
+    dispatch(addToCart(cartItem));
+    toast.success(`${product.name} added to cart`);
+  };
+
+  const handleAddToWishlist = (product: any) => {
+    const wishlistItem: WishlistItem = {
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      quantity: 1, // Default quantity when adding to cart
+      image: product.image,
+      description: product.description,
+      currency: product.currency,
+      unit: product.unit,
+      category: product.category,
+    };
+
+    dispatch(addToWishlist(wishlistItem));
+    toast.success(`${product.name} added to wishlist`);
+  };
 
   const getImageSrc = (image: any) => {
     if (
@@ -148,10 +180,16 @@ const Juices = () => {
                   {product.currency} {product.price}
                 </p>
                 <div className="flex justify-center space-x-2 mt-2">
-                  <button className="bg-[#7FA200] ml-6 text-white font-medium text-xl px-4 py-2 rounded-lg">
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className="bg-[#7FA200] ml-6 text-white font-medium text-xl px-4 py-2 rounded-lg"
+                  >
                     Add to Cart
                   </button>
-                  <button className="bg-[#7FA200] ml-6 text-white font-medium text-xl px-4 py-2 rounded-lg">
+                  <button
+                    onClick={() => handleAddToWishlist(product)}
+                    className="bg-[#7FA200] ml-6 text-white font-medium text-xl px-4 py-2 rounded-lg"
+                  >
                     Add to Wishlist
                   </button>
                 </div>

@@ -6,6 +6,7 @@ import morgan from "morgan";
 import { connectDB } from "./utils/features";
 import apiRouter from "./routes/api";
 import { config } from "dotenv";
+import userSideRoutes from "./routes/userSideRoutes";
 // import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
 import productRouter from "./routes/farmerProducts";
 // Load environment variables from .env file
@@ -52,6 +53,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/auth", apiRouter);
 // app.use('/api',farmerUploadImageRoute)
 app.use("/auth", productRouter);
+app.use("/auth", userSideRoutes);
 
 // Set the port and start the server
 const port = Number(process.env.PORT) || 3001;

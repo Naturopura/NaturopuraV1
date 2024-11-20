@@ -14,7 +14,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, http } from "wagmi";
 import "@rainbow-me/rainbowkit/styles.css";
 import dynamic from "next/dynamic";
-import ProtectedRoute from "@/auth/ProtectedRoute";
+import { Toaster } from "react-hot-toast";
 
 const config = getDefaultConfig({
   appName: "RainbowKit demo",
@@ -60,6 +60,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Toaster position="top-center" />
         <ReduxProvider>
           <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
