@@ -88,18 +88,20 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-100 border-b-2 border-gray-200 px-[15.63rem] py-3 z-50 top-0 w-full">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="container mx-auto flex items-center justify-between gap-8">
+        {/* Logo */}
         <Link href={"/"}>
           <Image
             src={img2}
             className="ml-[-20px]"
             width={200}
             height={200}
-            alt=""
+            alt="Logo"
           />
         </Link>
-        {/* Left Side - Search Input */}
-        <div className="relative w-full md:w-60 mr-4">
+
+        {/* Search Input */}
+        <div className="relative w-full max-w-xs">
           <input
             type="search"
             placeholder="Search for products"
@@ -109,58 +111,62 @@ const Navbar = () => {
             <Search className="text-gray-400" />
           </div>
         </div>
-        {/* Right Side - Logo/Brand */}
-        <div className="relative w-full md:w-60 mt-[2px] mr-4">
+
+        {/* Connect Button */}
+        <div className="flex-shrink-0">
           <ConnectButton label="Sign in with wallet" />
         </div>
 
-        <div className="mt-2">
-          <Link href={"/cart"}>
-            <ShoppingCart className="h-10 w-10 -mt-2" />
-            <div className="text-2xl ml-11 -mt-9">Cart</div>
-
-            {totalQuantity > 0 && (
-              <span className="absolute top-6 right-[28.3rem] bg-red-500 text-white rounded-full text-sm w-5 h-5 flex items-center justify-center">
-                {totalQuantity}
-              </span>
-            )}
+        {/* Cart Section */}
+        <div className="relative flex items-center">
+          <Link href={"/cart"} className="flex items-center">
+            <ShoppingCart className="h-10 w-10" />
+            <span className="ml-2 text-2xl">Cart</span>
           </Link>
+          {totalQuantity > 0 && (
+            <span className="absolute top-0 right-[-10px] bg-red-500 text-white rounded-full text-sm w-5 h-5 flex items-center justify-center">
+              {totalQuantity}
+            </span>
+          )}
         </div>
 
-        <div className="" onClick={toggleDropdown}>
-          <UserCircleIcon className="h-10 w-10 mt-1 cursor-pointer" />
+        {/* User Dropdown */}
+        <div className="relative">
+          <UserCircleIcon
+            className="h-10 w-10 cursor-pointer"
+            onClick={toggleDropdown}
+          />
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white border z-50 border-gray-200 rounded-lg shadow-lg">
+              <ul className="text-sm text-gray-700">
+                <li>
+                  <Link
+                    href="/profile"
+                    className="block px-4 py-2 text-xl hover:bg-gray-100"
+                  >
+                    My Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/wishlist"
+                    className="block px-4 py-2 text-xl hover:bg-gray-100"
+                  >
+                    Wishlist
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/orders"
+                    className="block px-4 py-2 text-xl hover:bg-gray-100"
+                  >
+                    Orders
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
-
-        {isDropdownOpen && (
-          <div className="absolute right-44 mt-52 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
-            <ul className="text-sm text-gray-700">
-              <li>
-                <Link
-                  href="/profile"
-                  className="block px-4 py-2 text-xl hover:bg-gray-100"
-                >
-                  My Profile
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/wishlist"
-                  className="block px-4 py-2 text-xl hover:bg-gray-100"
-                >
-                  Wishlist
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/orders"
-                  className="block px-4 py-2 text-xl hover:bg-gray-100"
-                >
-                  Orders
-                </Link>
-              </li>
-            </ul>
-          </div>
-        )}
       </div>
     </nav>
   );

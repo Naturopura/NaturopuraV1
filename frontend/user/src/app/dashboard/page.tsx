@@ -38,13 +38,13 @@ const Dashboard = () => {
         <FoodCupboard />
         <ProductCategoryList />
 
-        <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-10" />
+        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
 
-        <h2 className="underline ml-8 mt-9 text-2xl font-bold">
+        <h2 className="underline ml-8 mt-6 text-2xl font-bold">
           <Link href={""}>View all&gt;</Link>
         </h2>
 
-        <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-8" />
+        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
 
         <ProductGrid />
         <Fruits />
@@ -52,78 +52,76 @@ const Dashboard = () => {
         <DrinksTeaCoffee />
         <ProductCategoryLists />
 
-        <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-10" />
+        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
 
-        <h2 className="underline ml-8 mt-9 text-2xl font-bold">
+        <h2 className="underline ml-8 mt-6 text-2xl font-bold">
           <Link href={""}>View all&gt;</Link>
         </h2>
 
-        <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-8" />
+        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
 
         <ProductGrid />
 
-        <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 mt-[-28px]" />
+        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto -mt-16" />
 
         <Honey />
         <HoneyProducts />
 
         <Link href="/honey">
-          <button className="text-white z-10 mt-[-1px] ml-[778px] text-xl bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg px-12 py-3">
+          <button className="text-white z-10 mt-[-1px] mx-auto block text-xl bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg px-12 py-3">
             View Products&gt;
           </button>
         </Link>
 
-        <div className="flex items-center justify-center ml-[-125px] mt-5">
-          <div className="mr-3">
-            <Image width={200} height={100} src={leaf} alt="leaf" />
-          </div>
-          <div className="text-black mt-[-23px] ml-[-95px] text-3xl focus:ring-4 focus:outline-none font-bold rounded-lg py-2.5">
+        <div className="flex items-center justify-center mt-5">
+          <Image width={200} height={100} src={leaf} alt="leaf" />
+          <div className="text-black text-3xl font-bold ml-4">
             GET WHAT YOU WANT
           </div>
         </div>
 
         <Gallery />
 
-        <div className="ml-[678px] mt-[100px]">
+        <div className="text-center mt-10">
           <div className="text-[#ACB631] text-4xl font-semibold">
             100% FRESH & HEALTHY
           </div>
-          <div className="ml-0 text-4xl font-semibold">SPROUTS, VEGETABLES</div>
-          <div className="ml-[118px] text-4xl font-semibold">& lot more</div>
+          <div className="text-4xl font-semibold">SPROUTS, VEGETABLES</div>
+          <div className="text-4xl font-semibold">& lot more</div>
         </div>
 
         <HealthyFruits />
 
-        <hr className="border-gray-400 border-t-2 w-[1730px] ml-8 -mt-10" />
+        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
 
         <ProductCategories />
         <SeasonalFruits />
         <OrganicFertilizer />
         <SoilConditioner />
 
-        <div className="text-[#9FA82B] ml-[765px] text-3xl font-semibold">
+        <div className="text-[#9FA82B] text-center text-3xl font-semibold mt-5">
           Soil Conditioner
         </div>
 
         <Pesticides />
 
-        <div className="text-[#9FA82B] ml-[800px] -mt-10  text-3xl font-semibold">
+        <div className="text-[#9FA82B] text-center text-3xl font-semibold mt-5">
           Pesticides
         </div>
 
-        <button className="text-white mt-10 bg-[#ACB631] ml-[870px] rounded-md px-2 py-2 text-xl bottom-[50px]  transform -translate-x-1/2 font-medium">
+        <button className="text-white mt-10 bg-[#ACB631] mx-auto block rounded-md px-2 py-2 text-xl font-medium">
           Know more
         </button>
 
         <AgricultureSeeds />
         <FarmingGardening />
 
-        <Image width={200} height={100} src={leaf} alt="" />
-        <div className="text-3xl font-bold mt-[-90px] ml-[115px]">
+        <Image width={200} height={100} src={leaf} alt="" className="mx-auto" />
+        <div className="text-center text-3xl font-bold mt-[-90px]">
           Recommendations
         </div>
 
-        <div className="ml-[116px] mt-[50px] text-2xl">
+        <div className="text-center text-2xl mt-5">
           New arrival | Best Selling | Most popular | On Sales | All
         </div>
 

@@ -115,13 +115,12 @@ const ProductGrid = () => {
       link: "/product-detail",
       rating: 5,
     },
-    // Add more products as needed
   ];
 
   return (
     <div className="bg-gray-200">
-      <div className="mx-auto px-6 lg:px-12 py-16 sm:py-24">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="mx-auto px-4 lg:px-5 py-16 sm:py-24">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product, index) => (
             <ProductCard key={index} {...product} />
           ))}

@@ -1,92 +1,53 @@
 import Link from "next/link";
 import React from "react";
 
-const ProductCategoryLists = () => {
-  return (
-    <div>
-      <div className="container ml-[260px] mt-[-50px]">
-        <div className="flex justify-between w-full">
-          {/* Column 1 - Left */}
-          <div className="space-y-6 ml-[-230px]">
-            <Link
-              href="/tea-coffee"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              Tea & Coffee
-            </Link>
-            <Link
-              href="/hot-drinks"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              Hot Drinks
-            </Link>
-            <Link
-              href="/fizzy-drinks"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              Fizzy Drinks
-            </Link>
-            <Link
-              href="/water"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              Water
-            </Link>
-          </div>
+const categories = [
+  [
+    { href: "/tea-coffee", label: "Tea & Coffee" },
+    { href: "/hot-drinks", label: "Hot Drinks" },
+    { href: "/fizzy-drinks", label: "Fizzy Drinks" },
+    { href: "/water", label: "Water" },
+  ],
+  [
+    { href: "/squash", label: "Squash" },
+    { href: "/juices", label: "Juices" },
+    { href: "/mixers", label: "Mixers" },
+    { href: "/still-sparkling", label: "Still & Sparkling" },
+  ],
+  [
+    { href: "/no-added-sugar", label: "No Added Sugar" },
+    { href: "/still-sparkling", label: "Still & Sparkling" },
+    { href: "/cordials", label: "Cordials" },
+  ],
+];
 
-          {/* Column 2 - Middle */}
-          <div className="space-y-6">
+const ProductCategoryLists = () => (
+  <div className="container ml-[16.25rem] -mt-[3.125rem]">
+    <div className="flex justify-between w-full">
+      {categories.map((column, colIndex) => (
+        <div
+          key={colIndex}
+          className={`space-y-6 ${
+            colIndex === 0
+              ? "-ml-[14.375rem]"
+              : colIndex === 1
+              ? "ml-24"
+              : "mr-56"
+          }`}
+        >
+          {column.map((item, index) => (
             <Link
-              href="/squash"
+              key={index}
+              href={item.href}
               className="text-2xl leading-6 text-black font-bold block"
             >
-              Squash
+              {item.label}
             </Link>
-            <Link
-              href="/juices"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              Juices
-            </Link>
-            <Link
-              href="/mixers"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              Mixers
-            </Link>
-            <Link
-              href="/still-sparkling"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              Still & Sparkling
-            </Link>
-          </div>
-
-          {/* Column 3 - Right */}
-          <div className="space-y-6 mr-5">
-            <Link
-              href="/no-added-sugar"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              No Added Sugar
-            </Link>
-            <Link
-              href="/still-sparkling"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              Still & Sparkling
-            </Link>
-            <Link
-              href="/cordials"
-              className="text-2xl leading-6 text-black font-bold block"
-            >
-              Cordials
-            </Link>
-          </div>
+          ))}
         </div>
-      </div>
+      ))}
     </div>
-  );
-};
+  </div>
+);
 
 export default ProductCategoryLists;

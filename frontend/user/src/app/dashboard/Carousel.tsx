@@ -6,48 +6,85 @@ import img14 from "@/assets/img14.jpg";
 
 const slides = [
   {
-    url: img11,
+    id: 1,
+    title: "locally grown",
+    description: "Farm fresh",
+    img: img11,
+    bg: "bg-gradient-to-r from-yellow-50 to-pink-50",
   },
   {
-    url: img12,
+    id: 2,
+    title: "locally grown",
+    description: "Farm fresh",
+    img: img12,
+    bg: "bg-gradient-to-r from-pink-50 to-blue-50",
   },
   {
-    url: img14,
+    id: 3,
+    title: "locally grown",
+    description: "Farm fresh",
+    img: img14,
+    bg: "bg-gradient-to-r from-blue-50 to-yellow-50",
   },
 ];
 
 const Carousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextSlide = () => {
-    const isLastSlide = currentIndex === slides.length - 1;
-    const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
-  };
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    console.log("Current Index:", currentIndex);
-    const slideInterval = setInterval(() => {
-      nextSlide();
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 3000);
 
-    return () => clearInterval(slideInterval);
-  }, [currentIndex]);
-  return (
-    <div className=" h-[780px] w-[1831px] ml-[-16px] mt-[-63px] py-16 px-4 relative group overflow-hidden">
-      <div className="w-full h-full relative">
-        <Image
-          src={slides[currentIndex].url}
-          alt={`Slide ${currentIndex + 1}`}
-          layout="fill"
-          objectFit="cover"
-          className="transition duration-500"
-        />
-      </div>
+    return () => clearInterval(interval);
+  }, []);
 
-      <div className="absolute top-[44%] left-[17%] transform -translate-x-1/2 -translate-y-1/2 text-white text-center">
-        <div className="text-8xl text-[#18650B]">Farm fresh</div>
-        <div className="text-6xl text-black">locally grown</div>
+  return (
+    <div className="h-screen flex flex-col overflow-hidden">
+      <div
+        className="w-max h-full flex transition-all ease-in-out duration-1000"
+        style={{ transform: `translateX(-${current * 100}vw)` }}
+      >
+        {slides.map((slide) => (
+          <div
+            className="w-screen h-full flex flex-col xl:flex-row relative"
+            key={slide.id}
+          >
+            {/* IMAGE CONTAINER */}
+            <div className="h-full w-full relative">
+              <Image
+                src={slide.img}
+                alt={slide.title || ""}
+                fill
+                sizes="100%"
+                className="object-cover"
+              />
+              {/* TEXT CONTAINER */}
+              <div className="absolute inset-0 -ml-6 mt-16 flex flex-col items-start justify-start gap-4 text-start p-16">
+                <h2 className="text-[#18650B] text-8xl">{slide.description}</h2>
+                <h1 className="text-5xl ml-6 lg:text-7xl 2xl:text-8xl font-medium">
+                  {slide.title}
+                </h1>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* DOT NAVIGATION */}
+      <div className="absolute left-1/2 -bottom-12 flex gap-4 transform -translate-x-1/2">
+        {slides.map((slide, index) => (
+          <div
+            className={`w-3 h-3 rounded-full ring-1 ring-gray-600 cursor-pointer flex items-center justify-center ${
+              current === index ? "scale-150" : ""
+            }`}
+            key={slide.id}
+            onClick={() => setCurrent(index)}
+          >
+            {current === index && (
+              <div className="w-[6px] h-[6px] bg-gray-600 rounded-full"></div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
