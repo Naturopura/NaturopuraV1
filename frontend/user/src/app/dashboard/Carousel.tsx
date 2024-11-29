@@ -10,21 +10,18 @@ const slides = [
     title: "locally grown",
     description: "Farm fresh",
     img: img11,
-    bg: "bg-gradient-to-r from-yellow-50 to-pink-50",
   },
   {
     id: 2,
     title: "locally grown",
     description: "Farm fresh",
     img: img12,
-    bg: "bg-gradient-to-r from-pink-50 to-blue-50",
   },
   {
     id: 3,
     title: "locally grown",
     description: "Farm fresh",
     img: img14,
-    bg: "bg-gradient-to-r from-blue-50 to-yellow-50",
   },
 ];
 
@@ -40,7 +37,7 @@ const Carousel = () => {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="h-screen mx-[19px] flex flex-col overflow-hidden">
       <div
         className="w-max h-full flex transition-all ease-in-out duration-1000"
         style={{ transform: `translateX(-${current * 100}vw)` }}

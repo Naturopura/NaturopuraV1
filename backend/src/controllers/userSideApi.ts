@@ -19,6 +19,72 @@ export const getAllProducts = async (
   }
 };
 
+export const getProductsByCategoryAndPagination = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    const { category, page = 1, limit = 6 } = req.query;
+
+    // Parse page and limit to numbers
+    const pageNumber = parseInt(page as string, 10);
+    const limitNumber = parseInt(limit as string, 6);
+
+    // Calculate the number of documents to skip
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // Build the query filter
+    const filter = category ? { category } : {};
+
+    // Fetch products with pagination and filtering
+    const products = await Product.find(filter).skip(skip).limit(limitNumber);
+
+    // Get the total count of products for the given filter
+    const totalProducts = await Product.countDocuments(filter);
+
+    // If no products are found
+    if (products.length === 0) {
+      return res.status(404).json({ message: "No products found." });
+    }
+
+    // Return products with pagination metadata
+    return res.status(200).json({
+      success: true,
+      data: products,
+      pagination: {
+        total: totalProducts,
+        currentPage: pageNumber,
+        totalPages: Math.ceil(totalProducts / limitNumber),
+        limit: limitNumber,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getProductsByCategory = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  const { category } = req.query;
+
+  if (!category || typeof category !== "string") {
+    return res
+      .status(400)
+      .json({ error: "Invalid or missing category query parameter" });
+  }
+
+  try {
+    const products = await Product.find({ category });
+    return res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch products" });
+  }
+};
+
 // New function to get product details by ID
 export const getProductById = async (
   req: AuthenticatedRequest,
@@ -44,9 +110,9 @@ export const getProductById = async (
     }
 
     // Return the product details
-    res.status(200).json(product);
+    return res.status(200).json(product);
   } catch (error: any) {
     console.error("Error fetching product by ID:", error.message);
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };

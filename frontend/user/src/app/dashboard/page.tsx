@@ -38,13 +38,13 @@ const Dashboard = () => {
         <FoodCupboard />
         <ProductCategoryList />
 
-        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
+        <hr className="border-gray-400 border-t-2 mx-5 mt-10" />
 
         <h2 className="underline ml-8 mt-6 text-2xl font-bold">
           <Link href={""}>View all&gt;</Link>
         </h2>
 
-        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
+        <hr className="border-gray-400 border-t-2 mx-5 mt-10" />
 
         <ProductGrid />
         <Fruits />
@@ -52,77 +52,95 @@ const Dashboard = () => {
         <DrinksTeaCoffee />
         <ProductCategoryLists />
 
-        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
+        <hr className="border-gray-400 border-t-2 mx-5 mt-10" />
 
         <h2 className="underline ml-8 mt-6 text-2xl font-bold">
           <Link href={""}>View all&gt;</Link>
         </h2>
 
-        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
+        <hr className="border-gray-400 border-t-2 mx-5 mt-10" />
 
         <ProductGrid />
 
-        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto -mt-16" />
+        <hr className="border-gray-400 border-t-2 mx-5 -mt-16" />
 
         <Honey />
         <HoneyProducts />
 
         <Link href="/honey">
-          <button className="text-white z-10 mt-[-1px] mx-auto block text-xl bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg px-12 py-3">
+          <button className="text-white ml-[35rem] text-xl bg-[#ACB631] font-medium rounded-lg px-12 py-3">
             View Products&gt;
           </button>
         </Link>
 
-        <div className="flex items-center justify-center mt-5">
-          <Image width={200} height={100} src={leaf} alt="leaf" />
-          <div className="text-black text-3xl font-bold ml-4">
+        <div className="flex items-center justify-center -ml-[7.1875rem] mt-5">
+          <div className="mr-3">
+            <Image width={200} height={200} src={leaf} alt="leaf" />
+          </div>
+          <div className="text-black -mt-6 -ml-24 text-3xl font-bold rounded-lg py-2.5">
             GET WHAT YOU WANT
           </div>
         </div>
 
         <Gallery />
 
-        <div className="text-center mt-10">
+        <div className="ml-[28.6rem] mt-20">
           <div className="text-[#ACB631] text-4xl font-semibold">
             100% FRESH & HEALTHY
           </div>
-          <div className="text-4xl font-semibold">SPROUTS, VEGETABLES</div>
-          <div className="text-4xl font-semibold">& lot more</div>
+          <div className="ml-0 text-4xl font-semibold">SPROUTS, VEGETABLES</div>
+          <div className="ml-[7.4rem] text-4xl font-semibold">& lot more</div>
         </div>
 
         <HealthyFruits />
 
-        <hr className="border-gray-400 border-t-2 w-full max-w-screen-lg mx-auto mt-10" />
+        <hr className="border-gray-400 border-t-2 mx-5 -mt-10" />
 
         <ProductCategories />
         <SeasonalFruits />
         <OrganicFertilizer />
         <SoilConditioner />
 
-        <div className="text-[#9FA82B] text-center text-3xl font-semibold mt-5">
+        <div className="text-[#9FA82B] ml-[33.5rem] mt-10 text-4xl font-semibold">
           Soil Conditioner
         </div>
 
         <Pesticides />
 
-        <div className="text-[#9FA82B] text-center text-3xl font-semibold mt-5">
+        <div className="text-[#9FA82B] ml-[36.5rem] mt-10  text-4xl font-semibold">
           Pesticides
         </div>
 
-        <button className="text-white mt-10 bg-[#ACB631] mx-auto block rounded-md px-2 py-2 text-xl font-medium">
+        <button className="text-white mt-10 bg-[#ACB631] ml-[42rem] rounded-md px-2 py-2 text-xl bottom-12 transform -translate-x-1/2 font-semibold">
           Know more
         </button>
 
         <AgricultureSeeds />
         <FarmingGardening />
 
-        <Image width={200} height={100} src={leaf} alt="" className="mx-auto" />
-        <div className="text-center text-3xl font-bold mt-[-90px]">
+        <Image
+          width={120}
+          height={120}
+          src={leaf}
+          className="ml-2 mt-5"
+          alt=""
+        />
+        <div className="text-3xl font-bold -mt-[3.75rem] ml-20">
           Recommendations
         </div>
 
-        <div className="text-center text-2xl mt-5">
-          New arrival | Best Selling | Most popular | On Sales | All
+        <div className="ml-20 mt-7 text-2xl cursor-pointer space-x-4">
+          {[
+            "New arrival",
+            "Best Selling",
+            "Most popular",
+            "On Sales",
+            "All",
+          ].map((text, index, arr) => (
+            <span key={index} className="hover:underline">
+              {text} {index < arr.length - 1 && "|"}
+            </span>
+          ))}
         </div>
 
         <Recommendations />

@@ -9,70 +9,69 @@ import leaf from "@/assets/leaf.png";
 
 const OrganicFertilizer = () => {
   return (
-    <div>
-      <div className="mt-[-50px]">
-        <Image width={200} height={100} src={leaf} alt="" />
-        <div className="text-3xl font-bold mt-[-90px] ml-[115px]">
-          Organic Fertilizer
-        </div>
-        <div className="relative mt-[-10px]">
-          <div className="">
-            <Image
-              width={600}
-              height={600}
-              src={hand}
-              alt=""
-              className="absolute bg-white inset-0 w-[1730px] ml-[33px] mt-9 px-16 h-[1293px] object-cover z-0"
-            />
-          </div>
-          {/* Background Image */}
-
-          {/* Soil Image - Positioned above the hand image but behind the cards */}
+    <div className="-mt-12 -mx-2">
+      <Image width={100} height={100} src={leaf} className="ml-3" alt="" />
+      <div className="text-3xl font-bold -mt-[3.25rem] ml-[4.5rem]">
+        Organic Fertilizer
+      </div>
+      <div className="relative -mt-2">
+        <div className="">
           <Image
-            width={400}
-            height={400}
-            src={soil}
+            width={1300}
+            height={1400}
+            src={hand}
             alt=""
-            className="absolute ml-[200px] inset-x-0 bottom-8 w-[2500px] px-16 h-[650px] object-cover z-10"
+            className="absolute bg-white inset-0 ml-8 py-[18px] mt-8 object-cover z-0"
           />
+        </div>
+        {/* Background Image */}
 
-          <div className="flex p-8 relative  z-20">
-            {/* First Card (Horizontal Mobile Screen) */}
-            <div className="w-[1400px] h-[1300px] border-[3px] border-gray-400 flex items-center justify-center relative">
+        {/* Soil Image - Positioned above the hand image but behind the cards */}
+
+        <Image
+          width={1400}
+          height={1400}
+          src={soil}
+          alt=""
+          className="absolute ml-32 inset-x-0 bottom-8 object-cover z-10"
+        />
+
+        <div className="flex p-8 relative z-20">
+          {/* First Card (Horizontal Mobile Screen) */}
+          <div className="w-[87.5rem] h-[81.25rem] border-[3px] border-gray-400 flex items-center justify-center relative">
+            <Image
+              width={700}
+              height={700}
+              src={fert}
+              alt=""
+              className="object-contain"
+            />
+            <button className="text-white bg-[#ACB631] rounded-md px-2 py-2 text-xl absolute bottom-[12.5rem] left-[50%] transform -translate-x-1/2 font-bold">
+              Know more
+            </button>
+          </div>
+
+          <div className="flex flex-col flex-grow">
+            {/* Second Card (Square) - Adjusted Size */}
+            <div className="aspect-square w-[40.65rem] h-[40.65rem] border-gray-400 border-[3px] flex items-center justify-center text-white text-xl font-bold">
               <Image
-                width={600}
-                height={600}
-                src={fert}
+                width={500}
+                height={500}
+                src={fert2}
                 alt=""
-                className="w-full h-full object-contain"
+                className="rounded-full"
               />
-              <button className="text-white bg-[#ACB631] rounded-md px-2 py-2 text-xl absolute bottom-[200px] left-[47%] transform -translate-x-1/2 font-bold">
-                Know more
-              </button>
             </div>
 
-            <div className="flex flex-col flex-grow">
-              {/* Second Card (Square) - Adjusted Size */}
-              <div className="aspect-square w-[900px] h-[650px] border-gray-400 border-[3px] flex items-center justify-center text-white text-xl font-bold">
-                <Image
-                  width={600}
-                  height={600}
-                  src={fert2}
-                  alt=""
-                  className="w-[60%] h-[60%] rounded-full"
-                />
-              </div>
-
-              {/* Third Card (Square) - Adjusted Size */}
-              <div className="aspect-square w-[900px] h-[650px] border-gray-400 border-[3px] flex items-center justify-center text-white text-xl font-bold">
-                <Image
-                  width={600}
-                  height={600}
-                  src={fert3}
-                  alt=""
-                  className="w-[60%] h-[60%] rounded-full"
-                />
-              </div>
+            {/* Third Card (Square) - Adjusted Size */}
+            <div className="aspect-square w-[40.65rem] h-[40.6rem] border-gray-400 border-[3px] flex items-center justify-center text-white text-xl font-bold">
+              <Image
+                width={500}
+                height={500}
+                src={fert3}
+                alt=""
+                className="rounded-full"
+              />
             </div>
           </div>
         </div>

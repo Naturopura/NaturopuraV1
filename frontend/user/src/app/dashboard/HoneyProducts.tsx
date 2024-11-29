@@ -28,7 +28,7 @@ const ProductCard = ({
   rating,
   link,
 }: ProductProps) => (
-  <div className="border border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
+  <div className="border -mt-32 border-gray-300 bg-white bg-opacity-40 p-4 flex flex-col items-center">
     <Link href={link}>
       <Image
         width={100}
@@ -37,7 +37,7 @@ const ProductCard = ({
         alt={title}
         className="h-48 ml-7 object-cover rounded-md"
       />
-      <h3 className="mt-4 text-xl font-bold text-gray-700">{title}</h3>
+      <h3 className="mt-4 text-xl ml-3 font-bold text-gray-700">{title}</h3>
     </Link>
     <button className="mt-2 text-xl bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md">
       Add to Cart
@@ -65,7 +65,7 @@ const HoneyProducts = () => {
   const products = [
     {
       imageSrc: daburhoney,
-      title: "Honey",
+      title: "Organic Honey",
       price: 1000,
       rating: 5,
       link: "/product-detail",
@@ -122,18 +122,18 @@ const HoneyProducts = () => {
   ];
 
   return (
-    <div className="relative mt-[-60px] bg-gray-200 min-h-screen">
+    <div className="relative bg-gray-200 min-h-screen px-5">
       {/* Honeybee background image */}
       <Image
-        width={600}
-        height={600}
+        width={800}
+        height={800}
         src={honeybee}
         alt="Honeybee"
-        className="absolute ml-[-70px] mt-[120px] inset-0 w-[1150px] h-[750px] object-cover opacity-100"
+        className="absolute -ml-[3.125rem] -mt-32 inset-0 object-cover opacity-100"
       />
 
-      <div className="relative z-10 mx-auto px-6 lg:px-12 py-16 sm:py-24">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="relative z-10 mx-auto py-16 sm:py-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-y-36 gap-4">
           {/* Render Product Cards */}
           {products.map((product, index) => (
             <ProductCard key={index} {...product} />
@@ -143,11 +143,11 @@ const HoneyProducts = () => {
 
       {/* Second honeybee image */}
       <Image
-        width={600}
-        height={600}
+        width={800}
+        height={800}
         src={honeybee2}
         alt="Honeybee"
-        className="absolute ml-[800px] mt-[70px] inset-0 w-[1150px] h-[1050px] object-cover opacity-100"
+        className="absolute ml-[37.5rem] mt-[4.375rem] inset-0 object-cover opacity-100"
       />
     </div>
   );

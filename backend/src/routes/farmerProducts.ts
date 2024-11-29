@@ -6,7 +6,6 @@ import {
   listProduct,
   updateProduct,
 } from "../controllers/farmerProducts";
-import { getAllProducts } from "../controllers/userSideApi";
 
 const router = express.Router();
 

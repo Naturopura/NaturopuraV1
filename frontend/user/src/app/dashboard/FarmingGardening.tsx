@@ -6,53 +6,45 @@ import leafy from "@/assets/leafy.png";
 import leaf from "@/assets/leaf.png";
 
 const FarmingGardening = () => {
+  const images = [
+    {
+      src: farmingequipment,
+      className: "-ml-72 mt-16",
+      width: 1000,
+      height: 1000,
+    },
+    {
+      src: leafy,
+      className: "absolute top-2 -right-14",
+      width: 600,
+      height: 600,
+    },
+    { src: leaf, className: "absolute -mt-[31.3rem]", width: 200, height: 200 },
+    { src: mugs, className: "absolute ml-[18.8rem]", width: 400, height: 400 },
+  ];
+
   return (
-    <div>
-      <div className="w-full px-7 mt-5">
-        <div className="relative h-[1000px] border-[3px] bg-gray-100 border-gray-200 shadow-xl flex items-center justify-center text-black text-lg font-semibold">
+    <div className="w-full px-[31px] mt-5">
+      <div className="relative h-[62.5rem] border-3 bg-gray-100 border-gray-200 shadow-xl flex items-center justify-center text-black font-semibold">
+        {images.map((img, index) => (
           <Image
-            width={700}
-            height={700}
-            src={farmingequipment}
-            className="w-full h-full mt-[150px]"
+            key={index}
+            src={img.src}
             alt=""
+            width={img.width}
+            height={img.height}
+            className={img.className}
           />
-
-          <Image
-            width={600}
-            height={450}
-            src={leafy}
-            className="absolute top-[2px] right-[-100px] w-[950px] h-[350px]" // Adjusted position and size
-            alt=""
-          />
-
-          <Image
-            width={200}
-            height={200}
-            src={leaf}
-            className="absolute mt-[-500px]"
-            alt=""
-          />
-
-          <div className="text-[#98A02D] mt-[-440px] absolute text-4xl">
-            Farming & Gardening
-          </div>
-
-          <div className="mt-[-340px] font-normal absolute text-2xl">
-            Illustrations
-          </div>
-
-          <Image
-            width={400}
-            height={400}
-            src={mugs}
-            className="absolute w-[400px] h-[350px] ml-[300px]"
-            alt=""
-          />
-          <button className="text-white bg-[#ACB631] rounded-md px-2 py-2 text-xl absolute bottom-[50px] left-[92%] transform -translate-x-1/2 font-medium">
-            Know more
-          </button>
+        ))}
+        <div className="absolute text-[#98A02D] text-4xl -mt-[27.5rem]">
+          Farming & Gardening
         </div>
+        <div className="absolute text-2xl font-normal -mt-[21.25rem]">
+          Illustrations
+        </div>
+        <button className="absolute bottom-12 left-[90%] transform -translate-x-1/2 bg-[#ACB631] text-white rounded-md px-2 py-2 text-xl font-semibold">
+          Know more
+        </button>
       </div>
     </div>
   );

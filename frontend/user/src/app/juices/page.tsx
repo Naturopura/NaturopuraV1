@@ -1,68 +1,108 @@
 "use client";
 
-import arrowup from "@/assets/arrow-up-01-512.jpg";
 import Image from "next/image";
-import { useGetAllProductsQuery } from "@/state/userApi";
+import { useGetProductsByCategoryAndPaginationQuery } from "@/state/userApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Link from "next/link";
 import { addToCart, CartItem } from "@/store/cartSlice";
 import { useAppDispatch } from "@/store";
 import toast from "react-hot-toast";
 import { addToWishlist, WishlistItem } from "@/store/wishlistSlice";
-
-type SidebarProps = {
-  title: string;
-  items: (string | number)[];
-};
-
-const filters = {
-  brand: ["Rita", "Paper Boat", "Tropicana"],
-  ratings: [4, 3, 2, 1],
-  type: ["Mango Juice", "Apple Juice", "Orange Juice"],
-};
-
-// Reusable Checkbox Component
-const CheckboxGroup = ({ title, items }: SidebarProps) => (
-  <div className="mt-5">
-    <h4 className="font-semibold text-xl">
-      {title}
-      <Image
-        className="float-right mt-1"
-        src={arrowup}
-        alt=""
-        width={20}
-        height={20}
-      />
-    </h4>
-    {Array.isArray(items) ? (
-      items.map((item, index) => (
-        <div key={index} className="flex items-center text-xl mb-2">
-          <input type="checkbox" className="mr-3 w-5 h-5 cursor-pointer" />
-          <label>
-            {item} {title === "CUSTOMER RATINGS" && "★ & above"}
-          </label>
-        </div>
-      ))
-    ) : (
-      <div className="text-red-500">Invalid items type</div>
-    )}
-  </div>
-);
+import Sidebar from "../(components)/Sidebar";
+import { useState } from "react";
 
 const Juices = () => {
   const dispatch = useAppDispatch();
+  const [category, setCategory] = useState("juices");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+
   const {
-    data: products = [],
-    isError,
+    data: products,
     isLoading,
     error,
-  } = useGetAllProductsQuery();
+  } = useGetProductsByCategoryAndPaginationQuery({ category, page, limit });
 
-  if (isLoading) return <div className="py-4">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex animate-pulse">
+        {/* Filters Section */}
+        <div className="w-1/4 p-4 space-y-6 border-r">
+          <div className="h-6 bg-gray-300 rounded w-[35%]"></div>
+          <div className="flex">
+            <div className="h-6 bg-gray-300 rounded w-[35%]"></div>
+            <div className="h-6 ml-44 w-6 bg-gray-300 rounded"></div>
+          </div>
 
-  if (isError) {
+          <div className="space-y-3">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="flex -mt-4 items-center space-x-3">
+                <div className="h-6 w-6 bg-gray-300 rounded"></div>
+                <div className="h-6 bg-gray-300 rounded w-1/4"></div>
+              </div>
+            ))}
+          </div>
+          <div className="flex">
+            <div className="h-6 bg-gray-300 rounded w-[150%]"></div>
+            <div className="h-7 ml-44 w-24 bg-gray-300 rounded"></div>
+          </div>
+
+          <div className="space-y-3">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex -mt-5 items-center space-x-3">
+                <div className="h-6 w-6  bg-gray-300 rounded"></div>
+                <div className="h-6 bg-gray-300 rounded w-[40%]"></div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex">
+            <div className="h-6 bg-gray-300 rounded w-[35%]"></div>
+            <div className="h-6 ml-44 w-6 bg-gray-300 rounded"></div>
+          </div>
+
+          <div className="space-y-3">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="flex -mt-4 items-center space-x-3">
+                <div className="h-6 w-6 bg-gray-300 rounded"></div>
+                <div className="h-6 bg-gray-300 rounded w-1/4"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Products Section */}
+        <div className="w-3/4 p-4">
+          <div className="flex justify-between mb-4">
+            <div className="h-6 bg-gray-300 rounded w-1/3"></div>
+          </div>
+          <div className="grid grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="space-y-4">
+                <div className="h-32 w-32 ml-24 bg-gray-300 rounded"></div>
+                <div className="h-6 bg-gray-300 ml-[6.55rem] rounded w-[35%]"></div>
+                <div className="h-6 bg-gray-300 rounded w-1/4 ml-[7.5rem]"></div>
+                <div className="flex space-x-2 ml-12">
+                  <div className="h-8 bg-gray-300 rounded w-[40%]"></div>
+                  <div className="h-8 bg-gray-300 rounded w-[40%]"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center space-x-4 mt-16">
+            <div className="h-7 ml-1 bg-gray-300 rounded w-24"></div>
+            <div className="flex items-center space-x-3">
+              <div className="h-8 w-8 ml-[19rem] bg-gray-300 rounded-full"></div>{" "}
+              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>{" "}
+              <div className="h-8 w-16 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+  if (error) {
     if ("data" in (error as FetchBaseQueryError)) {
-      // const errorData = (error as FetchBaseQueryError).data;
       return (
         <div className="text-center ml-84 -mt-[600px] text-4xl">
           No products yet
@@ -78,7 +118,7 @@ const Juices = () => {
 
   if (!products) return <div>Failed to fetch products</div>;
 
-  if (products.length === 0)
+  if (products.data.length === 0)
     return <div className="text-center text-black py-4">No products yet</div>;
 
   const handleAddToCart = (product: any) => {
@@ -86,7 +126,7 @@ const Juices = () => {
       _id: product._id,
       name: product.name,
       price: product.price,
-      quantity: 1, // Default quantity when adding to cart
+      quantity: 1,
       image: product.image,
       description: product.description,
       currency: product.currency,
@@ -103,7 +143,7 @@ const Juices = () => {
       _id: product._id,
       name: product.name,
       price: product.price,
-      quantity: 1, // Default quantity when adding to cart
+      quantity: 1,
       image: product.image,
       description: product.description,
       currency: product.currency,
@@ -140,30 +180,38 @@ const Juices = () => {
 
   return (
     <div className="flex overflow-x-hidden min-h-screen">
-      {/* Sidebar */}
-      <div className="w-[20rem] p-6 border-r-2 border-black">
-        <h3 className="font-semibold text-2xl mb-6">Filters</h3>
-        <hr className="border-black -ml-6 mb-5 w-[200rem]" />
-
-        <CheckboxGroup title="BRAND" items={filters.brand} />
-        <hr className="border-black my-5 -ml-7 w-[20.2rem]" />
-
-        <CheckboxGroup title="CUSTOMER RATINGS" items={filters.ratings} />
-        <hr className="border-black my-5 -ml-7 w-[20.2rem]" />
-
-        <CheckboxGroup title="TYPE" items={filters.type} />
-      </div>
+      <Sidebar />
 
       {/* Main Content */}
       <div className="flex-1 p-6">
         <h2 className="text-2xl font-bold mb-4">
-          Showing 1-3 of 3 results for juices
+          Showing{" "}
+          {products?.data
+            ? Math.min(
+                (page - 1) * limit + 1,
+                products.data.filter((product) => product.category === "juices")
+                  ?.length
+              )
+            : 0}{" "}
+          -{" "}
+          {products?.data
+            ? Math.min(
+                page * limit,
+                products.data.filter((product) => product.category === "juices")
+                  ?.length
+              )
+            : 0}{" "}
+          of{" "}
+          {products?.data?.filter((product) => product.category === "juices")
+            ?.length || 0}{" "}
+          products
         </h2>
+
         <div className="grid grid-cols-3 gap-4">
-          {products
-            .filter((product) => product.category === "juices")
-            .map((product, index) => (
-              <div key={index} className="p-4">
+          {products?.data
+            ?.slice((page - 1) * limit, page * limit)
+            .map((product) => (
+              <div key={product._id} className="p-4">
                 <Link href={`/products/${product._id}`}>
                   <Image
                     src={getImageSrc(product.image)}
@@ -179,16 +227,16 @@ const Juices = () => {
                 <p className="text-xl font-bold text-center">
                   {product.currency} {product.price}
                 </p>
-                <div className="flex justify-center space-x-2 mt-2">
+                <div className="flex space-x-1 ml-7">
                   <button
                     onClick={() => handleAddToCart(product)}
-                    className="bg-[#7FA200] ml-6 text-white font-medium text-xl px-4 py-2 rounded-lg"
+                    className="bg-[#7FA200] rounded-xl text-white px-4 py-2"
                   >
                     Add to Cart
                   </button>
                   <button
                     onClick={() => handleAddToWishlist(product)}
-                    className="bg-[#7FA200] ml-6 text-white font-medium text-xl px-4 py-2 rounded-lg"
+                    className="bg-[#7FA200] rounded-xl text-white px-4 py-2"
                   >
                     Add to Wishlist
                   </button>
@@ -199,23 +247,88 @@ const Juices = () => {
 
         {/* Pagination */}
         <div className="flex flex-col items-center -ml-36 mt-12">
-          <hr className="w-[96%] border-t-2 ml-[11rem] border-black mb-6" />
+          <hr className="w-[93%] border-t-2 ml-40 border-black mb-6" />
           <div className="flex justify-between items-center space-x-4 w-full max-w-[20rem]">
-            <span className="text-xl -ml-[31rem] font-semibold">
-              Page 1 of 3
+            <span className="text-xl -ml-64 font-semibold">
+              Page {page} of{" "}
+              {Math.ceil(
+                (products?.data?.filter(
+                  (product) => product.category === "juices"
+                )?.length || 0) / limit
+              ) || 1}
             </span>
             <div className="flex space-x-2">
-              {[1, 2, 3].map((page) => (
+              {/* Previous Button */}
+              {page > 1 && (
                 <button
-                  key={page}
+                  onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                  className={`text-xl font-medium px-4 py-2 rounded-full ${
+                    page <= 1
+                      ? "opacity-50 cursor-not-allowed"
+                      : "bg-[#7FA200] text-white"
+                  }`}
+                >
+                  Previous
+                </button>
+              )}
+
+              {/* Page Number Buttons */}
+              {Array.from(
+                {
+                  length:
+                    Math.ceil(
+                      (products?.data?.filter(
+                        (product) => product.category === "juices"
+                      )?.length || 0) / limit
+                    ) || 1,
+                },
+                (_, index) => index + 1
+              ).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => setPage(pageNum)}
                   className={`px-4 py-2 ${
-                    page === 1 ? "bg-[#7FA200] text-white" : ""
+                    pageNum === page ? "bg-[#7FA200] text-white" : ""
                   } rounded-full font-medium text-xl`}
                 >
-                  {page}
+                  {pageNum}
                 </button>
               ))}
-              <span className="text-xl mt-2 font-medium">NEXT</span>
+
+              {/* Next Button */}
+              {page <
+                Math.ceil(
+                  (products?.data?.filter(
+                    (product) => product.category === "juices"
+                  )?.length || 0) / limit
+                ) && (
+                <button
+                  onClick={() => {
+                    setPage((prev) =>
+                      Math.min(
+                        prev + 1,
+                        Math.ceil(
+                          (products?.data?.filter(
+                            (product) => product.category === "juices"
+                          )?.length || 0) / limit
+                        )
+                      )
+                    );
+                  }}
+                  className={`text-xl font-medium px-4 py-2 rounded-full ${
+                    page >=
+                    Math.ceil(
+                      (products?.data?.filter(
+                        (product) => product.category === "juices"
+                      )?.length || 0) / limit
+                    )
+                      ? "opacity-50 cursor-not-allowed"
+                      : "bg-[#7FA200] text-white"
+                  }`}
+                >
+                  Next
+                </button>
+              )}
             </div>
           </div>
         </div>

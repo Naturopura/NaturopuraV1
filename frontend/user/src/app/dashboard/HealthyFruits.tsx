@@ -83,14 +83,11 @@ const products = [
     imageSrc: blackberry2,
     link: "/product-detail",
   },
-  // Add more products as needed
 ];
 
-// Reusable ProductCard component
-// eslint-disable-next-line react/prop-types
 const ProductCard = ({ name, price, rating, imageSrc, link }: ProductProps) => {
   return (
-    <div className="border-4 border-gray-300 bg-gray-200 p-4 flex flex-col items-center">
+    <div className="border-4 border-gray-300 bg-gray-200 flex flex-col items-center">
       <Link href={link}>
         <div className="">
           <Image
@@ -103,14 +100,14 @@ const ProductCard = ({ name, price, rating, imageSrc, link }: ProductProps) => {
         </div>
       </Link>
 
-      <div className="border-[#ACB631] w-[400px] -mb-5 border-2 px-6 sm:px-8 lg:px-12 bg-white text-center">
-        <h3 className="mt-4 text-xl font-bold text-gray-700">{name}</h3>
+      <div className="border-[#ACB631] w-[102%] mx-32 border-2 bg-white text-center">
+        <h3 className="mt-4 -ml-2 text-xl font-bold text-gray-700">{name}</h3>
 
-        <button className="mt-2 text-lg bg-white border-2 text-black px-4 py-2 border-[#ACB631] rounded-md transition">
+        <button className="mt-2 text-lg bg-white border-2 text-black py-2 px-4 border-[#ACB631] rounded-md transition">
           Add to Cart
         </button>
 
-        <p className="mt-2 text-lg font-bold text-black">₹{price}</p>
+        <p className="mt-2 -ml-2 text-lg font-bold text-black">₹{price}</p>
 
         <div className="mt-2 flex items-center justify-center space-x-1">
           {[...Array(rating)].map((_, i) => (
@@ -133,8 +130,8 @@ const ProductCard = ({ name, price, rating, imageSrc, link }: ProductProps) => {
 
 const HealthyFruits = () => {
   return (
-    <div className="mt-[-50px]">
-      <div className="mx-auto px-6 lg:px-12 py-16 sm:py-24">
+    <div className="-mt-12">
+      <div className="mx-auto px-5 py-16 sm:py-24">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((product) => (
             <ProductCard

@@ -1,94 +1,49 @@
 import React from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import blueberry from "@/assets/blueberry.png";
 import greenleaf from "@/assets/greenleaf.png";
 import anotherleaf from "@/assets/anotherleaf.png";
 import dragonfruit from "@/assets/dragonfruit.png";
 import capsicum from "@/assets/capsicum.png";
 
-const Gallery = () => {
-  return (
-    <div>
-      <div className="flex flex-row mt-[20px] gap-[150px] p-5 justify-center relative">
-        <div className="border-4 border-[#ACB631] bg-white w-[420px] relative  h-[420px] flex items-center justify-center">
-          <Image
-            width={600}
-            height={600}
-            src={blueberry}
-            alt=""
-            className="ml-[-245px] w-96"
-          />
+const items = [
+  { src: blueberry, className: "-ml-56" },
+  { src: dragonfruit, className: "-ml-[17rem] -mt-2" },
+  { src: capsicum, className: "-ml-[14.5rem] mt-10" },
+];
 
-          <Image
-            width={185}
-            height={185}
-            src={greenleaf}
-            alt=""
-            className="absolute -top-[45px] right-[-120px] z-[50]"
-          />
-          <Image
-            width={130}
-            height={130}
-            src={anotherleaf}
-            alt=""
-            className="absolute top-[338px] right-[-77px] z-[50]"
-          />
-        </div>
+const GalleryItem = ({
+  src,
+  imgClass,
+}: {
+  src: StaticImageData;
+  imgClass: string;
+}) => (
+  <div className="border-4 border-[#ACB631] bg-white w-[19rem] h-[19rem] relative flex items-center justify-center">
+    <Image width={250} height={250} src={src} alt="" className={imgClass} />
+    <Image
+      width={185}
+      height={185}
+      src={greenleaf}
+      alt=""
+      className="absolute -top-11 -right-[7.5rem] z-[50]"
+    />
+    <Image
+      width={130}
+      height={130}
+      src={anotherleaf}
+      alt=""
+      className="absolute top-56 -right-20 z-[50]"
+    />
+  </div>
+);
 
-        <div className="border-4 border-[#ACB631] bg-white w-[420px] relative  h-[420px] flex items-center justify-center">
-          <Image
-            width={600}
-            height={600}
-            src={dragonfruit}
-            alt=""
-            className="ml-[-295px] w-[500px] mt-[-10px]"
-          />
-
-          <Image
-            width={185}
-            height={185}
-            src={greenleaf}
-            alt=""
-            className="absolute -top-[45px] right-[-120px] z-[50]"
-          />
-
-          <Image
-            width={130}
-            height={130}
-            src={anotherleaf}
-            alt=""
-            className="absolute top-[338px] right-[-77px] z-[50]"
-          />
-        </div>
-
-        <div className="border-4 border-[#ACB631] bg-white w-[420px] relative  h-[420px] flex items-center justify-center">
-          <Image
-            width={600}
-            height={600}
-            src={capsicum}
-            alt=""
-            className="ml-[-233px] mt-10 w-[330px]"
-          />
-
-          <Image
-            width={185}
-            height={185}
-            src={greenleaf}
-            alt=""
-            className="absolute overflow-hidden -top-[45px] right-[-120px] z-[50]"
-          />
-
-          <Image
-            width={130}
-            height={130}
-            src={anotherleaf}
-            alt=""
-            className="absolute top-[338px] right-[-77px] z-[50]"
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
+const Gallery = () => (
+  <div className="flex flex-row gap-32 p-5 justify-center relative">
+    {items.map((item, index) => (
+      <GalleryItem key={index} src={item.src} imgClass={item.className} />
+    ))}
+  </div>
+);
 
 export default Gallery;

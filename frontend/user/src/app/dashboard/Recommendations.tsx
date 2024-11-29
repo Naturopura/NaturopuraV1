@@ -25,7 +25,7 @@ const ProductCard = ({
   link,
 }: ProductProps) => (
   <>
-    <div className=" bg-white border-4 border-gray-200 p-4 flex flex-col items-center text-center">
+    <div className="bg-white border-4 border-gray-200 p-2 flex flex-col items-center text-center">
       <Link href={link}>
         <div className="w-48 h-48 flex items-center justify-center rounded-md overflow-hidden">
           <Image
@@ -38,9 +38,9 @@ const ProductCard = ({
         </div>
       </Link>
 
-      <h3 className="mt-[-15px] text-xl font-bold text-gray-700">{title}</h3>
+      <h3 className="-mt-4 text-xl font-bold text-gray-700">{title}</h3>
 
-      <button className="mt-2 text-lg border-2 text-black px-6 py-2 border-[#ACB631] rounded-md hover:bg-[#ACB631] hover:text-white transition">
+      <button className="mt-2 text-lg border-2 text-black px-6 py-2 border-[#ACB631] rounded-md">
         Add to Cart
       </button>
 
@@ -126,8 +126,8 @@ const Recommendations = () => {
   ];
 
   return (
-    <div className="mt-[-50px] px-6 lg:px-12 py-16 sm:py-24 mx-auto">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div className="-mt-[4.5rem] px-6 lg:px-[26px] py-16 sm:py-24 mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {products.map((product, index) => (
           <ProductCard
             key={index}

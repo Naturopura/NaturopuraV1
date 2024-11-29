@@ -7,7 +7,6 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useParams } from "next/navigation";
 import { addToCart, CartItem } from "@/store/cartSlice";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
 import { useAppDispatch } from "@/store";
 
 // Helper function to handle image rendering
@@ -38,7 +37,41 @@ const ProductCard = () => {
     error,
   } = useGetProductByIdQuery(id as string);
 
-  if (isLoading) return <div className="py-4">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex space-x-6 ml-10 animate-pulse">
+        {/* Thumbnail Skeletons */}
+        <div className="space-y-4">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="w-28 h-28 bg-gray-300 rounded-md"></div>
+          ))}
+        </div>
+
+        {/* Main Content */}
+        <div className="flex flex-col w-full">
+          {/* Main Image Skeleton */}
+          <div className="w-[31%] h-[367px] bg-gray-300 rounded-md mb-6"></div>
+
+          {/* Text Skeletons to the Right of the Image */}
+          <div className="flex space-x-4 w-full -mt-[24.4rem] ml-[24rem]">
+            <div className="space-y-4 w-[50%]">
+              <div className="h-8 bg-gray-300 rounded w-1/3"></div>
+              <div className="h-7 bg-gray-300 rounded w-1/4"></div>
+              <div className="h-9 bg-gray-300 rounded w-1/5"></div>
+              <div className="h-7 bg-gray-300 rounded w-1/5"></div>
+              <div className="h-7 bg-gray-300 rounded w-[30%]"></div>
+              <div className="h-6 bg-gray-300 rounded w-[14%]"></div>
+            </div>
+          </div>
+
+          {/* Buttons Below the Image */}
+          <div className="flex space-x-2 mt-[7.5rem]">
+            <div className="h-10 w-44 bg-gray-300 rounded-md"></div>
+            <div className="h-10 w-44 bg-gray-300 rounded-md"></div>
+          </div>
+        </div>
+      </div>
+    );
 
   if (isError) {
     const errorMsg =
@@ -71,7 +104,7 @@ const ProductCard = () => {
   };
 
   return (
-    <div className="h-screen w-screen mx-auto flex">
+    <div className="h-screen w-screen mx-auto -mt-14 flex">
       {/* Left Section: Thumbnails and Main Image */}
       <div className="flex flex-col items-start p-8 w-1/2">
         <div className="flex">
@@ -114,7 +147,7 @@ const ProductCard = () => {
       </div>
 
       {/* Right Section: Product Info */}
-      <div className="p-12 -ml-96 -mt-6 w-1/2">
+      <div className="p-12 -ml-40 -mt-5 w-1/2">
         <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
         <div className="flex items-center space-x-2 mb-6">
           <span className="text-yellow-400 text-3xl">★★★★★</span>
