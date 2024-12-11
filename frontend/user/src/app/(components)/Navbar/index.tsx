@@ -6,12 +6,13 @@ import Image from "next/image";
 import img2 from "@/assets/logo 1.png";
 import "@rainbow-me/rainbowkit/styles.css";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { BrowserProvider } from "ethers";
 import { useAppSelector } from "@/store";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const Navbar = () => {
   const { cartItems } = useAppSelector((state) => state.rootReducer.cart);
@@ -82,67 +83,95 @@ const Navbar = () => {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  return (
-    <nav className="bg-gray-100 border-b-2 border-gray-200 px-[15.63rem] py-3 z-50 top-0 w-full">
-      <div className="container mx-auto flex items-center justify-between gap-8">
-        {/* Logo */}
-        <Link href={"/"}>
-          <Image
-            src={img2}
-            className="ml-[-20px]"
-            width={200}
-            height={200}
-            alt="Logo"
-          />
-        </Link>
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
 
-        {/* Search Input */}
-        <div className="relative w-full max-w-xs">
-          <input
-            type="search"
-            placeholder="Search for products"
-            className="pl-4 pr-10 py-2 w-full border-2 border-gray-300 bg-white rounded-lg focus:outline-none focus:border-blue-500"
-          />
-          <div className="absolute cursor-pointer inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <Search className="text-gray-400" />
+    // Add event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <main>
+      <nav className="flex justify-between px-8 bg-gray-200 items-center py-2">
+        <div className="flex items-center gap-8">
+          <section className="flex items-center gap-4">
+            {/* logo */}
+            <Link href={"/"} className="text-4xl font-mono">
+              <Image
+                src={img2}
+                className=""
+                width={1200}
+                height={1200}
+                alt="Logo"
+              />
+            </Link>
+          </section>
+
+          <div className="relative flex items-center w-[500%]">
+            <input
+              type="search"
+              placeholder="Search for products..."
+              className="pl-4 pr-10 py-2 w-full border-2 border-gray-400 bg-white rounded-lg focus:outline-none"
+            />
+            <div className="absolute inset-y-0 right-3 flex items-center">
+              <Search className="text-gray-400" />
+            </div>
+          </div>
+
+          <div className="flex-shrink-0">
+            <ConnectButton label="Sign in with wallet" />
           </div>
         </div>
 
-        {/* Connect Button */}
-        <div className="flex-shrink-0">
-          <ConnectButton label="Sign in with wallet" />
-        </div>
+        {/* sidebar mobile menu */}
 
-        {/* Cart Section */}
-        <div className="relative flex items-center">
-          <Link href={"/cart"} className="flex items-center">
-            <ShoppingCart className="h-10 w-10" />
-            <span className="ml-2 text-2xl">Cart</span>
+        {/* last section */}
+        <section className="flex items-center gap-14 mx-10">
+          {/* cart icon */}
+          <Link href={"/cart"}>
+            <AiOutlineShoppingCart className="text-3xl" />
           </Link>
           {totalQuantity > 0 && (
-            <span className="absolute top-0 right-[-10px] bg-red-500 text-white rounded-full text-sm w-5 h-5 flex items-center justify-center">
+            <span className="absolute top-3 ml-5 bg-red-500 text-white rounded-full text-sm w-5 h-5 flex items-center justify-center">
               {totalQuantity}
             </span>
           )}
-        </div>
 
-        {/* User Dropdown */}
-        <div className="relative">
           <UserCircleIcon
-            className="h-10 w-10 cursor-pointer"
+            width={40}
+            height={40}
+            className="h-8 w-8 rounded-full cursor-pointer"
             onClick={toggleDropdown}
           />
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border z-50 border-gray-200 rounded-lg shadow-lg">
+            <div
+              ref={dropdownRef}
+              className="absolute right-0 mt-48 mr-20 w-48 bg-white border z-50 border-gray-200 rounded-lg shadow-lg"
+            >
               <ul className="text-sm text-gray-700">
                 <li>
                   <Link
                     href="/profile"
                     className="block px-4 py-2 text-xl hover:bg-gray-100"
+                    onClick={() => setIsDropdownOpen(false)}
                   >
                     My Profile
                   </Link>
@@ -151,6 +180,7 @@ const Navbar = () => {
                   <Link
                     href="/wishlist"
                     className="block px-4 py-2 text-xl hover:bg-gray-100"
+                    onClick={() => setIsDropdownOpen(false)}
                   >
                     Wishlist
                   </Link>
@@ -159,6 +189,7 @@ const Navbar = () => {
                   <Link
                     href="/orders"
                     className="block px-4 py-2 text-xl hover:bg-gray-100"
+                    onClick={() => setIsDropdownOpen(false)}
                   >
                     Orders
                   </Link>
@@ -166,9 +197,10 @@ const Navbar = () => {
               </ul>
             </div>
           )}
-        </div>
-      </div>
-    </nav>
+          {/* avatar img */}
+        </section>
+      </nav>
+    </main>
   );
 };
 

@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductById = exports.getProductsByCategory = exports.getProductsByCategoryAndPagination = exports.getAllProducts = void 0;
-const admin_farmer_model_1 = __importDefault(require("../models/admin.farmer.model"));
+exports.getProductById = exports.getProductsByCategoryAndPagination = exports.getAllProducts = void 0;
+const admin_farmer_product_1 = __importDefault(require("../models/admin.farmer.product"));
 // Existing function to list all products
 const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const products = yield admin_farmer_model_1.default.find({});
+        const products = yield admin_farmer_product_1.default.find({});
         if (products.length === 0) {
             return res.status(404).json({ message: "No products found." });
         }
@@ -39,9 +39,9 @@ const getProductsByCategoryAndPagination = (req, res, next) => __awaiter(void 0,
         // Build the query filter
         const filter = category ? { category } : {};
         // Fetch products with pagination and filtering
-        const products = yield admin_farmer_model_1.default.find(filter).skip(skip).limit(limitNumber);
+        const products = yield admin_farmer_product_1.default.find(filter).skip(skip).limit(limitNumber);
         // Get the total count of products for the given filter
-        const totalProducts = yield admin_farmer_model_1.default.countDocuments(filter);
+        const totalProducts = yield admin_farmer_product_1.default.countDocuments(filter);
         // If no products are found
         if (products.length === 0) {
             return res.status(404).json({ message: "No products found." });
@@ -63,22 +63,6 @@ const getProductsByCategoryAndPagination = (req, res, next) => __awaiter(void 0,
     }
 });
 exports.getProductsByCategoryAndPagination = getProductsByCategoryAndPagination;
-const getProductsByCategory = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { category } = req.query;
-    if (!category || typeof category !== "string") {
-        return res
-            .status(400)
-            .json({ error: "Invalid or missing category query parameter" });
-    }
-    try {
-        const products = yield admin_farmer_model_1.default.find({ category });
-        return res.status(200).json(products);
-    }
-    catch (error) {
-        res.status(500).json({ error: "Failed to fetch products" });
-    }
-});
-exports.getProductsByCategory = getProductsByCategory;
 // New function to get product details by ID
 const getProductById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -90,7 +74,7 @@ const getProductById = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             return res.status(400).json({ error: "Product ID is required." });
         }
         // Fetch the product from the database using its ID
-        const product = yield admin_farmer_model_1.default.findById(productId);
+        const product = yield admin_farmer_product_1.default.findById(productId);
         // Check if the product exists
         if (!product) {
             return res.status(404).json({ message: "Product not found." });

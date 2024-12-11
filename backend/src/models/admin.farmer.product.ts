@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
   farmerId: {
@@ -8,22 +8,9 @@ const productSchema = new mongoose.Schema({
   },
   name: { type: String, required: [true, "Please enter Name"] },
   category: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
     required: [true, "Please enter category"],
-    enum: [
-      "vegetables",
-      "fruits",
-      "staples",
-      "chips",
-      "bakery",
-      "snacks",
-      "chocolates",
-      "biscuits",
-      "tea",
-      "coffee",
-      "juices",
-      "honey",
-    ],
   },
   price: { type: Number, required: [true, "Please enter price"] },
   currency: { type: String, required: true, enum: ["INR", "USD"] },

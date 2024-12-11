@@ -14,6 +14,7 @@ const dotenv_1 = require("dotenv");
 const userSideRoutes_1 = __importDefault(require("./routes/userSideRoutes"));
 // import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
 const farmerProducts_1 = __importDefault(require("./routes/farmerProducts"));
+const farmerOrders_1 = __importDefault(require("./routes/farmerOrders"));
 // Load environment variables from .env file
 (0, dotenv_1.config)({
     path: "./.env",
@@ -49,6 +50,7 @@ app.use("/auth", api_1.default);
 // app.use('/api',farmerUploadImageRoute)
 app.use("/auth", farmerProducts_1.default);
 app.use("/auth", userSideRoutes_1.default);
+app.use("/auth", farmerOrders_1.default);
 // Set the port and start the server
 const port = Number(process.env.PORT) || 3001;
 app.listen(port, "0.0.0.0", () => {

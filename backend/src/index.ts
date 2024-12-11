@@ -9,7 +9,9 @@ import { config } from "dotenv";
 import userSideRoutes from "./routes/userSideRoutes";
 // import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
 import productRouter from "./routes/farmerProducts";
+import orderRouter from "./routes/farmerOrders";
 // Load environment variables from .env file
+
 config({
   path: "./.env",
 });
@@ -54,6 +56,7 @@ app.use("/auth", apiRouter);
 // app.use('/api',farmerUploadImageRoute)
 app.use("/auth", productRouter);
 app.use("/auth", userSideRoutes);
+app.use("/auth", orderRouter);
 
 // Set the port and start the server
 const port = Number(process.env.PORT) || 3001;

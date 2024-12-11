@@ -38,6 +38,13 @@ const AdminLogin = () => {
         "http://localhost:8000/auth/admin/login",
         { walletAddress }
       );
+      console.log("response here", response);
+      if (response.data.success === false) {
+        toast.error("Account doesn't exist, Please Sign up");
+      } else {
+        toast.success("Sign in successful");
+      }
+
       const nonce = response.data.data.nonce;
       console.log("Nonce received:", nonce);
       setNonce(nonce); // Set the nonce state

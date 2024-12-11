@@ -1,21 +1,28 @@
 "use client";
 
 import Image from "next/image";
-import { useGetProductsByCategoryAndPaginationQuery } from "@/state/userApi";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import {
+  useGetProductsByCategoryAndPaginationQuery,
+  // useGetProductsByCategoryQuery,
+} from "@/state/userApi";
+import { FetchBaseQueryError, skipToken } from "@reduxjs/toolkit/query";
 import Link from "next/link";
 import { addToCart, CartItem } from "@/store/cartSlice";
 import { useAppDispatch } from "@/store";
 import toast from "react-hot-toast";
 import { addToWishlist, WishlistItem } from "@/store/wishlistSlice";
-import Sidebar from "../(components)/Sidebar";
-import { useState } from "react";
+import Sidebar from "../../(components)/Sidebar";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 const Juices = () => {
   const dispatch = useAppDispatch();
-  const [category, setCategory] = useState("juices");
+  // const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
+  const { category }: { category: string } = useParams();
+
+  console.log("here is cat", category);
 
   const {
     data: products,
@@ -118,8 +125,13 @@ const Juices = () => {
 
   if (!products) return <div>Failed to fetch products</div>;
 
-  if (products.data.length === 0)
-    return <div className="text-center text-black py-4">No products yet</div>;
+  if (products.data.length === 0) {
+    return (
+      <div className="text-center text-black py-4">
+        No products found for the {category} category.
+      </div>
+    );
+  }
 
   const handleAddToCart = (product: any) => {
     const cartItem: CartItem = {
@@ -181,7 +193,6 @@ const Juices = () => {
   return (
     <div className="flex overflow-x-hidden min-h-screen">
       <Sidebar />
-
       {/* Main Content */}
       <div className="flex-1 p-6">
         <h2 className="text-2xl font-bold mb-4">
@@ -189,7 +200,7 @@ const Juices = () => {
           {products?.data
             ? Math.min(
                 (page - 1) * limit + 1,
-                products.data.filter((product) => product.category === "juices")
+                products.data.filter((product) => product.category === category)
                   ?.length
               )
             : 0}{" "}
@@ -197,12 +208,12 @@ const Juices = () => {
           {products?.data
             ? Math.min(
                 page * limit,
-                products.data.filter((product) => product.category === "juices")
+                products.data.filter((product) => product.category === category)
                   ?.length
               )
             : 0}{" "}
           of{" "}
-          {products?.data?.filter((product) => product.category === "juices")
+          {products?.data?.filter((product) => product.category === category)
             ?.length || 0}{" "}
           products
         </h2>
@@ -212,7 +223,7 @@ const Juices = () => {
             ?.slice((page - 1) * limit, page * limit)
             .map((product) => (
               <div key={product._id} className="p-4">
-                <Link href={`/products/${product._id}`}>
+                <Link href={`/product/${product._id}`}>
                   <Image
                     src={getImageSrc(product.image)}
                     width={100}
@@ -253,7 +264,7 @@ const Juices = () => {
               Page {page} of{" "}
               {Math.ceil(
                 (products?.data?.filter(
-                  (product) => product.category === "juices"
+                  (product) => product.category === category
                 )?.length || 0) / limit
               ) || 1}
             </span>
@@ -278,7 +289,7 @@ const Juices = () => {
                   length:
                     Math.ceil(
                       (products?.data?.filter(
-                        (product) => product.category === "juices"
+                        (product) => product.category === category
                       )?.length || 0) / limit
                     ) || 1,
                 },
@@ -299,7 +310,7 @@ const Juices = () => {
               {page <
                 Math.ceil(
                   (products?.data?.filter(
-                    (product) => product.category === "juices"
+                    (product) => product.category === category
                   )?.length || 0) / limit
                 ) && (
                 <button
@@ -309,7 +320,7 @@ const Juices = () => {
                         prev + 1,
                         Math.ceil(
                           (products?.data?.filter(
-                            (product) => product.category === "juices"
+                            (product) => product.category === category
                           )?.length || 0) / limit
                         )
                       )
@@ -319,7 +330,7 @@ const Juices = () => {
                     page >=
                     Math.ceil(
                       (products?.data?.filter(
-                        (product) => product.category === "juices"
+                        (product) => product.category === category
                       )?.length || 0) / limit
                     )
                       ? "opacity-50 cursor-not-allowed"

@@ -74,9 +74,6 @@ export const userApi = createApi({
       },
       providesTags: ["Products"],
     }),
-    getProductsByCategory: build.query<getProduct[], string>({
-      query: (category) => `/auth/getProductsByCategory?category=${category}`, // Adjust the API endpoint if needed
-    }),
   }),
 });
 
@@ -85,5 +82,4 @@ export const {
   useGetAllProductsQuery,
   useGetProductByIdQuery,
   useGetProductsByCategoryAndPaginationQuery,
-  useGetProductsByCategoryQuery,
 } = userApi;

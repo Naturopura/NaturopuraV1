@@ -1,30 +1,20 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = require("mongoose");
-const productSchema = new mongoose.Schema({
+const mongoose_1 = __importDefault(require("mongoose"));
+const productSchema = new mongoose_1.default.Schema({
     farmerId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "Admin",
         required: true,
     },
     name: { type: String, required: [true, "Please enter Name"] },
     category: {
-        type: String,
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Category",
         required: [true, "Please enter category"],
-        enum: [
-            "vegetables",
-            "fruits",
-            "staples",
-            "chips",
-            "bakery",
-            "snacks",
-            "chocolates",
-            "biscuits",
-            "tea",
-            "coffee",
-            "juices",
-            "honey",
-        ],
     },
     price: { type: Number, required: [true, "Please enter price"] },
     currency: { type: String, required: true, enum: ["INR", "USD"] },
@@ -44,5 +34,5 @@ const productSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
 });
 // Create Product Model
-const Product = mongoose.model("Product", productSchema);
+const Product = mongoose_1.default.model("Product", productSchema);
 exports.default = Product;

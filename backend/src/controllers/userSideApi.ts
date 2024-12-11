@@ -1,4 +1,4 @@
-import Product from "../models/admin.farmer.model";
+import Product from "../models/admin.farmer.product";
 import { Response, NextFunction } from "express";
 import { AuthenticatedRequest } from "../middlewares/authenticateToken"; // Adjust this import path as necessary
 
@@ -61,27 +61,6 @@ export const getProductsByCategoryAndPagination = async (
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
-  }
-};
-
-export const getProductsByCategory = async (
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
-): Promise<any> => {
-  const { category } = req.query;
-
-  if (!category || typeof category !== "string") {
-    return res
-      .status(400)
-      .json({ error: "Invalid or missing category query parameter" });
-  }
-
-  try {
-    const products = await Product.find({ category });
-    return res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch products" });
   }
 };
 

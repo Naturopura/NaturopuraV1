@@ -10,5 +10,5 @@ router.get("/getAllProducts", userSideApi_1.getAllProducts);
 router.get("/getProduct/:productId", userSideApi_1.getProductById);
 router.get("/getProduct/:limit", userSideApi_1.getProductById);
 router.get("/getProducts", userSideApi_1.getProductsByCategoryAndPagination);
-router.get("/getProductsByCategory", userSideApi_1.getProductsByCategory);
+// router.get("/getProductsByCategory", getProductsByCategory);
 exports.default = router;

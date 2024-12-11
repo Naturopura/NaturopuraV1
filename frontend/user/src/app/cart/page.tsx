@@ -60,7 +60,31 @@ const CartPage = () => {
       {cartItems.length > 0 ? (
         <div className="container mx-auto grid grid-cols-3 gap-8">
           {/* Cart Items Section */}
-          <div className="col-span-2 bg-gray-200 space-y-8">
+          <div
+            className={`col-span-2 ${
+              cartItems.length === 1
+                ? "bg-gray-200 h-44"
+                : cartItems.length === 2
+                ? "bg-gray-200 h-80"
+                : cartItems.length === 3
+                ? "bg-gray-200 h-[29.2rem]"
+                : cartItems.length === 4
+                ? "bg-gray-200 h-[38.2rem]"
+                : cartItems.length === 5
+                ? "bg-gray-200 h-[47.4rem]"
+                : cartItems.length === 6
+                ? "bg-gray-200 h-[56.3rem]"
+                : cartItems.length === 7
+                ? "bg-gray-200 h-[65.4rem]"
+                : cartItems.length === 8
+                ? "bg-gray-200 h-[74.5rem]"
+                : cartItems.length === 9
+                ? "bg-gray-200 h-[83.6rem]"
+                : cartItems.length === 10
+                ? "bg-gray-200 h-[92.7rem]"
+                : "bg-gray-200 h-16"
+            } space-y-8`}
+          >
             {cartItems.map((item) => (
               <div
                 key={item._id}
@@ -118,49 +142,51 @@ const CartPage = () => {
               <input
                 type="text"
                 placeholder="Your coupon code"
-                className="border border-gray-300 -mt-5 ml-2 py-3 px-8 text-lg w-[25%] rounded"
+                className="border border-gray-300 -mt-7 ml-[15px] py-3 px-8 text-lg w-1/4 rounded"
               />
-              <button className="bg-[#E8AE3F] ml-2 -mt-5 text-white text-xl font-bold py-3 px-8 rounded">
+              <button className="bg-[#E8AE3F] ml-1 -mt-7 text-white text-xl font-bold py-3 px-8 rounded">
                 Apply
               </button>
 
-              <button className="bg-[#E8AE3F] -mt-5 ml-[26rem] text-white text-xl font-bold py-3 px-8 w-[20%] rounded">
+              <button className="bg-[#E8AE3F] -mt-7 ml-80 py-3 text-white text-xl font-bold px-5 w-[20%] rounded">
                 Update Cart
               </button>
             </div>
           </div>
 
           {/* Cart Total Section (Right Side) */}
-          <div className="mt-8 bg-gray-200">
-            <div className="border-2 border-gray-300 p-6 h-[24rem] rounded-md flex flex-col justify-between">
-              <h2 className="text-2xl font-bold mb-4">Cart Total</h2>
-              <div className="flex justify-between text-xl mb-2">
-                <span>Subtotal:</span>
-                <span>
-                  ₹
-                  {cartItems.reduce(
-                    (sum, item) => sum + item.price * item.quantity,
-                    0
-                  )}
-                </span>
+          <div className="relative">
+            <div className="-top-10 sticky bg-gray-200">
+              <div className="p-6 h-[24rem] rounded-md flex flex-col justify-between">
+                <h2 className="text-2xl font-bold mb-4">Cart Total</h2>
+                <div className="flex justify-between text-xl mb-2">
+                  <span>Subtotal:</span>
+                  <span>
+                    ₹
+                    {cartItems.reduce(
+                      (sum, item) => sum + item.price * item.quantity,
+                      0
+                    )}
+                  </span>
+                </div>
+                <div className="flex justify-between text-xl mb-2">
+                  <span>Shipping:</span>
+                  <span>Free</span>
+                </div>
+                <div className="flex justify-between font-bold text-xl">
+                  <span>Total:</span>
+                  <span>
+                    ₹
+                    {cartItems.reduce(
+                      (sum, item) => sum + item.price * item.quantity,
+                      0
+                    )}
+                  </span>
+                </div>
+                <button className="bg-[#00A2A2] text-xl text-white font-bold py-3 px-8 w-full mt-6 rounded">
+                  Proceed to checkout →
+                </button>
               </div>
-              <div className="flex justify-between text-xl mb-2">
-                <span>Shipping:</span>
-                <span>Free</span>
-              </div>
-              <div className="flex justify-between font-bold text-xl">
-                <span>Total:</span>
-                <span>
-                  ₹
-                  {cartItems.reduce(
-                    (sum, item) => sum + item.price * item.quantity,
-                    0
-                  )}
-                </span>
-              </div>
-              <button className="bg-[#00A2A2] text-xl text-white font-bold py-3 px-8 w-full mt-6 rounded">
-                Proceed to checkout →
-              </button>
             </div>
           </div>
         </div>

@@ -2,7 +2,12 @@
 
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import Image from "next/image";
-import { useListProductMutation } from "@/state/farmerApi";
+import {
+  ListProductRequest,
+  // useCreateCategoryMutation,
+  useGetCategoryQuery,
+  useListProductMutation,
+} from "@/state/farmerApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import imageCompression from "browser-image-compression";
@@ -11,18 +16,6 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 type ImageBuffer = {
   type: "Buffer";
   data: number[];
-};
-
-type ProductFormData = {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  currency: string;
-  quantity: number;
-  description: string;
-  unit: string;
-  image: ImageBuffer;
 };
 
 const NewProduct = () => {
@@ -57,21 +50,6 @@ const NewProduct = () => {
       id: "category",
       label: "Category",
       type: "select",
-      options: [
-        "Select Category",
-        "vegetables",
-        "fruits",
-        "staples",
-        "chips",
-        "bakery",
-        "snacks",
-        "chocolates",
-        "biscuits",
-        "tea",
-        "coffee",
-        "juices",
-        "honey",
-      ],
     },
     {
       id: "description",
@@ -82,6 +60,10 @@ const NewProduct = () => {
   ];
 
   const [createProduct] = useListProductMutation();
+  // const [createCategory] = useCreateCategoryMutation();
+  const { data: category, isLoading, error } = useGetCategoryQuery();
+  console.log("getCategory", category?.categories);
+
   const router = useRouter();
 
   const initialImage: ImageBuffer = {
@@ -89,8 +71,7 @@ const NewProduct = () => {
     data: [],
   };
 
-  const [formData, setFormData] = useState<ProductFormData>({
-    id: "",
+  const [formData, setFormData] = useState<ListProductRequest>({
     name: "",
     category: "",
     price: 0,
@@ -100,6 +81,14 @@ const NewProduct = () => {
     unit: "",
     image: initialImage,
   });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Failed to fetch category</div>;
+  }
 
   // Handle form field changes
   const handleChange = (
@@ -181,7 +170,7 @@ const NewProduct = () => {
 
   return (
     <>
-      <div className="flex items-center ml-32 mt-[-835px] justify-center py-10 h-full">
+      <div className="flex items-center ml-72 mt-[-835px] justify-center py-10 h-full">
         <div className="w-[1000px] bg-white shadow-2xl p-6">
           <h2 className="text-center text-2xl font-bold mb-6">NEW PRODUCT</h2>
           <form onSubmit={handleSubmit}>
@@ -207,7 +196,7 @@ const NewProduct = () => {
                     />
                     <select
                       id="currency"
-                      className="-ml-1 w-[100px] border text-xl text-black border-black py-[10.7px]"
+                      className="-ml-1 w-[100px] border text-xl text-black border-black py-[10.4px]"
                       value={formData.currency}
                       onChange={handleChange}
                     >
@@ -224,9 +213,7 @@ const NewProduct = () => {
                     id={field.id}
                     className="w-full border text-xl placeholder:text-xl border-black p-2"
                     placeholder={field.placeholder}
-                    value={
-                      formData[field.id as keyof ProductFormData] as string
-                    }
+                    value={formData.name}
                     onChange={handleChange}
                   />
                 )}
@@ -238,9 +225,7 @@ const NewProduct = () => {
                     id={field.id}
                     className="w-full border text-xl placeholder:text-xl border-black p-2"
                     placeholder={field.placeholder}
-                    value={
-                      formData[field.id as keyof ProductFormData] as number
-                    }
+                    value={formData.quantity}
                     onChange={handleChange}
                   />
                 )}
@@ -251,14 +236,11 @@ const NewProduct = () => {
                     id={field.id}
                     className="w-full border text-xl placeholder:text-xl border-black p-2"
                     placeholder={field.placeholder}
-                    value={
-                      formData[field.id as keyof ProductFormData] as string
-                    }
+                    value={formData.description}
                     onChange={handleChange}
                   />
                 )}
 
-                {/* Category Select */}
                 {field.type === "select" && field.id === "category" && (
                   <select
                     id={field.id}
@@ -266,12 +248,10 @@ const NewProduct = () => {
                     value={formData.category}
                     onChange={handleChange}
                   >
-                    {field.options?.map((option, index) => (
-                      <option
-                        key={index}
-                        value={option === "Select Category" ? "" : option}
-                      >
-                        {option}
+                    <option value="">Select Category</option>
+                    {category?.categories.map((cat) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.name}
                       </option>
                     ))}
                   </select>

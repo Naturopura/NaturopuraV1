@@ -12,11 +12,11 @@ const LoginAdmin = async (credentials: {
       "http://localhost:8000/auth/admin/login",
       credentials
     );
-    console.log("adminLogin", response);
+    console.log("adminLogin", response.data);
     if (response.data.success === true) {
       toast.success("Sign in Successful");
     } else {
-      toast.error("Account Not Found, Please Sign up");
+      toast.error("Account doesn't exist, Please Sign up");
     }
     localStorage.setItem("accessToken", response?.data?.data?.token);
     return response.data;

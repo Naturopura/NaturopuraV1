@@ -2,7 +2,7 @@ import express from "express";
 import {
   getAllProducts,
   getProductById,
-  getProductsByCategory,
+  // getProductsByCategory,
   getProductsByCategoryAndPagination,
 } from "../controllers/userSideApi";
 
@@ -12,6 +12,6 @@ router.get("/getAllProducts", getAllProducts);
 router.get("/getProduct/:productId", getProductById);
 router.get("/getProduct/:limit", getProductById);
 router.get("/getProducts", getProductsByCategoryAndPagination);
-router.get("/getProductsByCategory", getProductsByCategory);
+// router.get("/getProductsByCategory", getProductsByCategory);
 
 export default router;

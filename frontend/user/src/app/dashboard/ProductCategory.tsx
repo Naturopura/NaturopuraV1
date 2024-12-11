@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import img3 from "@/assets/milk.png";
 import img1 from "@/assets/file (1).png";
@@ -10,47 +9,48 @@ import img6 from "@/assets/insecticide.png";
 import img7 from "@/assets/spade.png";
 import img8 from "@/assets/groceries.png";
 import img9 from "@/assets/chips.png";
+import Link from "next/link";
 
 const productCategories = [
   {
     title: "Fresh Juices",
-    link: "/juices",
     image: img1,
+    category: "juices",
   },
   {
     title: "Fresh Fruits",
-    link: "/fruits",
     image: img2,
+    category: "fruits",
   },
   {
     title: "Fresh Milk",
-    link: "/milks",
     image: img3,
+    category: "milks",
   },
   {
     title: "Fresh Vegetables",
-    link: "/vegetables",
     image: img4,
+    category: "vegetables",
   },
   {
     title: "Farming Chemicals",
-    link: "/farming-chemicals",
     image: img6,
+    category: "",
   },
   {
     title: "Farming Equipments",
-    link: "/farming-equipments",
     image: img7,
+    category: "",
   },
   {
     title: "All Groceries",
-    link: "/groceries",
     image: img8,
+    category: "",
   },
   {
     title: "Chips & Snacks",
-    link: "/chips-snacks",
     image: img9,
+    category: "",
   },
 ];
 
@@ -69,13 +69,13 @@ const ProductCategory = () => {
 
         {/* Product Grid */}
         <div className="grid grid-cols-4 gap-x-10 gap-y-40 relative z-10">
-          {productCategories.map(({ title, link, image }, index) => (
+          {productCategories.map(({ title, image, category }, index) => (
             <div key={index} className="flex ml-10 items-center">
               {/* Text Section */}
               <div className="p-4">
                 <h2 className="text-xl -ml-16 font-bold text-gray-800">
                   {title}
-                  <Link href={link}>
+                  <Link href={`/products/${category}`}>
                     <button
                       className={`text-white ml-1.5 bg-[#ACB631] font-semibold rounded-lg text-md px-4 py-3 mt-4`}
                     >
