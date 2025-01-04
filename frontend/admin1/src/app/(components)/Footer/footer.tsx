@@ -8,7 +8,7 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r bg-[#282F40] text-white py-8 w-full mt-72">
+    <footer className="bg-gradient-to-r bg-[#282F40] text-white py-8 w-full mt-80">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* About Section */}

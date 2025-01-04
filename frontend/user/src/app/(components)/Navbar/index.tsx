@@ -1,18 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ShoppingCart, UserCircleIcon } from "lucide-react";
 import Image from "next/image";
-import img2 from "@/assets/logo 1.png";
+import Naturopura from "@/assets/logo 1.png";
 import "@rainbow-me/rainbowkit/styles.css";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { BrowserProvider } from "ethers";
 import { useAppSelector } from "@/store";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  FiShoppingCart,
+  FiUser,
+  FiHeart,
+  FiBox,
+  FiLogOut,
+  FiSettings,
+} from "react-icons/fi";
 
 const Navbar = () => {
   const { cartItems } = useAppSelector((state) => state.rootReducer.cart);
@@ -25,6 +31,7 @@ const Navbar = () => {
   const { address, isConnected } = useAccount();
   const [nonce, setNonce] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (address) {
@@ -45,6 +52,8 @@ const Navbar = () => {
       const response = await axios.post("http://localhost:4000/auth/signin", {
         walletAddress,
       });
+      console.log("Response:", response);
+
       const nonce = response.data.data.nonce;
       console.log("Nonce received:", nonce);
       setNonce(nonce); // Set the nonce state
@@ -65,13 +74,15 @@ const Navbar = () => {
         console.log("Signature:", signature);
         const walletAddress = address;
         console.log("request sent");
-        const response = await axios.post("http://localhost:3000/auth/signin", {
+        const response = await axios.post("http://localhost:4000/auth/signin", {
           walletAddress,
           nonce,
           signature,
         });
         console.log("response received", response);
         toast.success("SignIn successful");
+        console.log("JWT Token", response.data.data.token);
+        localStorage.setItem("accessToken", response.data.data.token);
       } catch (error) {
         console.error("Error signing message:", error);
         toast.error("Failed to sign the message.");
@@ -81,126 +92,103 @@ const Navbar = () => {
     }
   };
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsDropdownOpen(false);
+      if (!(event.target as HTMLElement).closest("#user-dropdown")) {
+        setDropdownVisible(false);
       }
     };
 
-    // Add event listener
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Cleanup event listener
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
+  // Toggle dropdown visibility
+  const toggleDropdown = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation(); // Prevent closing due to document click
+    setDropdownVisible(!dropdownVisible);
+  };
+
   return (
-    <main>
-      <nav className="flex justify-between px-8 bg-gray-200 items-center py-2">
-        <div className="flex items-center gap-8">
-          <section className="flex items-center gap-4">
-            {/* logo */}
-            <Link href={"/"} className="text-4xl font-mono">
-              <Image
-                src={img2}
-                className=""
-                width={1200}
-                height={1200}
-                alt="Logo"
-              />
-            </Link>
-          </section>
+    <header className="flex items-center justify-between px-8 py-4 bg-white shadow-md fixed top-0 left-0 w-full z-50 transition-all">
+      {/* Left Section: Logo */}
+      <div className="flex items-center space-x-2">
+        <Link href={"/"}>
+          <Image src={Naturopura} alt="Logo" width={180} height={180} />
+        </Link>
+      </div>
 
-          <div className="relative flex items-center w-[500%]">
-            <input
-              type="search"
-              placeholder="Search for products..."
-              className="pl-4 pr-10 py-2 w-full border-2 border-gray-400 bg-white rounded-lg focus:outline-none"
-            />
-            <div className="absolute inset-y-0 right-3 flex items-center">
-              <Search className="text-gray-400" />
-            </div>
-          </div>
-
-          <div className="flex-shrink-0">
-            <ConnectButton label="Sign in with wallet" />
-          </div>
-        </div>
-
-        {/* sidebar mobile menu */}
-
-        {/* last section */}
-        <section className="flex items-center gap-14 mx-10">
-          {/* cart icon */}
-          <Link href={"/cart"}>
-            <AiOutlineShoppingCart className="text-3xl" />
+      {/* Center Section: Navigation */}
+      <nav className="flex space-x-6 text-gray-700 font-medium">
+        {["Home", "Services", "Forum", "Contact us"].map((item) => (
+          <Link
+            key={item}
+            href={
+              item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "")}`
+            }
+            className="hover:text-gray-500 hover:underline"
+          >
+            {item}
           </Link>
+        ))}
+      </nav>
+
+      {/* Right Section: Cart, Wallet Button, and User Icon */}
+      <div className="flex items-center space-x-4">
+        {/* Cart Icon */}
+        <Link href={"/cart"} aria-label="Cart" className="relative">
+          <FiShoppingCart className="text-2xl text-gray-700 hover:text-gray-400" />
           {totalQuantity > 0 && (
-            <span className="absolute top-3 ml-5 bg-red-500 text-white rounded-full text-sm w-5 h-5 flex items-center justify-center">
+            <span className="absolute bottom-4 left-4 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
               {totalQuantity}
             </span>
           )}
+        </Link>
 
-          <UserCircleIcon
-            width={40}
-            height={40}
-            className="h-8 w-8 rounded-full cursor-pointer"
-            onClick={toggleDropdown}
-          />
-          {isDropdownOpen && (
-            <div
-              ref={dropdownRef}
-              className="absolute right-0 mt-48 mr-20 w-48 bg-white border z-50 border-gray-200 rounded-lg shadow-lg"
+        {isConnected ? (
+          // Show the user icon if the wallet is connected
+          <div id="user-dropdown" className="relative">
+            <button
+              aria-label="User Profile"
+              onClick={toggleDropdown}
+              className="relative"
             >
-              <ul className="text-sm text-gray-700">
-                <li>
-                  <Link
-                    href="/profile"
-                    className="block px-4 py-2 text-xl hover:bg-gray-100"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    My Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/wishlist"
-                    className="block px-4 py-2 text-xl hover:bg-gray-100"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Wishlist
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/orders"
-                    className="block px-4 py-2 text-xl hover:bg-gray-100"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Orders
-                  </Link>
-                </li>
-              </ul>
+              <FiUser className="text-2xl text-gray-700 mt-2 hover:text-gray-400" />
+            </button>
+
+            {/* Dropdown Menu */}
+            <div
+              className={`absolute right-0 mt-2 w-48  bg-white border border-gray-200 shadow-lg rounded-lg transition-all duration-300 ${
+                dropdownVisible
+                  ? "opacity-100 transform scale-100"
+                  : "opacity-0 transform scale-95 pointer-events-none"
+              }`}
+            >
+              {[
+                { name: "Wishlist", path: "/wishlist", icon: <FiHeart /> },
+                { name: "Orders", path: "/orders", icon: <FiBox /> },
+                { name: "Settings", path: "/settings", icon: <FiSettings /> },
+                { name: "Disconnect", path: "#", icon: <FiLogOut /> },
+              ].map(({ name, path, icon }) => (
+                <Link
+                  key={name}
+                  href={path}
+                  className="flex items-center px-4 py-2 hover:bg-gray-100"
+                >
+                  <span className="mr-2">{icon}</span>
+                  {name}
+                </Link>
+              ))}
             </div>
-          )}
-          {/* avatar img */}
-        </section>
-      </nav>
-    </main>
+          </div>
+        ) : (
+          // Show Connect Wallet button if not connected
+          <ConnectButton />
+        )}
+      </div>
+    </header>
   );
 };
 

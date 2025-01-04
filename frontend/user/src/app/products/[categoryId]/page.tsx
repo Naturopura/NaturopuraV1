@@ -12,23 +12,36 @@ import { useAppDispatch } from "@/store";
 import toast from "react-hot-toast";
 import { addToWishlist, WishlistItem } from "@/store/wishlistSlice";
 import Sidebar from "../../(components)/Sidebar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
+import { FiHeart } from "react-icons/fi";
 
-const Juices = () => {
+const Products = () => {
   const dispatch = useAppDispatch();
-  // const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
-  const { category }: { category: string } = useParams();
+  const [filters, setFilters] = useState({
+    priceRange: [25, 125],
+    sort: "",
+  });
+  const { categoryId }: { categoryId: string } = useParams();
 
-  console.log("here is cat", category);
+  console.log("categoryId:", categoryId);
 
   const {
     data: products,
     isLoading,
     error,
-  } = useGetProductsByCategoryAndPaginationQuery({ category, page, limit });
+  } = useGetProductsByCategoryAndPaginationQuery({ categoryId, page, limit });
+
+  const totalPages = Math.ceil(
+    (products?.pagination.totalProducts || 0) / limit
+  );
+
+  console.log("Products:", products);
+  console.log("Current Page:", page);
+  console.log("Total Products:", products?.data?.length);
+  console.log("Total Pages:", Math.ceil((products?.data?.length || 0) / limit));
 
   if (isLoading)
     return (
@@ -127,8 +140,8 @@ const Juices = () => {
 
   if (products.data.length === 0) {
     return (
-      <div className="text-center text-black py-4">
-        No products found for the {category} category.
+      <div className="text-center text-2xl mt-64 ml-10 font-semibold py-4">
+        No products found for this category
       </div>
     );
   }
@@ -190,162 +203,147 @@ const Juices = () => {
     return "/default-image.png";
   };
 
-  return (
-    <div className="flex overflow-x-hidden min-h-screen">
-      <Sidebar />
-      {/* Main Content */}
-      <div className="flex-1 p-6">
-        <h2 className="text-2xl font-bold mb-4">
-          Showing{" "}
-          {products?.data
-            ? Math.min(
-                (page - 1) * limit + 1,
-                products.data.filter((product) => product.category === category)
-                  ?.length
-              )
-            : 0}{" "}
-          -{" "}
-          {products?.data
-            ? Math.min(
-                page * limit,
-                products.data.filter((product) => product.category === category)
-                  ?.length
-              )
-            : 0}{" "}
-          of{" "}
-          {products?.data?.filter((product) => product.category === category)
-            ?.length || 0}{" "}
-          products
-        </h2>
+  const handleFilterChange = (key: string, value: string | number[]) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
 
+  return (
+    <div className="flex mt-32 mx-5 border-t-2">
+      {/* Sidebar Filters */}
+      <Sidebar />
+
+      {/* Main Content */}
+      <main className="w-3/4 p-4">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <p className="text-xl font-semibold">
+              Showing {products?.pagination ? (page - 1) * limit + 1 : 0} -{" "}
+              {products?.pagination
+                ? Math.min(page * limit, products.pagination.totalProducts)
+                : 0}{" "}
+              of {products?.pagination?.totalProducts || 0} products
+            </p>
+          </div>
+          <select
+            className={`border font-semibold rounded p-2 ${
+              filters.sort === "price-low" ||
+              filters.sort === "price-high" ||
+              filters.sort === "all-products"
+                ? "w-64"
+                : "w-44"
+            }`}
+            onChange={(e) => handleFilterChange("sort", e.target.value)}
+          >
+            <option value="all-products">Sort By: All Products</option>
+            <option value="newest">Sort By: Newest</option>
+            <option value="price-low">Sort By: Price: Low to High</option>
+            <option value="price-high">Sort By: Price: High to Low</option>
+          </select>
+        </div>
+
+        {/* Product Cards */}
         <div className="grid grid-cols-3 gap-4">
-          {products?.data
-            ?.slice((page - 1) * limit, page * limit)
-            .map((product) => (
-              <div key={product._id} className="p-4">
+          {products?.data.map((product) => (
+            <div
+              key={product._id}
+              className="border-2 border-gray-400 rounded-lg p-4 flex flex-col items-start relative"
+            >
+              <div className="relative w-full h-40">
                 <Link href={`/product/${product._id}`}>
                   <Image
+                    width={998}
+                    height={1000}
                     src={getImageSrc(product.image)}
-                    width={100}
-                    height={100}
-                    alt={product.name}
-                    className="w-full h-[70%] object-cover mb-4"
+                    alt="Product"
+                    className="mb-4 ml-16 object-cover w-1/2 h-3/4"
                   />
-                  <h4 className="font-semibold text-xl text-center">
-                    {product.name}
-                  </h4>
                 </Link>
-                <p className="text-xl font-bold text-center">
+                <button
+                  onClick={() => handleAddToWishlist(product)}
+                  className="absolute -top-3 -right-2 text-xl p-1 "
+                >
+                  <FiHeart />
+                </button>
+              </div>
+              <p className="text-lg text-gray-500 flex items-center justify-between w-full">
+                <span>{product.category.name}</span>
+                <span className="flex items-center space-x-1">
+                  <span>⭐</span>
+                  <span>4.5</span>
+                </span>
+              </p>
+              <Link href={`/product/${product._id}`}>
+                <h4 className="font-bold text-lg pt-2">{product.name}</h4>
+              </Link>
+              <div className="flex items-center justify-between w-full mt-2">
+                <p className="text-lg font-bold">
                   {product.currency} {product.price}
                 </p>
-                <div className="flex space-x-1 ml-7">
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="bg-[#7FA200] rounded-xl text-white px-4 py-2"
-                  >
-                    Add to Cart
-                  </button>
-                  <button
-                    onClick={() => handleAddToWishlist(product)}
-                    className="bg-[#7FA200] rounded-xl text-white px-4 py-2"
-                  >
-                    Add to Wishlist
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="bg-[#7FA200] font-semibold text-white px-4 py-2 rounded-lg"
+                >
+                  Add to Cart
+                </button>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
 
         {/* Pagination */}
-        <div className="flex flex-col items-center -ml-36 mt-12">
-          <hr className="w-[93%] border-t-2 ml-40 border-black mb-6" />
-          <div className="flex justify-between items-center space-x-4 w-full max-w-[20rem]">
-            <span className="text-xl -ml-64 font-semibold">
-              Page {page} of{" "}
-              {Math.ceil(
-                (products?.data?.filter(
-                  (product) => product.category === category
-                )?.length || 0) / limit
-              ) || 1}
-            </span>
-            <div className="flex space-x-2">
-              {/* Previous Button */}
-              {page > 1 && (
-                <button
-                  onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                  className={`text-xl font-medium px-4 py-2 rounded-full ${
-                    page <= 1
-                      ? "opacity-50 cursor-not-allowed"
-                      : "bg-[#7FA200] text-white"
-                  }`}
-                >
-                  Previous
-                </button>
-              )}
+        <div className="flex items-center justify-between mt-8">
+          {/* Page Info */}
+          <div className="text-lg font-semibold">
+            Page {page} of {totalPages || 1}
+          </div>
 
-              {/* Page Number Buttons */}
-              {Array.from(
-                {
-                  length:
-                    Math.ceil(
-                      (products?.data?.filter(
-                        (product) => product.category === category
-                      )?.length || 0) / limit
-                    ) || 1,
-                },
-                (_, index) => index + 1
-              ).map((pageNum) => (
-                <button
-                  key={pageNum}
-                  onClick={() => setPage(pageNum)}
-                  className={`px-4 py-2 ${
-                    pageNum === page ? "bg-[#7FA200] text-white" : ""
-                  } rounded-full font-medium text-xl`}
-                >
-                  {pageNum}
-                </button>
-              ))}
+          {/* Pagination Buttons */}
+          <div className="flex justify-center flex-grow space-x-2">
+            {page > 1 && (
+              <button
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                className="bg-[#7FA200] text-white px-4 py-2 font-semibold rounded-lg disabled:opacity-50"
+              >
+                Previous
+              </button>
+            )}
 
-              {/* Next Button */}
-              {page <
-                Math.ceil(
-                  (products?.data?.filter(
-                    (product) => product.category === category
-                  )?.length || 0) / limit
-                ) && (
-                <button
-                  onClick={() => {
-                    setPage((prev) =>
-                      Math.min(
-                        prev + 1,
-                        Math.ceil(
-                          (products?.data?.filter(
-                            (product) => product.category === category
-                          )?.length || 0) / limit
-                        )
-                      )
-                    );
-                  }}
-                  className={`text-xl font-medium px-4 py-2 rounded-full ${
-                    page >=
-                    Math.ceil(
-                      (products?.data?.filter(
-                        (product) => product.category === category
-                      )?.length || 0) / limit
-                    )
-                      ? "opacity-50 cursor-not-allowed"
-                      : "bg-[#7FA200] text-white"
-                  }`}
-                >
-                  Next
-                </button>
-              )}
-            </div>
+            {/* Page Numbers */}
+            {Array.from(
+              {
+                length: totalPages,
+              },
+              (_, index) => index + 1
+            ).map((pageNum) => (
+              <button
+                key={pageNum}
+                onClick={() => setPage(pageNum)}
+                className={`px-4 py-2 ${
+                  pageNum === page ? "bg-[#7FA200] text-white" : ""
+                } rounded-full font-medium text-xl`}
+              >
+                {pageNum}
+              </button>
+            ))}
+
+            {page < totalPages && (
+              <button
+                onClick={() =>
+                  setPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                className="bg-[#7FA200] text-white px-4 py-2 rounded-lg font-semibold disabled:opacity-50"
+              >
+                Next
+              </button>
+            )}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
 
-export default Juices;
+export default Products;

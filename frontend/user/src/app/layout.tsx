@@ -66,8 +66,8 @@ export default function RootLayout({
             <QueryClientProvider client={queryClient}>
               <RainbowKitProvider
                 theme={lightTheme({
-                  accentColor: "#acb631",
-                  accentColorForeground: "white",
+                  accentColor: "#d1d5db",
+                  accentColorForeground: "black",
                   borderRadius: "medium",
                   fontStack: "system",
                 })}

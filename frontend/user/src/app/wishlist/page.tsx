@@ -2,10 +2,11 @@
 
 import { useAppDispatch, useAppSelector } from "@/store";
 import { removeWishlistItem } from "@/store/wishlistSlice";
-import { TrashIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import toast from "react-hot-toast";
+import { AiFillHeart } from "react-icons/ai";
 
 const Wishlist = () => {
   const dispatch = useAppDispatch();
@@ -40,62 +41,87 @@ const Wishlist = () => {
     return "/default-image.png"; // Fallback image
   };
 
+  const WishlistHeader = () => (
+    <div className="flex items-center justify-between border-b pb-4 mb-4">
+      <h1 className="text-2xl font-bold">Wishlist ({wishlistItems.length})</h1>
+    </div>
+  );
+
+  const WishlistCard = ({
+    _id,
+    imageSrc,
+    name,
+    description,
+    price,
+    image,
+  }: {
+    _id: string;
+    imageSrc: string;
+    name: string;
+    description: string;
+    price: number;
+    image: unknown;
+  }) => (
+    <div className="border p-4 h-[98%] rounded-lg shadow-lg border-gray-300 relative flex flex-col">
+      {/* Heart icon in the top right corner */}
+      <button onClick={() => removeHandler(_id)}>
+        <AiFillHeart
+          className="absolute top-2 right-2 text-red-500 cursor-pointer"
+          size={24}
+        />
+      </button>
+
+      <Image
+        width={1000}
+        height={1000}
+        src={getImageSrc(image)}
+        alt={name}
+        className="h-48 w-5/6 ml-6 object-cover rounded-md"
+      />
+      <h3 className="font-semibold -mt-2">{name}</h3>
+      <p className="text-base mt-1 font-medium text-gray-500 flex-grow">
+        {description}
+      </p>
+
+      {/* Ensuring price and button are aligned at the bottom */}
+      <div className="mt-2 flex flex-col justify-end">
+        <span className="text-lg font-bold">₹{price}</span>
+        <button className="mt-2 mx-auto w-full bg-[#7FA200] text-white font-semibold py-2 rounded-lg">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  );
+
+  // Main Return
   return (
-    <>
-      {wishlistItems.length > 0 ? (
-        <div className="w-[100%] p-4 my-20">
-          <h1 className="text-2xl -mt-16 font-semibold border-b border-black pb-2">
-            My Wishlist ({wishlistItems.length})
-          </h1>
-          <div className="mt-4 space-y-4">
-            {wishlistItems.map((item) => (
-              <div
-                key={item._id}
-                className="flex items-center justify-between border-b border-black pb-4 w-full"
-              >
-                {/* Product Image */}
-                <Image
-                  width={100}
-                  height={100}
-                  src={getImageSrc(item.image)}
-                  alt={item.name}
-                  className="w-32 h-32 object-cover rounded-md"
-                />
+    <div className="p-8 max-w-7xl mt-20 px-1 mx-auto">
+      <WishlistHeader />
 
-                {/* Product Details */}
-                <div className="flex-1 ml-4">
-                  {/* Product Name */}
-                  <h2 className="text-2xl text-gray-400 font-normal">
-                    {item.name}
-                  </h2>
-
-                  {/* Rating */}
-                  <div className="text-sm text-gray-500 flex items-center mt-2">
-                    <span className="text-yellow-500 text-2xl">★★★★★</span>
-                    {/* <span className="ml-1 text-2xl">{item.rating.toFixed(5)}</span> */}
-                  </div>
-
-                  {/* Price */}
-                  <p className="text-2xl font-normal mt-2">₹{item.price}</p>
-                </div>
-
-                {/* Delete Button */}
-                <button
-                  onClick={() => removeHandler(item._id)}
-                  className="-mt-20"
-                >
-                  <TrashIcon className="h-10 w-10" />
-                </button>
-              </div>
-            ))}
-          </div>
+      {wishlistItems.length === 0 ? (
+        <div className="flex flex-col justify-center items-center h-[60vh] text-center">
+          <p className="text-4xl text-gray-500 mb-4">
+            No items in wishlist. Start Adding
+          </p>
+          <Link
+            href={"/"}
+            className="bg-[#7FA200] text-white font-semibold py-2 px-6 rounded-lg transition hover:bg-[#6f9100] active:bg-[#5c7a00]"
+          >
+            Shop now
+          </Link>
         </div>
       ) : (
-        <h1 className="text-center text-4xl font-medium mt-40">
-          You have no items in your wishlist. Start adding!
-        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {wishlistItems.map((item) => (
+            <WishlistCard
+              key={item._id}
+              {...item}
+              imageSrc={getImageSrc(item.image)}
+            />
+          ))}
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

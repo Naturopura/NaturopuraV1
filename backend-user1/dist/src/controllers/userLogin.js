@@ -18,6 +18,7 @@ const responses_1 = require("../responses");
 const crypto_1 = __importDefault(require("crypto"));
 const web3_1 = __importDefault(require("web3"));
 const redis_1 = require("./redis");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { walletAddress, nonce, signature } = req.body;
     const lowerCaseWalletAddress = walletAddress.toLowerCase(); // Ensure wallet address is always in lowercase
@@ -30,10 +31,14 @@ const userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             console.log("No signature or nonce provided. Generating nonce...");
             const randomNonce = crypto_1.default.randomInt(100000, 999999); // Random 6-digit nonce
             console.log("Generated nonce:", randomNonce);
-            yield redis_1.redisClient.set(lowerCaseWalletAddress, randomNonce.toString(), { EX: 300 }); // Increased expiration time to 5 minutes
+            yield redis_1.redisClient.set(lowerCaseWalletAddress, randomNonce.toString(), {
+                EX: 300,
+            }); // Increased expiration time to 5 minutes
             console.log("Stored nonce in Redis for walletAddress:", lowerCaseWalletAddress);
             // Send the generated nonce to the client
-            return res.status(200).json(ApiResponse_1.default.success("Nonce generated", { nonce: randomNonce }));
+            return res
+                .status(200)
+                .json(ApiResponse_1.default.success("Nonce generated", { nonce: randomNonce }));
         }
         // Scenario 2: If signature, nonce, and walletAddress are all provided (Verify signature)
         if (signature && nonce && walletAddress) {
@@ -44,11 +49,15 @@ const userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             // If nonce does not match or is expired, return an error
             if (!cachedNonce) {
                 console.error("No nonce found in Redis. It may have expired.");
-                return res.status(400).json(ApiResponse_1.default.error("Nonce mismatch or expired", responses_1.ResponseDefinitions.SignatureError.code));
+                return res
+                    .status(400)
+                    .json(ApiResponse_1.default.error("Nonce mismatch or expired", responses_1.ResponseDefinitions.SignatureError.code));
             }
             if (cachedNonce !== nonce.toString()) {
                 console.error("Nonce mismatch. Expected:", cachedNonce, "but received:", nonce);
-                return res.status(400).json(ApiResponse_1.default.error("Nonce mismatch or expired", responses_1.ResponseDefinitions.SignatureError.code));
+                return res
+                    .status(400)
+                    .json(ApiResponse_1.default.error("Nonce mismatch or expired", responses_1.ResponseDefinitions.SignatureError.code));
             }
             // Recreate the message that was signed by the user (should match frontend message)
             const message = `Please sign this message to authenticate: ${nonce}`;
@@ -60,22 +69,34 @@ const userLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             // If recovered address doesn't match the provided wallet address, return an error
             if (recoveredAddress.toLowerCase() !== walletAddress.toLowerCase()) {
                 console.error("Recovered address does not match provided wallet address. Recovered:", recoveredAddress, "Provided:", walletAddress);
-                return res.status(400).json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.SignatureError.message, responses_1.ResponseDefinitions.SignatureError.code));
+                return res
+                    .status(400)
+                    .json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.SignatureError.message, responses_1.ResponseDefinitions.SignatureError.code));
             }
+            const tokenPayload = {
+                id: crypto_1.default.randomUUID(), // Use a unique identifier for the user
+                walletAddress: lowerCaseWalletAddress,
+            };
+            const token = jsonwebtoken_1.default.sign(tokenPayload, process.env.TOKEN_SECRET || "QUOTUS", { expiresIn: "48h" });
             // Signature verification successful, return success response
             console.log("Signature verified successfully. Authentication successful.");
             return res.status(200).json(ApiResponse_1.default.success(responses_1.ResponseDefinitions.OperationSuccessful.message, {
                 message: "Successfully authenticated with wallet.",
                 walletAddress: walletAddress,
+                token: token,
             }, responses_1.ResponseDefinitions.OperationSuccessful.code));
         }
         // If none of the conditions match, return an invalid request response
         console.error("Invalid request. Signature, nonce, or walletAddress missing.");
-        return res.status(400).json(ApiResponse_1.default.error("Invalid request", responses_1.ResponseDefinitions.InvalidRequest.code));
+        return res
+            .status(400)
+            .json(ApiResponse_1.default.error("Invalid request", responses_1.ResponseDefinitions.InvalidRequest.code));
     }
     catch (error) {
         console.error("Error in userLogin:", error);
-        return res.status(500).json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.InternalError.message, responses_1.ResponseDefinitions.InternalError.code));
+        return res
+            .status(500)
+            .json(ApiResponse_1.default.error(responses_1.ResponseDefinitions.InternalError.message, responses_1.ResponseDefinitions.InternalError.code));
     }
 });
 exports.userLogin = userLogin;

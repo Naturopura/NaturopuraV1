@@ -1,124 +1,144 @@
-import React from "react";
 import Image from "next/image";
-import Link from "next/link";
-import broccoli from "@/assets/broccoli-lg.jpg";
-import bread from "@/assets/Bread.png";
-import cola from "@/assets/cola.png";
-import leaf from "@/assets/leaf.png";
+import React from "react";
+import bakery from "@/assets/20353b41b309b6e66e7ead8438746fdb.jpg";
+import beverage from "@/assets/pexels-fotios-photos-109275.jpg";
+import freshvegetables from "@/assets/vegetables-fresh.jpg";
 
 const FeaturedCategories = () => {
   return (
-    <>
-      <div className="-mt-[29rem] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-16 sm:py-24 lg:py-32">
-          <div className="flex items-center -ml-[6.6rem] justify-between px-10 py-4">
-            {/* Leaf Image */}
-            <div className="">
-              <Image
-                width={100}
-                height={100}
-                src={leaf}
-                alt="Leaf Icon"
-                className=""
-              />
-            </div>
+    // <div>
+    //   <div className="-mt-[7.5rem] ml-[3px]">
+    //     <Image
+    //       width={100}
+    //       height={100}
+    //       src={leaf}
+    //       alt=""
+    //       className="ml-[-2px]"
+    //     />
+    //     <div className="text-2xl text-gray-900 font-bold ml-[3.875rem] -mt-[3.25rem]">
+    //       Food Cupboard
+    //     </div>
+    //     <div className="flex items-center justify-center min-h-screen">
+    //       <div className="w-[96vw] -mt-[1.5625rem] h-[90vh] bg-white relative">
+    //         <Image
+    //           width={600}
+    //           height={600}
+    //           src={snacks}
+    //           alt="Snacks"
+    //           className="w-full h-full object-cover"
+    //         />
+    //         <div className="absolute -ml-[46.875rem] inset-0 flex flex-col items-center justify-center space-y-4 ">
+    //           <h1 className="text-4xl font-bold text-black">
+    //             Sweet <span className="text-[#ACB631]">Snacks</span> &{" "}
+    //             <span className="text-[#ACB631]">Nuts</span> Recipes
+    //           </h1>
+    //           <p className="text-black text-3xl">Healthy Recipes</p>
+    //           <Link href={"/sweets-snacks"}>
+    //             <button className="text-white text-xl -ml-5 bg-[#ACB631] font-medium rounded-lg text-md px-12 py-3 mt-4">
+    //               Shop now
+    //             </button>
+    //           </Link>
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
 
-            {/* Featured Categories Title */}
-            <h2 className="text-2xl -ml-[54.5rem] -mt-3 font-bold text-gray-900">
-              Featured Categories
-            </h2>
+    //   <div className="flex items-center justify-center min-h-screen">
+    //     <div className="w-[96vw] -mt-[7.1875rem] ml-[2px] h-[90vh] bg-white relative">
+    //       <Image
+    //         width={600}
+    //         height={600}
+    //         src={snacks2}
+    //         alt="Snacks"
+    //         className="w-full h-full object-cover"
+    //       />
 
-            {/* View All Link */}
-            <h2 className="text-2xl hover:underline font-bold text-gray-900">
-              <Link href="#">View all &gt;</Link>
-            </h2>
-          </div>
+    //       <div className="absolute inset-0 flex flex-col items-center justify-center space-y-4 -mt-5 -ml-[25rem]">
+    //         <h1 className="text-4xl font-bold text-[#ACB631]">
+    //           Snacks <span className="text-black">For Your</span>
+    //           <span className="text-black ml-3">Summer</span>{" "}
+    //           <span className="text-[#ACB631]">Party</span>
+    //         </h1>
+    //         <p className="text-3xl text-black">Healthy Recipes</p>
+    //       </div>
+    //       <Link href={"/sweets-snacks"}>
+    //         <button
+    //           className="absolute bottom-10 right-10 text-white text-xl bg-[#ACB631]
+    //            focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50  font-medium rounded-lg
+    //            text-md px-12 py-3"
+    //         >
+    //           Shop now
+    //         </button>
+    //       </Link>
+    //     </div>
+    //   </div>
+    // </div>
 
-          <div className="-mt-4 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
-            <div className="group relative">
-              <div className="relative w-[175%] -ml-12 overflow-hidden bg-white h-[37.5rem]">
-                <Image
-                  width={400}
-                  height={400}
-                  alt="Fresh Vegetables"
-                  src={broccoli}
-                  className="object-center ml-32 -mt-16"
-                />
-                <div className="p-6 -mt-24 -ml-7 text-center">
-                  <button className="text-white text-2xl bg-[#ACB631] font-medium rounded-lg text-md px-12 py-3 mt-4">
-                    <Link href={"/vegetables"}>Shop now</Link>
-                  </button>
-                  <div className="mt-4 text-xl font-bold">Fresh Vegetables</div>
-                  <div className="text-gray-500 text-xl">125 items</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="container mx-auto text-center">
+      <h2 className="text-3xl font-bold mb-2">Featured Categories</h2>
+      <p className="text-gray-600 mb-8 font-medium">
+        Find what you are looking for
+      </p>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="-mt-[55rem] ml-[40rem] max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
-          <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
-            <div className="group relative">
-              <div className="relative h-[18.75rem] w-[39.0625rem] overflow-hidden bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1">
-                <Image
-                  width={300}
-                  height={100}
-                  alt="Bakery"
-                  src={bread}
-                  className="h-[11.25rem] ml-[3.125rem] mt-[4.0625rem] object-cover object-center"
-                />
-                <div className="p-6">
-                  <h2 className="text-2xl ml-[20.625rem] -mt-[12.5rem] font-bold text-gray-800">
-                    <button className="text-white -ml-[1.25rem] bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-md px-12 py-3 mt-4">
-                      <Link href={"/bakery"}>Shop now</Link>
-                    </button>
-                  </h2>
-                </div>
-                <div className="ml-[25rem] -mt-[8.75rem] font-bold text-xl">
-                  Bakery
-                </div>
-                <div className="ml-[24.5625rem] mt-[0.187rem] text-gray-500 text-xl">
-                  29 items
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="-mt-[16.5625rem] ml-[40rem] max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
-          <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
-            <div className="group relative">
-              <div className="relative h-[17.75rem] w-[39.0625rem] overflow-hidden bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1">
-                <Image
-                  width={200}
-                  height={100}
-                  alt="Drinks, Tea & Coffee"
-                  src={cola}
-                  className="h-[13.75rem] ml-[5.625rem] mt-[2.1875rem] object-cover object-center"
-                />
-                <div className="p-6">
-                  <h2 className="text-2xl ml-[20.625rem] -mt-[12.5rem] font-bold text-gray-800">
-                    <button className="text-white -ml-5 bg-[#ACB631] focus:ring-4 focus:outline-none focus:ring-[#f3ff63]/50 font-medium rounded-lg text-md px-12 py-3 mt-4">
-                      <Link href={"/drinks"}>Shop now</Link>
-                    </button>
-                  </h2>
-                </div>
-                <div className="ml-[21.0625rem] -mt-[8.75rem] font-bold text-xl">
-                  Drinks, Tea & Coffee
-                </div>
-                <div className="ml-[24.5625rem] mt-[3px] text-gray-500 text-xl">
-                  45 items
-                </div>
-              </div>
-            </div>
+      <div className="py-12 -mx-4 my-9 rounded-lg grid grid-cols-1 md:grid-cols-3 gap-8 px-4 bg-[rgba(193,220,220,1)] md:px-0">
+        {/* Fresh Vegetables Card */}
+        <div className="overflow-hidden ml-14">
+          <Image
+            width={1920}
+            height={1080}
+            src={freshvegetables}
+            alt="Fresh Vegetables"
+            className="w-80 h-[28rem] object-cover rounded-lg"
+          />
+          <div className="p-4 text-center">
+            <h3 className="font-semibold text-lg mr-12">Fresh Vegetables</h3>
           </div>
         </div>
+
+        {/* Bakery Card */}
+        <div className="overflow-hidden ml-12">
+          <Image
+            width={682}
+            height={1023}
+            src={bakery}
+            alt="Bakery"
+            className="w-80 h-[28rem] object-cover rounded-lg"
+          />
+          <div className="p-4 text-center">
+            <h3 className="font-semibold text-lg mr-8">Bakery</h3>
+          </div>
+        </div>
+
+        {/* Beverages Card */}
+        <div className="overflow-hidden ml-10">
+          <Image
+            width={5795}
+            height={3797}
+            src={beverage}
+            alt="Beverages"
+            className="w-80 h-[28rem] object-cover rounded-lg"
+          />
+          <div className="p-4 text-center">
+            <h3 className="font-semibold text-lg mr-7">Beverages</h3>
+          </div>
+        </div>
+
+        {/* Description and Explore Button */}
+        <div className="col-span-1 md:col-span-3 text-center mt-3">
+          <p className="text-gray-500 font-semibold px-6 md:px-32">
+            Our product categories feature fresh vegetables, delicious bakery
+            items, and refreshing beverages, all carefully selected to enhance
+            your daily meals. From farm-fresh produce to freshly baked goods and
+            thirst-quenching drinks, we have everything you need. Explore our
+            offerings today and discover a variety of flavors to suit your
+            taste. Don’t miss out—browse through our selection now!
+          </p>
+          <button className="mt-6 ml-3 px-6 py-2 bg-white font-semibold rounded-lg transition">
+            Explore →
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

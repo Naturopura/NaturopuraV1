@@ -5,11 +5,17 @@ type ImageBuffer = {
   data: number[];
 };
 
+export interface Category {
+  _id: string;
+  name: string;
+  image: ImageBuffer;
+}
+
 export interface getProduct {
   _id: string;
-  id: string;
+  farmerId: string;
   name: string;
-  category: string;
+  category: Category;
   price: number;
   currency: string;
   quantity: number;
@@ -30,8 +36,13 @@ export interface getProductById {
   image: ImageBuffer;
 }
 
+export interface CategoriesResponse {
+  message: string;
+  categories: Category[];
+}
+
 export interface getProductsByCategoryAndPaginationRequest {
-  category: string;
+  categoryId: string;
   page: number;
   limit: number;
 }
@@ -39,12 +50,28 @@ export interface getProductsByCategoryAndPaginationRequest {
 export type getProductsByCategoryAndPaginationResponse = {
   data: getProduct[];
   pagination: {
-    total: any;
+    totalProducts: number;
     currentPage: number;
     totalPages: number;
     limit: number;
   };
 };
+
+export interface searchProductRequest {
+  query: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface searchProductResponse {
+  results: getProduct[];
+  pagination: {
+    totalProducts: number;
+    currentPage: number;
+    totalPages: number;
+    limit: number;
+  };
+}
 
 export const userApi = createApi({
   baseQuery: fetchBaseQuery({
@@ -61,18 +88,34 @@ export const userApi = createApi({
       query: (id) => `/auth/getProduct/${id}`,
       providesTags: ["Products"],
     }),
+    getCategory: build.query<CategoriesResponse, void>({
+      query: () => "/auth/getCategories",
+      providesTags: ["Products"],
+    }),
     getProductsByCategoryAndPagination: build.query<
       getProductsByCategoryAndPaginationResponse,
       getProductsByCategoryAndPaginationRequest
     >({
-      query: ({ category, page = 1, limit = 6 }) => {
-        const params = new URLSearchParams();
-        if (category) params.append("category", category);
-        params.append("page", page.toString());
-        params.append("limit", limit.toString());
-        return `/auth/getProducts?${params.toString()}`;
+      query: ({ page = 1, limit = 6, categoryId }) => {
+        if (!categoryId) {
+          throw new Error("The 'categoryId' parameter is required.");
+        }
+
+        const queryParams = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString(),
+          categoryId, // Since categoryId is mandatory, it's always appended
+        });
+
+        return `/auth/productsByCategoryAndPagination?${queryParams.toString()}`;
       },
       providesTags: ["Products"],
+    }),
+    searchProducts: build.query<searchProductResponse, searchProductRequest>({
+      query: ({ page = 1, limit = 6, query }) => ({
+        url: "/auth/search",
+        params: { query, page, limit },
+      }),
     }),
   }),
 });
@@ -81,5 +124,7 @@ export const userApi = createApi({
 export const {
   useGetAllProductsQuery,
   useGetProductByIdQuery,
+  useGetCategoryQuery,
   useGetProductsByCategoryAndPaginationQuery,
+  useLazySearchProductsQuery,
 } = userApi;

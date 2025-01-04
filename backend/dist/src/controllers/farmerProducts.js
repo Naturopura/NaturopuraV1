@@ -24,6 +24,17 @@ const createCategory = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             res.status(400).json({ error: "Please provide both name and image." });
             return;
         }
+        // Validate that image is a Base64 string
+        const isBase64 = (str) => {
+            const base64Regex = /^data:image\/\w+;base64,/;
+            return base64Regex.test(str);
+        };
+        if (!isBase64(image)) {
+            res.status(400).json({ error: "Invalid image format." });
+            return;
+        }
+        // Remove Base64 metadata
+        const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
         // Check for duplicate category name
         const existingCategory = yield admin_farmer_category_1.default.findOne({ name });
         if (existingCategory) {
@@ -33,7 +44,7 @@ const createCategory = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         // Create a new category
         const category = new admin_farmer_category_1.default({
             name,
-            image, // Convert Base64 image to binary buffer
+            image: Buffer.from(base64Data, "base64"), // Convert Base64 image to binary buffer
         });
         // Save to database
         const savedCategory = yield category.save();
@@ -182,25 +193,24 @@ const getProductsByCategoryAndPagination = (req, res, next) => __awaiter(void 0,
         const limitNumber = parseInt(limit, 10);
         // Calculate the number of documents to skip
         const skip = (pageNumber - 1) * limitNumber;
-        // Ensure categoryId is provided
-        if (!categoryId) {
-            return res.status(400).json({ message: "Category ID is required." });
+        // Build the query conditionally based on categoryId
+        const query = {};
+        if (categoryId) {
+            query.category = categoryId;
         }
-        // Fetch products by category with pagination and filtering
-        const products = yield admin_farmer_product_1.default.find({ category: categoryId })
+        // Fetch products with pagination and filtering
+        const products = yield admin_farmer_product_1.default.find(query)
             .populate("category")
             .skip(skip)
             .limit(limitNumber)
             .sort({ createdAt: -1 });
-        // Get the total count of products for the given category
-        const totalProducts = yield admin_farmer_product_1.default.countDocuments({
-            category: categoryId,
-        });
+        // Get the total count of products for the given query
+        const totalProducts = yield admin_farmer_product_1.default.countDocuments(query);
         // If no products are found
         if (products.length === 0) {
             return res
                 .status(404)
-                .json({ message: "No products found for this category." });
+                .json({ message: "No products found for the given criteria." });
         }
         // Return products with pagination metadata
         return res.status(200).json({

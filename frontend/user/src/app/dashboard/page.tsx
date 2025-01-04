@@ -4,11 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import leaf from "@/assets/leaf.png";
-import ProductCategory from "./ProductCategory";
-import FeaturedCategories from "./FeaturedCategories";
-import FoodCupboard from "./FoodCupboard";
-import ProductCategoryList from "./ProductCategoryList";
-import ProductGrid from "./ProductGrid";
+import NewArrivals from "./NewArrivals";
+import Sales from "./Sales";
+import ProductGrid from "./Products";
 import Fruits from "./Fruits";
 import Vegetables from "./Vegetables";
 import DrinksTeaCoffee from "./DrinksTeaCoffee";
@@ -26,27 +24,22 @@ import AgricultureSeeds from "./AgricultureSeeds";
 import FarmingGardening from "./FarmingGardening";
 import Recommendations from "./Recommendations";
 import RecentViewed from "./RecentViewed";
-import Carousel from "./Carousel";
+import Hero from "./Hero";
+import FeaturedCategories from "./FeaturedCategories";
+import FoodCupboard from "./FoodCupboard";
+import Products from "./Products";
 
 const Dashboard = () => {
   return (
     <>
-      <div className="bg-gray-200 overflow-x-hidden">
-        <Carousel />
-        <ProductCategory />
+      <div className="overflow-x-hidden">
+        <Hero />
+        <NewArrivals />
+        <Sales />
         <FeaturedCategories />
         <FoodCupboard />
-        <ProductCategoryList />
 
-        <hr className="border-gray-400 border-t-2 mx-5 mt-10" />
-
-        <h2 className="underline ml-8 mt-6 text-2xl font-bold">
-          <Link href={""}>View all&gt;</Link>
-        </h2>
-
-        <hr className="border-gray-400 border-t-2 mx-5 mt-10" />
-
-        <ProductGrid />
+        <Products />
         <Fruits />
         <Vegetables />
         <DrinksTeaCoffee />
