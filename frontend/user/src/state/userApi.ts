@@ -57,19 +57,27 @@ export type getProductsByCategoryAndPaginationResponse = {
   };
 };
 
-export interface searchProductRequest {
-  query: string;
+export interface searchFilterAndSortProductsRequest {
+  query?: string;
   page?: number;
   limit?: number;
+  category?: string | string[];
+  minPrice?: number;
+  maxPrice?: number;
+  sort?: string;
 }
 
-export interface searchProductResponse {
-  results: getProduct[];
-  pagination: {
-    totalProducts: number;
-    currentPage: number;
-    totalPages: number;
-    limit: number;
+export interface searchFilterAndSortProductsResponse {
+  success: boolean;
+  message: string;
+  data: {
+    products: getProduct[];
+    pagination: {
+      totalProducts: number;
+      currentPage: number;
+      totalPages: number;
+      limit: number;
+    };
   };
 }
 
@@ -100,7 +108,6 @@ export const userApi = createApi({
         if (!categoryId) {
           throw new Error("The 'categoryId' parameter is required.");
         }
-
         const queryParams = new URLSearchParams({
           page: page.toString(),
           limit: limit.toString(),
@@ -111,10 +118,13 @@ export const userApi = createApi({
       },
       providesTags: ["Products"],
     }),
-    searchProducts: build.query<searchProductResponse, searchProductRequest>({
-      query: ({ page = 1, limit = 6, query }) => ({
+    searchFilterAndSortProducts: build.query<
+      searchFilterAndSortProductsResponse,
+      searchFilterAndSortProductsRequest
+    >({
+      query: (params) => ({
         url: "/auth/search",
-        params: { query, page, limit },
+        params,
       }),
     }),
   }),
@@ -126,5 +136,5 @@ export const {
   useGetProductByIdQuery,
   useGetCategoryQuery,
   useGetProductsByCategoryAndPaginationQuery,
-  useLazySearchProductsQuery,
+  useLazySearchFilterAndSortProductsQuery,
 } = userApi;

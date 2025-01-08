@@ -267,7 +267,315 @@ const ManageProduct: React.FC = () => {
   const router = useRouter();
 
   if (isLoading)
-    return <div className="py-4 ml-[30rem] -mt-60 text-4xl">Loading...</div>;
+    return (
+      <div className="p-4 mx-2 pl-64 -mt-[37rem] animate-pulse">
+        <div className="w-full mb-4">
+          <div className="h-8 w-1/6 bg-gray-300 rounded-md"></div>
+        </div>
+
+        <div className="flex justify-between items-center mb-4">
+          <div className="w-1/3 h-8 bg-gray-300 rounded-md"></div>
+          <div className="w-1/6 h-9 bg-gray-300 ml-[21.4rem] rounded-md"></div>
+          <div className="w-1/6 h-9 bg-gray-300 rounded-md"></div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full border border-gray-300 rounded-md">
+            <thead>
+              <tr>
+                {[
+                  "Name",
+                  "Image",
+                  "Price",
+                  "Stock",
+                  "Unit",
+                  "Category",
+                  "Description",
+                  "Actions",
+                ].map((header, index) => (
+                  <th key={index} className="px-4 py-2">
+                    <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              <tr className="border-t">
+                <td className="px-2 py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-4 py-2">
+                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-8 py-2">
+                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-9 py-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-2 py-2">
+                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="py-2">
+                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
+                </td>
+                <td className="px-10 py-2">
+                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
+                </td>
+              </tr>
+              {/* Repeat rows as needed */}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="flex mt-20">
+          <div className="h-8 w-28 ml-20 bg-gray-300 rounded-md"></div>
+          <div className="flex space-x-4 ml-60">
+            <div className="h-8 w-20 bg-gray-300 rounded-md"></div>
+            <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+            <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+            <div className="h-8 w-20 bg-gray-300 rounded-md"></div>
+          </div>
+        </div>
+      </div>
+    );
 
   const totalPages = products?.pagination?.totalPages || 1;
 
@@ -405,8 +713,6 @@ const ManageProduct: React.FC = () => {
 
   return (
     <>
-      {/* Main Content */}
-      {/* Page Loading Progress Bar */}
       <div
         style={{
           position: "fixed",
@@ -421,12 +727,10 @@ const ManageProduct: React.FC = () => {
         }}
       />
 
-      {/* Main Section */}
       <div className="flex-1 ml-64 -mt-[36rem] px-6">
         <main>
           <h1 className="text-2xl font-bold">Products</h1>
 
-          {/* Search and Filter */}
           <div className="mt-4 flex items-center justify-between">
             <div className="relative w-1/2">
               <Search
@@ -460,7 +764,6 @@ const ManageProduct: React.FC = () => {
             </div>
           </div>
 
-          {/* Table */}
           <div className="mt-6 border border-gray-400 rounded-lg">
             <table className="w-full table-auto text-left border-collapse">
               <thead>
@@ -514,7 +817,6 @@ const ManageProduct: React.FC = () => {
                             className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 w-full"
                             onClick={() => {
                               setVisibleDropdown(null);
-                              // setIsEditModalOpen(true);
                               openEditModal(product);
                               console.log(
                                 "Product passed to openEditModal:",
@@ -547,16 +849,13 @@ const ManageProduct: React.FC = () => {
           </div>
         </main>
 
-        {/* Pagination */}
         <div className="flex flex-col items-center mt-12">
           <hr className="w-full border-t-2 border-black mb-6" />
           <div className="flex justify-between items-center w-full max-w-4xl">
-            {/* Page Indicator (Left-Aligned) */}
             <span className="text-xl font-semibold flex-1 justify-start">
               Page {page} of {totalPages}
             </span>
 
-            {/* Pagination Controls (Centered) */}
             <div className="flex-1 flex justify-start space-x-2">
               {page > 1 && (
                 <button
@@ -592,7 +891,6 @@ const ManageProduct: React.FC = () => {
         </div>
       </div>
 
-      {/* {isEditModalOpen && <EditProduct />} */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center backdrop-blur-sm justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white w-full max-w-4xl h-auto rounded-lg shadow-lg p-6 overflow-y-auto max-h-[90vh]">
@@ -603,7 +901,6 @@ const ManageProduct: React.FC = () => {
               onSubmit={handleSubmit}
               className="grid grid-cols-1 sm:grid-cols-2 gap-6"
             >
-              {/* Name and Description */}
               <div className="border-2 border-gray-300 p-4 rounded-md space-y-4">
                 <h2 className="text-xl font-semibold mb-2">
                   Name and Description
@@ -625,7 +922,6 @@ const ManageProduct: React.FC = () => {
                 />
               </div>
 
-              {/* Unit and Currency */}
               <div className="border-2 border-gray-300 h-[77%] p-4 rounded-md space-y-4">
                 <h2 className="text-xl font-semibold mb-2">
                   Unit and Currency
@@ -655,7 +951,6 @@ const ManageProduct: React.FC = () => {
                 </SelectField>
               </div>
 
-              {/* Product Pricing */}
               <div className="border-2 border-gray-300 p-4 rounded-md space-y-4">
                 <h2 className="text-xl font-semibold mb-2">Product Pricing</h2>
                 <hr className="border-b border-gray-200 my-4" />
@@ -669,7 +964,6 @@ const ManageProduct: React.FC = () => {
                 />
               </div>
 
-              {/* Category */}
               <div className="border-2 border-gray-300 p-4 -mt-20 h-full rounded-md space-y-4">
                 <h2 className="text-xl font-semibold mb-2">Category</h2>
                 <hr className="border-b border-gray-200 my-4" />
@@ -698,7 +992,6 @@ const ManageProduct: React.FC = () => {
                 </SelectField>
               </div>
 
-              {/* Manage Stock */}
               <div className="border-2 border-gray-300 p-4 rounded-md space-y-4">
                 <h2 className="text-xl font-semibold mb-2">Manage Stock</h2>
                 <hr className="border-b border-gray-200 my-4" />
@@ -712,7 +1005,6 @@ const ManageProduct: React.FC = () => {
                 />
               </div>
 
-              {/* Product Image */}
               <div className="border-2 border-gray-300 p-4 -mt-20 h-[90%] rounded-md space-y-4">
                 <h2 className="text-xl font-semibold mb-2">Product Image</h2>
                 <hr className="border-b border-gray-200 my-4" />
@@ -735,7 +1027,6 @@ const ManageProduct: React.FC = () => {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="col-span-2 flex justify-end space-x-2 -mt-44">
                 <button
                   type="button"

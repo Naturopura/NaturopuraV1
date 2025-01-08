@@ -10,6 +10,6 @@ router.get("/getAllProducts", userSideApi_1.getAllProducts);
 router.get("/getCategories", userSideApi_1.getCategory);
 router.get("/getProduct/:productId", userSideApi_1.getProductById);
 router.get("/productsByCategoryAndPagination", userSideApi_1.getProductsByCategoryAndPagination);
-router.get("/search", userSideApi_1.searchProducts);
+router.get("/search", userSideApi_1.searchFilterAndSortProducts);
 // router.get("/getProductsByCategory", getProductsByCategory);
 exports.default = router;

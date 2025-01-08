@@ -43,6 +43,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
 const Sidebar = () => {
   const [activeItem, setActiveItem] = useState<string>("");
+  const [loading] = useState(false);
 
   const menuItems = [
     {
@@ -67,7 +68,14 @@ const Sidebar = () => {
     },
   ];
 
-  return (
+  return loading ? (
+    <div className="flex justify-center items-center min-h-screen animate-pulse">
+      <div className="h-10 bg-gray-300 rounded mb-4"></div>
+      <div className="h-10 bg-gray-300 rounded mb-4"></div>
+      <div className="h-10 bg-gray-300 rounded mb-4"></div>
+      <div className="h-10 bg-gray-300 rounded mb-4"></div>
+    </div>
+  ) : (
     <div className="w-64 min-h-screen mt-24 bg-gray-100 p-4">
       <nav>
         {menuItems.map((item) => (

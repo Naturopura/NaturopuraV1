@@ -1,13 +1,16 @@
 import Image from "next/image";
 import React from "react";
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
-import mango from "@/assets/yellow-mango.png";
+import coriander from "@/assets/61lC3tBxWwL._AC_UF1000,1000_QL80_.jpg";
+import rice from "@/assets/image_processing20220225-11624-1qyve6q.png";
+import dal from "@/assets/images (23).jpg";
+import sooji from "@/assets/images (24).jpg";
 
 const suggestions = [
-  { id: 1, name: "Adidas x Fruit", price: "$349.00", image: mango },
-  { id: 2, name: "Fruit Cap", price: "$49.00", image: mango },
-  { id: 3, name: "Fruit Beanie", price: "$20.00", image: mango },
-  { id: 4, name: "Fruit Tote", price: "$39.90", image: mango },
+  { id: 1, name: "Coriander Powder", price: "$349.00", image: coriander },
+  { id: 2, name: "Rice", price: "$49.00", image: rice },
+  { id: 3, name: "Dal", price: "$20.00", image: dal },
+  { id: 4, name: "Sooji", price: "$39.90", image: sooji },
 ];
 
 const RecentlyViewed = () => {

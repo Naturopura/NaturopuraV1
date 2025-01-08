@@ -45,76 +45,83 @@ const Products = () => {
 
   if (isLoading)
     return (
-      <div className="flex animate-pulse">
-        {/* Filters Section */}
-        <div className="w-1/4 p-4 space-y-6 border-r">
-          <div className="h-6 bg-gray-300 rounded w-[35%]"></div>
-          <div className="flex">
-            <div className="h-6 bg-gray-300 rounded w-[35%]"></div>
-            <div className="h-6 ml-44 w-6 bg-gray-300 rounded"></div>
-          </div>
+      <div className="flex gap-4 mt-32 animate-pulse">
+        {/* Sidebar Filter Options Skeleton */}
+        <div className="w-1/4 space-y-8">
+          <div className="h-7 bg-gray-300 rounded-md w-1/2 ml-10"></div>
+          <div className="space-y-8">
+            <div className="h-6 bg-gray-300 ml-10 rounded-md w-1/3"></div>
 
-          <div className="space-y-3">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="flex -mt-4 items-center space-x-3">
-                <div className="h-6 w-6 bg-gray-300 rounded"></div>
-                <div className="h-6 bg-gray-300 rounded w-1/4"></div>
-              </div>
-            ))}
+            <div className="space-y-2">
+              {" "}
+              {/* Reduce vertical spacing */}
+              {[...Array(7)].map((_, i) => (
+                <div key={i} className="flex items-center gap-4 ml-10">
+                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
+                  <div className="h-6 bg-gray-300 rounded-md w-1/3"></div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex">
-            <div className="h-6 bg-gray-300 rounded w-[150%]"></div>
-            <div className="h-7 ml-44 w-24 bg-gray-300 rounded"></div>
-          </div>
+          <div className="h-6 bg-gray-300 ml-10 rounded-md w-1/3"></div>
+          <div className="flex flex-col ml-10 gap-2">
+            {/* First Line: 4 */}
 
-          <div className="space-y-3">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="flex -mt-5 items-center space-x-3">
-                <div className="h-6 w-6  bg-gray-300 rounded"></div>
-                <div className="h-6 bg-gray-300 rounded w-[40%]"></div>
-              </div>
-            ))}
-          </div>
+            <div className="h-6 bg-gray-300 rounded-md w-[89%]"></div>
 
-          <div className="flex">
-            <div className="h-6 bg-gray-300 rounded w-[35%]"></div>
-            <div className="h-6 ml-44 w-6 bg-gray-300 rounded"></div>
-          </div>
-
-          <div className="space-y-3">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="flex -mt-4 items-center space-x-3">
-                <div className="h-6 w-6 bg-gray-300 rounded"></div>
-                <div className="h-6 bg-gray-300 rounded w-1/4"></div>
-              </div>
-            ))}
+            {/* Second Line: Two 30s */}
+            <div className="flex items-center gap-52">
+              <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
+              <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
+            </div>
           </div>
         </div>
 
-        {/* Products Section */}
-        <div className="w-3/4 p-4">
-          <div className="flex justify-between mb-4">
-            <div className="h-6 bg-gray-300 rounded w-1/3"></div>
+        {/* Product Grid Skeleton */}
+        <div className="w-3/4">
+          {/* Product Count */}
+          <div className="flex justify-between items-center mb-4">
+            <div className="h-7 bg-gray-300 rounded-md w-1/3"></div>
+            <div className="h-8 bg-gray-300 rounded-md mr-5 w-1/6"></div>
           </div>
-          <div className="grid grid-cols-3 gap-6">
+
+          {/* Product Cards Skeleton */}
+          <div className="grid grid-cols-3 gap-4">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="space-y-4">
-                <div className="h-32 w-32 ml-24 bg-gray-300 rounded"></div>
-                <div className="h-6 bg-gray-300 ml-[6.55rem] rounded w-[35%]"></div>
-                <div className="h-6 bg-gray-300 rounded w-1/4 ml-[7.5rem]"></div>
-                <div className="flex space-x-2 ml-12">
-                  <div className="h-8 bg-gray-300 rounded w-[40%]"></div>
-                  <div className="h-8 bg-gray-300 rounded w-[40%]"></div>
+              <div key={i} className="p-4 space-y-4 bg-white">
+                <div className="flex gap-0">
+                  <div className="h-28 w-28 ml-24 bg-gray-300 rounded-md"></div>
+                  <div className="h-7 w-7 ml-24 bg-gray-300 rounded-md"></div>
+                </div>
+                <div className="flex gap-44">
+                  <div className="h-6 bg-gray-300 rounded-md w-1/3"></div>
+                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
+                </div>
+                <div className="h-6 bg-gray-300 rounded-md w-1/2"></div>
+                <div className="flex gap-24">
+                  <div className="h-6 bg-gray-300 rounded-md w-1/3"></div>
+                  <div className="h-7 bg-gray-300 w-1/3 rounded-md"></div>
                 </div>
               </div>
             ))}
           </div>
-          <div className="flex items-center space-x-4 mt-16">
-            <div className="h-7 ml-1 bg-gray-300 rounded w-24"></div>
-            <div className="flex items-center space-x-3">
-              <div className="h-8 w-8 ml-[19rem] bg-gray-300 rounded-full"></div>{" "}
-              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>{" "}
-              <div className="h-8 w-16 bg-gray-300 rounded"></div>
+
+          {/* Pagination Skeleton */}
+          <div className="flex items-center mt-4">
+            {/* Page Info Skeleton */}
+            <div className="h-8 bg-gray-300 rounded-md w-1/6"></div>
+
+            {/* Pagination Buttons Skeleton */}
+            <div className="flex items-center gap-4 ml-52">
+              {/* Page 1 Skeleton */}
+              <div className="h-8 w-16 bg-gray-300 rounded-md"></div>
+              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+
+              {/* Page 2 Skeleton */}
+              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
+
+              {/* Next Button Skeleton */}
+              <div className="h-8 w-16 bg-gray-300 rounded-md"></div>
             </div>
           </div>
         </div>

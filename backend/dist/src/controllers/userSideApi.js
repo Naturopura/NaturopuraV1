@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchProducts = exports.getProductById = exports.getProductsByCategoryAndPagination = exports.getCategory = exports.getAllProducts = void 0;
+exports.searchFilterAndSortProducts = exports.getProductById = exports.getProductsByCategoryAndPagination = exports.getCategory = exports.getAllProducts = void 0;
 const admin_farmer_product_1 = __importDefault(require("../models/admin.farmer.product"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const admin_farmer_category_1 = __importDefault(require("../models/admin.farmer.category"));
@@ -138,40 +138,84 @@ const getProductById = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getProductById = getProductById;
-const searchProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { query, limit = 6, page = 1 } = req.query;
+const searchFilterAndSortProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (!query) {
-            res.status(400).json({ message: "Query parameter 'query' is required." });
-            return;
+        const { query, category, minPrice, maxPrice, limit = 6, page = 1, sort = "all", } = req.query;
+        // Build the filter object dynamically
+        const filter = {};
+        // Add search query to filter
+        if (query) {
+            filter.name = { $regex: query, $options: "i" }; // Case-insensitive regex search
         }
-        const limitNum = parseInt(limit, 10) || 6; // Ensure limit is a number and defaults to 6
-        const pageNum = parseInt(page, 10) || 1; // Ensure page is a number and defaults to 1
-        // Get total product count matching the query
-        const totalProducts = yield admin_farmer_product_1.default.countDocuments({
-            name: { $regex: query, $options: "i" },
-        });
-        // Calculate total pages
+        // Add category filter
+        if (category) {
+            if (mongoose_1.default.Types.ObjectId.isValid(category)) {
+                filter.category = new mongoose_1.default.Types.ObjectId(category);
+            }
+            else {
+                res.status(400).json({ error: "Invalid category ID" });
+                return;
+            }
+        }
+        // Add price range filter
+        if (minPrice || maxPrice) {
+            filter.price = {};
+            if (minPrice)
+                filter.price.$gte = parseFloat(minPrice);
+            if (maxPrice)
+                filter.price.$lte = parseFloat(maxPrice);
+        }
+        // Convert pagination params to numbers
+        const limitNum = parseInt(limit, 10) || 6;
+        const pageNum = parseInt(page, 10) || 1;
+        // Determine sorting logic
+        let sortOption = {};
+        switch (sort) {
+            case "newest":
+                sortOption = { createdAt: -1 }; // Newest first
+                break;
+            case "price_low_to_high":
+                sortOption = { price: 1 }; // Price ascending
+                break;
+            case "price_high_to_low":
+                sortOption = { price: -1 }; // Price descending
+                break;
+            case "all":
+            default:
+                sortOption = {}; // No specific sorting
+                break;
+        }
+        // Calculate total products and total pages
+        const totalProducts = yield admin_farmer_product_1.default.countDocuments(filter);
         const totalPages = Math.ceil(totalProducts / limitNum);
-        // Fetch paginated results
-        const results = yield admin_farmer_product_1.default.find({
-            name: { $regex: query, $options: "i" },
-        })
+        // Fetch paginated and sorted results
+        const products = yield admin_farmer_product_1.default.find(filter)
             .populate("category")
+            .sort(sortOption)
             .skip((pageNum - 1) * limitNum)
             .limit(limitNum);
+        // Respond with results
         res.status(200).json({
-            results: results,
-            pagination: {
-                totalProducts: totalProducts,
-                currentPage: pageNum,
-                totalPages: totalPages,
-                limit: limitNum,
+            success: true,
+            message: "Products search, filter, and sort successful",
+            data: {
+                products: products,
+                pagination: {
+                    totalProducts: totalProducts,
+                    currentPage: pageNum,
+                    totalPages: totalPages,
+                    limit: limitNum,
+                },
             },
         });
     }
     catch (error) {
-        res.status(500).json({ message: "Error searching products", error });
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Error occurred during product search, filter, and sort",
+            error,
+        });
     }
 });
-exports.searchProducts = searchProducts;
+exports.searchFilterAndSortProducts = searchFilterAndSortProducts;

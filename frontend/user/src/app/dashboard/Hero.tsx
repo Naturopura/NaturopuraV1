@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import img from "@/assets/b714fa9235ce346b8350685054646dbb.png";
 import vector from "@/assets/Vector 186.png";
 import vector1 from "@/assets/Vector 187.png";
 import { Search } from "lucide-react";
-import { useLazySearchProductsQuery } from "@/state/userApi";
+import { useLazySearchFilterAndSortProductsQuery } from "@/state/userApi";
 import { useRouter } from "next/navigation";
 
 type StatProps = {
@@ -25,7 +25,7 @@ const Hero = () => {
   const [limit, setLimit] = useState(6);
   const router = useRouter();
   const [triggerSearch, { data: products, isLoading, isError }] =
-    useLazySearchProductsQuery();
+    useLazySearchFilterAndSortProductsQuery();
 
   const handleSearch = () => {
     if (search.trim()) {
@@ -63,6 +63,11 @@ const Hero = () => {
             placeholder="Search for products..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch(); // Trigger search on Enter key
+              }
+            }}
             className="w-[80%] p-4 pl-5 pr-16 placeholder:font-semibold text-lg border rounded-xl shadow-sm"
           />
           <div

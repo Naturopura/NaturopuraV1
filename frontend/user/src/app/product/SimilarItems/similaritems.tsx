@@ -1,13 +1,16 @@
 import React from "react";
 import mango from "@/assets/yellow-mango.png";
+import poha from "@/assets/shuddh-desi-poha.jpg";
+import sugar from "@/assets/71wjSz+A4JL.jpg";
+import salt from "@/assets/61u9sWJM3sL._AC_UF1000,1000_QL80_.jpg";
 import Image from "next/image";
 import { FiHeart, FiShoppingCart } from "react-icons/fi";
 
 const suggestions = [
-  { id: 1, name: "Adidas x Fruit", price: "$349.00", image: mango },
-  { id: 2, name: "Fruit Cap", price: "$49.00", image: mango },
-  { id: 3, name: "Fruit Beanie", price: "$20.00", image: mango },
-  { id: 4, name: "Fruit Tote", price: "$39.90", image: mango },
+  { id: 1, name: "Mango", price: "$349.00", image: mango },
+  { id: 2, name: "Poha", price: "$49.00", image: poha },
+  { id: 3, name: "Sugar", price: "$20.00", image: sugar },
+  { id: 4, name: "Salt", price: "$39.90", image: salt },
 ];
 
 const SimilarItems = () => {

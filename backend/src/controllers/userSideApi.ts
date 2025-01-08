@@ -154,47 +154,99 @@ export const getProductById = async (
   }
 };
 
-export const searchProducts = async (
+export const searchFilterAndSortProducts = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { query, limit = 6, page = 1 } = req.query;
-
   try {
-    if (!query) {
-      res.status(400).json({ message: "Query parameter 'query' is required." });
-      return;
+    const {
+      query,
+      category,
+      minPrice,
+      maxPrice,
+      limit = 6,
+      page = 1,
+      sort = "all",
+    } = req.query;
+
+    // Build the filter object dynamically
+    const filter: Record<string, any> = {};
+
+    // Add search query to filter
+    if (query) {
+      filter.name = { $regex: query, $options: "i" }; // Case-insensitive regex search
     }
 
-    const limitNum = parseInt(limit as string, 10) || 6; // Ensure limit is a number and defaults to 6
-    const pageNum = parseInt(page as string, 10) || 1; // Ensure page is a number and defaults to 1
+    // Add category filter
+    if (category) {
+      if (mongoose.Types.ObjectId.isValid(category as string)) {
+        filter.category = new mongoose.Types.ObjectId(category as string);
+      } else {
+        res.status(400).json({ error: "Invalid category ID" });
+        return;
+      }
+    }
 
-    // Get total product count matching the query
-    const totalProducts = await Product.countDocuments({
-      name: { $regex: query, $options: "i" },
-    });
+    // Add price range filter
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = parseFloat(minPrice as string);
+      if (maxPrice) filter.price.$lte = parseFloat(maxPrice as string);
+    }
 
-    // Calculate total pages
+    // Convert pagination params to numbers
+    const limitNum = parseInt(limit as string, 10) || 6;
+    const pageNum = parseInt(page as string, 10) || 1;
+
+    // Determine sorting logic
+    let sortOption: Record<string, any> = {};
+    switch (sort) {
+      case "newest":
+        sortOption = { createdAt: -1 }; // Newest first
+        break;
+      case "price_low_to_high":
+        sortOption = { price: 1 }; // Price ascending
+        break;
+      case "price_high_to_low":
+        sortOption = { price: -1 }; // Price descending
+        break;
+      case "all":
+      default:
+        sortOption = {}; // No specific sorting
+        break;
+    }
+
+    // Calculate total products and total pages
+    const totalProducts = await Product.countDocuments(filter);
     const totalPages = Math.ceil(totalProducts / limitNum);
 
-    // Fetch paginated results
-    const results = await Product.find({
-      name: { $regex: query, $options: "i" },
-    })
+    // Fetch paginated and sorted results
+    const products = await Product.find(filter)
       .populate("category")
+      .sort(sortOption)
       .skip((pageNum - 1) * limitNum)
       .limit(limitNum);
 
+    // Respond with results
     res.status(200).json({
-      results: results,
-      pagination: {
-        totalProducts: totalProducts,
-        currentPage: pageNum,
-        totalPages: totalPages,
-        limit: limitNum,
+      success: true,
+      message: "Products search, filter, and sort successful",
+      data: {
+        products: products,
+        pagination: {
+          totalProducts: totalProducts,
+          currentPage: pageNum,
+          totalPages: totalPages,
+          limit: limitNum,
+        },
       },
     });
   } catch (error) {
-    res.status(500).json({ message: "Error searching products", error });
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Error occurred during product search, filter, and sort",
+      error,
+    });
   }
 };

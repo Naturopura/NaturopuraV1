@@ -146,7 +146,76 @@ const NewProduct = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex -mt-[37.1rem] animate-pulse">
+        {/* Sidebar */}
+        <div className="w-64 h-screen p-4">
+          <div className="h-10 rounded mb-4"></div>
+          <div className="h-10 rounded mb-4"></div>
+          <div className="h-10 rounded mb-4"></div>
+          <div className="h-10 rounded mb-4"></div>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 p-6">
+          {/* Page Title */}
+          <div className="h-8 bg-gray-300 rounded w-1/4 mb-8"></div>
+
+          {/* Form Sections */}
+          <div className="grid grid-cols-2 gap-6">
+            {/* Name and Description */}
+            <div className="">
+              <div className="h-7 bg-gray-300 rounded w-[55%] ml-5 mb-2"></div>
+              <div className="h-7 bg-gray-300 rounded w-1/3 ml-5 mb-2 mt-10"></div>
+              <div className="h-10 bg-gray-300 ml-5 rounded mb-4"></div>
+              <div className="h-7 bg-gray-300 ml-5  rounded w-[45%] mb-2"></div>
+              <div className="h-20 ml-5 bg-gray-300 rounded"></div>
+            </div>
+
+            {/* Unit and Currency */}
+            <div>
+              <div className="h-7 bg-gray-300 rounded w-[55%] mb-2"></div>
+              <div className="h-7 bg-gray-300 w-1/3 rounded mt-10 mb-4"></div>
+              <div className="h-10 bg-gray-300 rounded w-full mb-4 -mt-2"></div>
+              <div className="h-7 bg-gray-300 w-[45%] rounded"></div>
+              <div className="h-10 bg-gray-300 w-full mt-2 rounded"></div>
+            </div>
+
+            {/* Product Pricing */}
+            <div>
+              <div className="h-7 bg-gray-300 rounded w-[55%] ml-5 mb-2 mt-5"></div>
+              <div className="h-7 mt-10 ml-5 w-1/3 bg-gray-300 rounded"></div>
+              <div className="h-7 mt-2 ml-5 bg-gray-300 rounded"></div>
+            </div>
+
+            {/* Product Stock */}
+            <div>
+              <div className="h-7 bg-gray-300 rounded w-[55%] mb-2"></div>
+              <div className="h-7 mt-10 w-1/3 bg-gray-300 rounded"></div>
+              <div className="h-7 mt-2 bg-gray-300 rounded"></div>
+            </div>
+
+            {/* Category */}
+            <div>
+              <div className="h-7 bg-gray-300 mt-5 rounded w-[55%] ml-5 mb-2"></div>
+              <div className="h-7 w-1/3 bg-gray-300 mt-10 ml-5 rounded"></div>
+              <div className="h-7 bg-gray-300 mt-2 ml-5 rounded"></div>
+            </div>
+
+            {/* Product Image */}
+            <div>
+              <div className="h-7 bg-gray-300 rounded w-[55%] mb-4"></div>
+              <div className="h-7 bg-gray-300 rounded mt-10"></div>
+            </div>
+          </div>
+
+          {/* Add Product Button */}
+          <div className="-mt-10 flex items-end justify-end">
+            <div className="h-9 bg-gray-300 rounded w-1/6"></div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -235,11 +304,9 @@ const NewProduct = () => {
 
   return (
     <>
-      {/* Main Content */}
       <div className="absolute top-24 right-0 w-full lg:w-[calc(100%-16rem)] p-6">
         <h1 className="text-2xl font-semibold mb-2 ml-1">Add New Product</h1>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6">
-          {/* Name and Description */}
           <div className="col-span-2 lg:col-span-1 border-2 border-gray-300 p-4 rounded-md space-y-4">
             <h2 className="text-xl font-semibold mb-2">Name and Description</h2>
             <hr className="border-b border-gray-200 my-4 -mx-4" />
@@ -259,7 +326,6 @@ const NewProduct = () => {
             />
           </div>
 
-          {/* Unit and Currency */}
           <div className="col-span-2 lg:col-span-1 border-2 h-3/4 border-gray-300 p-4 rounded-md space-y-4">
             <h2 className="text-xl font-semibold mb-2">Unit and Currency</h2>
             <hr className="border-b border-gray-200 my-4 -mx-4" />
@@ -287,7 +353,6 @@ const NewProduct = () => {
             </SelectField>
           </div>
 
-          {/* Product Pricing */}
           <div className="col-span-2 lg:col-span-1 border-2 border-gray-300 p-4 rounded-md space-y-4">
             <h2 className="text-xl font-semibold mb-2">Product Pricing</h2>
             <hr className="border-b border-gray-200 my-4 -mx-4" />
@@ -301,7 +366,6 @@ const NewProduct = () => {
             />
           </div>
 
-          {/* Category */}
           <div className="col-span-2 lg:col-span-1 border-2 -mt-[5.5rem] h-[103%] border-gray-300 p-4 rounded-md space-y-4">
             <h2 className="text-xl font-semibold mb-2">Category</h2>
             <hr className="border-b border-gray-200 my-4 -mx-4" />
@@ -320,7 +384,6 @@ const NewProduct = () => {
             </SelectField>
           </div>
 
-          {/* Manage Stock */}
           <div className="col-span-2 lg:col-span-1 border-2 border-gray-300 p-4 rounded-md space-y-4">
             <h2 className="text-xl font-semibold mb-2">Manage Stock</h2>
             <hr className="border-b border-gray-200 my-4 -mx-4" />
@@ -334,7 +397,6 @@ const NewProduct = () => {
             />
           </div>
 
-          {/* Product Image */}
           <div className="col-span-2 lg:col-span-1 border-2 -mt-20 h-[125%] border-gray-300 p-4 rounded-md space-y-4">
             <h2 className="text-xl font-semibold mb-2">Product Image</h2>
             <hr className="border-b border-gray-200 my-4 -mx-4" />
@@ -358,7 +420,6 @@ const NewProduct = () => {
             />
           </div>
 
-          {/* Action Buttons */}
           <div className="col-span-2 flex justify-end space-x-4">
             <button
               type="submit"

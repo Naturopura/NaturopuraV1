@@ -5,7 +5,7 @@ import {
   getProductById,
   // getProductsByCategory,
   getProductsByCategoryAndPagination,
-  searchProducts,
+  searchFilterAndSortProducts,
 } from "../controllers/userSideApi";
 
 const router = express.Router();
@@ -17,7 +17,7 @@ router.get(
   "/productsByCategoryAndPagination",
   getProductsByCategoryAndPagination
 );
-router.get("/search", searchProducts);
+router.get("/search", searchFilterAndSortProducts);
 // router.get("/getProductsByCategory", getProductsByCategory);
 
 export default router;

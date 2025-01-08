@@ -176,6 +176,7 @@ const Navbar = () => {
                   key={name}
                   href={path}
                   className="flex items-center px-4 py-2 hover:bg-gray-100"
+                  onClick={() => setDropdownVisible(false)}
                 >
                   <span className="mr-2">{icon}</span>
                   {name}

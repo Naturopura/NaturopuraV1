@@ -1,10 +1,16 @@
 "use client";
 
+import {
+  useGetProductByIdQuery,
+  useGetProductsByCategoryAndPaginationQuery,
+} from "@/state/userApi";
 import { useAppDispatch, useAppSelector } from "@/store";
+import { addToCart, CartItem } from "@/store/cartSlice";
 import { removeWishlistItem } from "@/store/wishlistSlice";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useParams } from "next/navigation";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { AiFillHeart } from "react-icons/ai";
 
@@ -39,6 +45,23 @@ const Wishlist = () => {
     }
 
     return "/default-image.png"; // Fallback image
+  };
+
+  const handleAddToCart = (product: any) => {
+    const cartItem: CartItem = {
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      image: product.image,
+      description: product.description,
+      currency: product.currency,
+      unit: product.unit,
+      category: product.category,
+    };
+
+    dispatch(addToCart(cartItem));
+    toast.success(`${product.name} added to cart`);
   };
 
   const WishlistHeader = () => (
@@ -86,7 +109,12 @@ const Wishlist = () => {
       {/* Ensuring price and button are aligned at the bottom */}
       <div className="mt-2 flex flex-col justify-end">
         <span className="text-lg font-bold">₹{price}</span>
-        <button className="mt-2 mx-auto w-full bg-[#7FA200] text-white font-semibold py-2 rounded-lg">
+        <button
+          onClick={() =>
+            handleAddToCart({ _id, name, price, image, description })
+          }
+          className="mt-2 mx-auto w-full bg-[#7FA200] text-white font-semibold py-2 rounded-lg"
+        >
           Add to Cart
         </button>
       </div>
@@ -100,9 +128,7 @@ const Wishlist = () => {
 
       {wishlistItems.length === 0 ? (
         <div className="flex flex-col justify-center items-center h-[60vh] text-center">
-          <p className="text-4xl text-gray-500 mb-4">
-            No items in wishlist. Start Adding
-          </p>
+          <p className="text-4xl mb-4">No items in wishlist. Start Adding</p>
           <Link
             href={"/"}
             className="bg-[#7FA200] text-white font-semibold py-2 px-6 rounded-lg transition hover:bg-[#6f9100] active:bg-[#5c7a00]"

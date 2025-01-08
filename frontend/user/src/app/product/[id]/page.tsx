@@ -85,35 +85,98 @@ const ProductCard = () => {
 
   if (isLoading)
     return (
-      <div className="flex space-x-6 ml-10 animate-pulse">
-        {/* Thumbnail Skeletons */}
-        <div className="space-y-4">
-          {[...Array(3)].map((_, index) => (
-            <div key={index} className="w-28 h-28 bg-gray-300 rounded-md"></div>
-          ))}
-        </div>
+      <div className="p-6 mt-28 animate-pulse">
+        {/* Top Section */}
+        <div className="flex flex-wrap gap-4">
+          {/* Image Carousel */}
+          <div className="flex flex-col space-y-4">
+            <div className="h-[7.35rem] w-[7.35rem] bg-gray-300 rounded-md"></div>
+            <div className="h-[7.35rem] w-[7.35rem] bg-gray-300 rounded-md"></div>
+            <div className="h-[7.35rem] w-[7.35rem] bg-gray-300 rounded-md"></div>
+          </div>
+          {/* Main Product Image */}
+          <div className="flex-grow h-96 bg-gray-300 rounded-md"></div>
+          {/* Product Details */}
+          <div className="flex-grow">
+            <div className="h-8 w-64 bg-gray-300 rounded-md mb-4"></div>
+            <div className="h-8 w-52 bg-gray-300 rounded-md mb-4"></div>
+            <div className="h-7 w-60 bg-gray-300 rounded-md mb-4"></div>
+            <div className="h-6 w-1/5 bg-gray-300 rounded-md mb-4"></div>
+            {/* Buttons 9 and 10 */}
+            <div className="flex gap-2 mb-4">
+              <div className="h-10 w-32 bg-gray-300 rounded-md"></div>
+              <div className="h-10 w-28 bg-gray-300 rounded-md"></div>
+            </div>
+            {/* Buttons 19, 20, and 21 */}
+            <div className="flex gap-2 mt-10">
+              <div className="h-10 w-32 bg-gray-300 rounded-md"></div>
+              <div className="h-10 w-28 bg-gray-300 rounded-md"></div>
+              <div className="h-10 w-28 bg-gray-300 rounded-md"></div>
+            </div>
 
-        {/* Main Content */}
-        <div className="flex flex-col w-full">
-          {/* Main Image Skeleton */}
-          <div className="w-[31%] h-[367px] bg-gray-300 rounded-md mb-6"></div>
+            <div className="flex flex-col p-4 bg-white mt-5 rounded-md w-full space-y-4">
+              {/* Top Section */}
+              <div className="flex items-start space-x-4">
+                {/* Image Placeholder */}
+                <div className="h-16 w-16 bg-gray-300 rounded-md"></div>
+              </div>
 
-          {/* Text Skeletons to the Right of the Image */}
-          <div className="flex space-x-4 w-full -mt-[24.4rem] ml-[24rem]">
-            <div className="space-y-4 w-[50%]">
-              <div className="h-8 bg-gray-300 rounded w-1/3"></div>
-              <div className="h-7 bg-gray-300 rounded w-1/4"></div>
-              <div className="h-9 bg-gray-300 rounded w-1/5"></div>
-              <div className="h-7 bg-gray-300 rounded w-1/5"></div>
-              <div className="h-7 bg-gray-300 rounded w-[30%]"></div>
-              <div className="h-6 bg-gray-300 rounded w-[14%]"></div>
+              {/* User Details and Interaction */}
+              <div className="flex items-center justify-between">
+                {/* User and Date */}
+                <div className="flex items-center space-x-2">
+                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
+                  <div className="h-6 w-40 bg-gray-300 rounded-md"></div>
+                </div>
+                {/* Actions */}
+                <div className="flex space-x-2">
+                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
+                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
+                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Buttons Below the Image */}
-          <div className="flex space-x-2 mt-[7.5rem]">
-            <div className="h-10 w-44 bg-gray-300 rounded-md"></div>
-            <div className="h-10 w-44 bg-gray-300 rounded-md"></div>
+        {/* Ratings & Reviews */}
+        <div className="mt-8">
+          <div className="h-7 w-48 bg-gray-300 rounded-md mb-4 -ml-2"></div>
+        </div>
+
+        {/* Similar Items */}
+        <div className="mt-5">
+          <div className="grid grid-cols-4 gap-8">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <div className="h-64 w-80 bg-gray-300 rounded-md mb-2"></div>
+                <div className="flex gap-52">
+                  <div className="h-7 w-20 bg-gray-300 rounded-md"></div>
+                  <div className="h-7 w-7 bg-gray-300 rounded-md"></div>
+                </div>
+                <div className="h-7 w-16 mr-[15.7rem] mt-2 bg-gray-300 rounded-md"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-10">
+          <div className="h-7 w-48 bg-gray-300 rounded-md mb-4 -ml-2"></div>
+        </div>
+
+        {/* Recently Viewed */}
+        <div className="mt-5">
+          <div className="grid grid-cols-4 gap-8">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <div className="h-64 w-80 bg-gray-300 rounded-md mb-2"></div>
+                <div className="flex gap-52">
+                  <div className="h-7 w-20 bg-gray-300 rounded-md"></div>
+                  <div className="h-7 w-7 bg-gray-300 rounded-md"></div>
+                </div>
+                <div className="h-7 w-16 mr-[15.7rem] mt-2 bg-gray-300 rounded-md"></div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -169,82 +232,14 @@ const ProductCard = () => {
   };
 
   return (
-    // <div className="h-screen w-screen mx-auto -mt-14 flex">
-    //   {/* Left Section: Thumbnails and Main Image */}
-    //   <div className="flex flex-col items-start p-8 w-1/2">
-    //     <div className="flex">
-    //       {/* Thumbnails */}
-    //       <div className="flex flex-col space-y-0 mr-6">
-    //         {[1, 2, 3].map((i) => (
-    //           <Image
-    //             key={i}
-    //             width={100}
-    //             height={100}
-    //             src={getImageSrc(product.image)}
-    //             alt={`Thumbnail ${i}`}
-    //             className="w-[8.67rem] h-[8.67rem] border border-gray-500 object-cover"
-    //           />
-    //         ))}
-    //       </div>
-
-    //       {/* Main Product Image */}
-    //       <Image
-    //         width={500}
-    //         height={500}
-    //         src={getImageSrc(product.image)}
-    //         alt={product.name}
-    //         className="border border-gray-500 w-96 h-[26rem] -ml-6 object-cover"
-    //       />
-    //     </div>
-
-    //     {/* Action Buttons Below Main Image */}
-    //     <div className="flex space-x-2 ml-36 mt-3">
-    //       <button
-    //         onClick={handleAddToCart}
-    //         className="bg-[#E8AE3F] hover:bg-yellow-700 text-white text-2xl font-bold py-3 px-8 rounded-md"
-    //       >
-    //         Add to Cart
-    //       </button>
-    //       <button className="bg-[#00A2A2] text-white text-2xl font-bold py-3 px-8 rounded-md">
-    //         Buy Now
-    //       </button>
-    //     </div>
-    //   </div>
-
-    //   {/* Right Section: Product Info */}
-    //   <div className="p-12 -ml-40 -mt-5 w-1/2">
-    //     <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-    //     <div className="flex items-center space-x-2 mb-6">
-    //       <span className="text-yellow-400 text-3xl">★★★★★</span>
-    //       <span className="text-gray-500 text-2xl">(5.0)</span>
-    //     </div>
-    //     <p className="text-4xl font-semibold text-gray-800 mb-6">
-    //       {product.currency} {product.price}
-    //     </p>
-    //     <h1 className="text-2xl text-gray-500 font-semibold mb-4">
-    //       Description
-    //     </h1>
-    //     <p className="mb-8 text-xl">{product.description}</p>
-    //     <p className="mb-8 text-xl">
-    //       {product.quantity > 0 ? (
-    //         <div className="text-green-600">In stock</div>
-    //       ) : (
-    //         <div className="text-red-600">Out of stock</div>
-    //       )}
-    //     </p>
-    //   </div>
-    // </div>
     <>
       <div
         ref={containerRef}
         className="min-h-screen p-8 mt-24 px-6 overflow-y-auto"
       >
-        {/* Main Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          {/* Left Section - Images */}
           <div className="sticky top-1 h-fit">
             <div className="flex space-x-4">
-              {/* Small Images */}
               <div className="flex flex-col space-y-4">
                 {[1, 2, 3].map((i) => (
                   <div
@@ -262,9 +257,7 @@ const ProductCard = () => {
                 ))}
               </div>
 
-              {/* Large Image */}
               <div className="relative bg-gray-200 rounded-lg border border-gray-300 overflow-hidden">
-                {/* Heart Button */}
                 <button
                   onClick={handleAddToWishlist}
                   className="absolute top-2 right-2 text-2xl"
@@ -282,7 +275,6 @@ const ProductCard = () => {
             </div>
           </div>
 
-          {/* Right Section - Details */}
           <div
             ref={detailsRef}
             className="space-y-6 overflow-y-auto max-h-[calc(100vh-2.2rem)] scrollbar-hide"
@@ -291,7 +283,6 @@ const ProductCard = () => {
               {product.name}
             </h1>
 
-            {/* Price and Discount Info */}
             <div className="flex items-center space-x-4">
               <div className="text-3xl font-bold">
                 {product.currency} {product.price}
@@ -307,12 +298,10 @@ const ProductCard = () => {
               </span>
             </div>
 
-            {/* Description */}
             <p className="text-gray-700 leading-relaxed text-xl">
               {product.description}
             </p>
 
-            {/* Buttons */}
             <div className="flex space-x-2">
               <button
                 onClick={handleAddToCart}
