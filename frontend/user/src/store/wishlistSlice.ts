@@ -1,19 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type ImageBuffer = {
-  type: "Buffer";
-  data: number[];
-};
+export interface Category {
+  _id: string;
+  name: string;
+  image: string;
+}
 
 export interface WishlistItem {
   name: string;
-  category: string;
+  category: Category;
   price: number;
   currency: string;
   unit: string;
   quantity: number;
   description: string;
-  image: ImageBuffer;
+  image: string;
   _id: string;
 }
 

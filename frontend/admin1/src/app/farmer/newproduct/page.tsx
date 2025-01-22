@@ -1,6 +1,12 @@
 "use client";
 
-import React, { ChangeEvent, FormEvent, ReactNode, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import Image from "next/image";
 import {
   ListProductRequest,
@@ -10,13 +16,8 @@ import {
 } from "@/state/farmerApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import imageCompression from "browser-image-compression";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-
-type ImageBuffer = {
-  type: "Buffer";
-  data: number[];
-};
+import { NewProductLoader } from "@/app/(components)/Loader/loader";
 
 interface FormFieldProps {
   label: string;
@@ -125,14 +126,9 @@ const NewProduct = () => {
   const [createProduct] = useListProductMutation();
   const { refetch } = useListProductsQuery();
   const { data: category, isLoading, error } = useGetCategoryQuery();
-  console.log("getCategory", category?.categories);
+  console.log("getCategory", category?.data);
 
   const router = useRouter();
-
-  const initialImage: ImageBuffer = {
-    type: "Buffer",
-    data: [],
-  };
 
   const [formData, setFormData] = useState<ListProductRequest>({
     name: "",
@@ -142,80 +138,25 @@ const NewProduct = () => {
     quantity: 0,
     description: "",
     unit: "",
-    image: initialImage,
+    image: null as File | null,
   });
 
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (formData.image) {
+      const objectUrl = URL.createObjectURL(formData.image);
+      setPreviewImage(objectUrl);
+
+      // Cleanup to prevent memory leaks
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewImage(null);
+    }
+  }, [formData.image]);
+
   if (isLoading) {
-    return (
-      <div className="flex -mt-[37.1rem] animate-pulse">
-        {/* Sidebar */}
-        <div className="w-64 h-screen p-4">
-          <div className="h-10 rounded mb-4"></div>
-          <div className="h-10 rounded mb-4"></div>
-          <div className="h-10 rounded mb-4"></div>
-          <div className="h-10 rounded mb-4"></div>
-        </div>
-
-        {/* Main Content */}
-        <div className="flex-1 p-6">
-          {/* Page Title */}
-          <div className="h-8 bg-gray-300 rounded w-1/4 mb-8"></div>
-
-          {/* Form Sections */}
-          <div className="grid grid-cols-2 gap-6">
-            {/* Name and Description */}
-            <div className="">
-              <div className="h-7 bg-gray-300 rounded w-[55%] ml-5 mb-2"></div>
-              <div className="h-7 bg-gray-300 rounded w-1/3 ml-5 mb-2 mt-10"></div>
-              <div className="h-10 bg-gray-300 ml-5 rounded mb-4"></div>
-              <div className="h-7 bg-gray-300 ml-5  rounded w-[45%] mb-2"></div>
-              <div className="h-20 ml-5 bg-gray-300 rounded"></div>
-            </div>
-
-            {/* Unit and Currency */}
-            <div>
-              <div className="h-7 bg-gray-300 rounded w-[55%] mb-2"></div>
-              <div className="h-7 bg-gray-300 w-1/3 rounded mt-10 mb-4"></div>
-              <div className="h-10 bg-gray-300 rounded w-full mb-4 -mt-2"></div>
-              <div className="h-7 bg-gray-300 w-[45%] rounded"></div>
-              <div className="h-10 bg-gray-300 w-full mt-2 rounded"></div>
-            </div>
-
-            {/* Product Pricing */}
-            <div>
-              <div className="h-7 bg-gray-300 rounded w-[55%] ml-5 mb-2 mt-5"></div>
-              <div className="h-7 mt-10 ml-5 w-1/3 bg-gray-300 rounded"></div>
-              <div className="h-7 mt-2 ml-5 bg-gray-300 rounded"></div>
-            </div>
-
-            {/* Product Stock */}
-            <div>
-              <div className="h-7 bg-gray-300 rounded w-[55%] mb-2"></div>
-              <div className="h-7 mt-10 w-1/3 bg-gray-300 rounded"></div>
-              <div className="h-7 mt-2 bg-gray-300 rounded"></div>
-            </div>
-
-            {/* Category */}
-            <div>
-              <div className="h-7 bg-gray-300 mt-5 rounded w-[55%] ml-5 mb-2"></div>
-              <div className="h-7 w-1/3 bg-gray-300 mt-10 ml-5 rounded"></div>
-              <div className="h-7 bg-gray-300 mt-2 ml-5 rounded"></div>
-            </div>
-
-            {/* Product Image */}
-            <div>
-              <div className="h-7 bg-gray-300 rounded w-[55%] mb-4"></div>
-              <div className="h-7 bg-gray-300 rounded mt-10"></div>
-            </div>
-          </div>
-
-          {/* Add Product Button */}
-          <div className="-mt-10 flex items-end justify-end">
-            <div className="h-9 bg-gray-300 rounded w-1/6"></div>
-          </div>
-        </div>
-      </div>
-    );
+    return <NewProductLoader />;
   }
 
   if (error) {
@@ -227,32 +168,14 @@ const NewProduct = () => {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [id]: value }));
-  };
 
-  // Handle file input change for image upload
-  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Compress the image
-      const options = {
-        maxSizeMB: 1, // Set the maximum size in MB
-        maxWidthOrHeight: 1920, // Set a max width or height
-        useWebWorker: true,
-      };
-      try {
-        const compressedFile = await imageCompression(file, options);
-        const buffer = await compressedFile.arrayBuffer();
-        setFormData((prevData) => ({
-          ...prevData,
-          image: {
-            type: "Buffer",
-            data: Array.from(new Uint8Array(buffer)),
-          },
-        }));
-      } catch (error) {
-        console.error("Image compression failed:", error);
-      }
+    if (e.target instanceof HTMLInputElement && e.target.type === "file") {
+      // If the event target is a file input, get the selected file
+      const file = e.target.files?.[0] || null;
+      setFormData((prevData) => ({ ...prevData, image: file }));
+    } else {
+      // Otherwise, update other fields normally
+      setFormData((prevData) => ({ ...prevData, [id]: value }));
     }
   };
 
@@ -376,7 +299,7 @@ const NewProduct = () => {
               onChange={handleChange}
             >
               <option value="">Select Category</option>
-              {category?.categories.map((categoryItem) => (
+              {category?.data.map((categoryItem) => (
                 <option key={categoryItem._id} value={categoryItem._id}>
                   {categoryItem.name}
                 </option>
@@ -403,20 +326,15 @@ const NewProduct = () => {
             <Image
               width={100}
               height={100}
-              src={
-                formData.image.data.length > 0
-                  ? `data:image/jpeg;base64,${Buffer.from(
-                      formData.image.data
-                    ).toString("base64")}`
-                  : ""
-              }
+              src={previewImage || "/placeholder-image.png"}
               alt="Product Image"
               className="h-12 w-12 object-cover rounded-md"
             />
             <input
               type="file"
+              accept="image/*"
               className="w-full border-2 text-lg border-gray-300 rounded-md p-2"
-              onChange={handleImageChange}
+              onChange={handleChange}
             />
           </div>
 

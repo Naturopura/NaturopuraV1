@@ -13,24 +13,7 @@ import { FiHeart } from "react-icons/fi";
 import RatingsAndReviews from "../RatingsAndReviews/ratingsandreviews";
 import SimilarItems from "../SimilarItems/similaritems";
 import RecentlyViewed from "../RecentlyViewed/recentlyviewed";
-
-// Helper function to handle image rendering
-const getImageSrc = (image: any) => {
-  if (
-    typeof image === "string" &&
-    (image.startsWith("http://") || image.startsWith("https://"))
-  ) {
-    return image;
-  }
-
-  if (image?.data && Array.isArray(image.data)) {
-    return `data:image/png;base64,${Buffer.from(image.data).toString(
-      "base64"
-    )}`;
-  }
-
-  return "/default-image.png"; // Fallback image
-};
+import { SingleProductLoader } from "@/app/(components)/Loader/loader";
 
 const ProductCard = () => {
   const detailsRef = useRef<HTMLDivElement>(null);
@@ -44,6 +27,8 @@ const ProductCard = () => {
     isLoading,
     error,
   } = useGetProductByIdQuery(id as string);
+
+  console.log("Product Image URL:", product?.image);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -83,104 +68,7 @@ const ProductCard = () => {
     };
   }, []);
 
-  if (isLoading)
-    return (
-      <div className="p-6 mt-28 animate-pulse">
-        {/* Top Section */}
-        <div className="flex flex-wrap gap-4">
-          {/* Image Carousel */}
-          <div className="flex flex-col space-y-4">
-            <div className="h-[7.35rem] w-[7.35rem] bg-gray-300 rounded-md"></div>
-            <div className="h-[7.35rem] w-[7.35rem] bg-gray-300 rounded-md"></div>
-            <div className="h-[7.35rem] w-[7.35rem] bg-gray-300 rounded-md"></div>
-          </div>
-          {/* Main Product Image */}
-          <div className="flex-grow h-96 bg-gray-300 rounded-md"></div>
-          {/* Product Details */}
-          <div className="flex-grow">
-            <div className="h-8 w-64 bg-gray-300 rounded-md mb-4"></div>
-            <div className="h-8 w-52 bg-gray-300 rounded-md mb-4"></div>
-            <div className="h-7 w-60 bg-gray-300 rounded-md mb-4"></div>
-            <div className="h-6 w-1/5 bg-gray-300 rounded-md mb-4"></div>
-            {/* Buttons 9 and 10 */}
-            <div className="flex gap-2 mb-4">
-              <div className="h-10 w-32 bg-gray-300 rounded-md"></div>
-              <div className="h-10 w-28 bg-gray-300 rounded-md"></div>
-            </div>
-            {/* Buttons 19, 20, and 21 */}
-            <div className="flex gap-2 mt-10">
-              <div className="h-10 w-32 bg-gray-300 rounded-md"></div>
-              <div className="h-10 w-28 bg-gray-300 rounded-md"></div>
-              <div className="h-10 w-28 bg-gray-300 rounded-md"></div>
-            </div>
-
-            <div className="flex flex-col p-4 bg-white mt-5 rounded-md w-full space-y-4">
-              {/* Top Section */}
-              <div className="flex items-start space-x-4">
-                {/* Image Placeholder */}
-                <div className="h-16 w-16 bg-gray-300 rounded-md"></div>
-              </div>
-
-              {/* User Details and Interaction */}
-              <div className="flex items-center justify-between">
-                {/* User and Date */}
-                <div className="flex items-center space-x-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                  <div className="h-6 w-40 bg-gray-300 rounded-md"></div>
-                </div>
-                {/* Actions */}
-                <div className="flex space-x-2">
-                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
-                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
-                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Ratings & Reviews */}
-        <div className="mt-8">
-          <div className="h-7 w-48 bg-gray-300 rounded-md mb-4 -ml-2"></div>
-        </div>
-
-        {/* Similar Items */}
-        <div className="mt-5">
-          <div className="grid grid-cols-4 gap-8">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <div className="h-64 w-80 bg-gray-300 rounded-md mb-2"></div>
-                <div className="flex gap-52">
-                  <div className="h-7 w-20 bg-gray-300 rounded-md"></div>
-                  <div className="h-7 w-7 bg-gray-300 rounded-md"></div>
-                </div>
-                <div className="h-7 w-16 mr-[15.7rem] mt-2 bg-gray-300 rounded-md"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-10">
-          <div className="h-7 w-48 bg-gray-300 rounded-md mb-4 -ml-2"></div>
-        </div>
-
-        {/* Recently Viewed */}
-        <div className="mt-5">
-          <div className="grid grid-cols-4 gap-8">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <div className="h-64 w-80 bg-gray-300 rounded-md mb-2"></div>
-                <div className="flex gap-52">
-                  <div className="h-7 w-20 bg-gray-300 rounded-md"></div>
-                  <div className="h-7 w-7 bg-gray-300 rounded-md"></div>
-                </div>
-                <div className="h-7 w-16 mr-[15.7rem] mt-2 bg-gray-300 rounded-md"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
+  if (isLoading) return <SingleProductLoader />;
 
   if (isError) {
     const errorMsg =
@@ -247,7 +135,7 @@ const ProductCard = () => {
                     className="w-40 h-40 border border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-500 bg-gray-200 relative"
                   >
                     <Image
-                      src={getImageSrc(product.image)}
+                      src={product.image}
                       alt={`Fruit variant ${i}`}
                       width={150}
                       height={150}
@@ -265,7 +153,7 @@ const ProductCard = () => {
                   <FiHeart />
                 </button>
                 <Image
-                  src={getImageSrc(product.image)}
+                  src={product.image}
                   alt={product.name}
                   width={1000}
                   height={1000}

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLazySearchFilterAndSortProductsQuery } from "@/state/userApi";
 import Link from "next/link";
 import Image from "next/image";
@@ -21,30 +21,49 @@ const Search = () => {
     priceRange: [25, 125],
     sort: "",
   });
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
-  const category = searchParams.get("category") || "";
+  const categories = searchParams.get("categories") || "";
+  const categoryArray = useMemo(
+    () => (categories ? categories.split(",").filter(Boolean) : []),
+    [categories]
+  );
+  const minPrice = Number(searchParams.get("minPrice")) || 1;
+  const maxPrice = Number(searchParams.get("maxPrice")) || 10000;
+
   const [triggerSearch, { data: product, isLoading, isError }] =
     useLazySearchFilterAndSortProductsQuery();
 
-  console.log("Category------", category);
+  console.log(
+    "Product Image URL",
+    product?.data.products.map((pr) => pr.image)
+  );
+
+  console.log("Categories------", categories);
+  console.log("Category Array: ", categoryArray);
 
   useEffect(() => {
-    if (query.trim()) {
-      triggerSearch({ query: query, page: page, limit: limit });
+    const trimmedQuery = query.trim();
+
+    if (trimmedQuery) {
+      triggerSearch({ query: trimmedQuery, page, limit });
     }
   }, [query, page, limit, triggerSearch]);
 
   useEffect(() => {
-    if (category.trim()) {
+    if (categoryArray.length > 0) {
+      // Trigger search for specific categories
       triggerSearch({
         query: query,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
         page: page,
         limit: limit,
-        category: category,
+        categories: categoryArray,
       });
     }
-  }, [query, page, limit, category, triggerSearch]);
+  }, [categoryArray, page, minPrice, maxPrice, limit, query, triggerSearch]);
 
   useEffect(() => {
     const urlPage = parseInt(searchParams.get("page") || "1", 10);
@@ -146,6 +165,8 @@ const Search = () => {
     (product?.data.pagination.totalProducts || 0) / limit
   );
 
+  console.log("Total Pages: ", totalPages);
+
   const handleAddToCart = (product: any) => {
     const cartItem: CartItem = {
       _id: product._id,
@@ -234,7 +255,19 @@ const Search = () => {
                     : 0}{" "}
                   of {product?.data.pagination.totalProducts || 0} products for
                   &quot;
-                  {category ? product?.data.products[0]?.category.name : query}
+                  {categoryArray.length > 0
+                    ? product?.data.products
+                        .map((item) => item.category.name) // Extract category names
+                        .filter(
+                          (value, index, self) => self.indexOf(value) === index
+                        ) // Remove duplicates
+                        .reduce((acc, name, index, arr) => {
+                          if (index === 0) return name; // First category
+                          if (index === arr.length - 1)
+                            return `${acc} & ${name}`; // Last category
+                          return `${acc}, ${name}`; // Middle categories
+                        }, "")
+                    : query}
                   &quot;
                 </p>
               </div>
@@ -319,8 +352,8 @@ const Search = () => {
                       const newPage = Math.max(page - 1, 1);
                       setPage(newPage);
                       router.push(
-                        `/search?query=${encodeURIComponent(
-                          query
+                        `/search?query=${query}&categories=${encodeURIComponent(
+                          categoryArray.join(",")
                         )}&page=${newPage}&limit=${limit}`
                       );
                     }}
@@ -342,8 +375,8 @@ const Search = () => {
                     onClick={() => {
                       setPage(pageNum);
                       router.push(
-                        `/search?query=${encodeURIComponent(
-                          query
+                        `/search?query=${query}&categories=${encodeURIComponent(
+                          categoryArray.join(",")
                         )}&page=${pageNum}&limit=${limit}`
                       );
                     }}
@@ -361,8 +394,8 @@ const Search = () => {
                       const newPage = Math.min(page + 1, totalPages);
                       setPage(newPage);
                       router.push(
-                        `/search?query=${encodeURIComponent(
-                          query
+                        `/search?query=${query}&categories=${encodeURIComponent(
+                          categoryArray.join(",")
                         )}&page=${newPage}&limit=${limit}`
                       );
                     }}
@@ -376,7 +409,9 @@ const Search = () => {
           </>
         ) : (
           // If no products, show a message
-          <div className="text-4xl text-center mt-40">No products yet</div>
+          <div className="text-4xl text-center mt-40">
+            Sorry, no products found!
+          </div>
         )}
       </main>
     </div>

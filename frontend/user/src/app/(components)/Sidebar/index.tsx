@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useGetCategoryQuery,
   useLazySearchFilterAndSortProductsQuery,
@@ -8,40 +8,69 @@ import {
 import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
-  const [filters, setFilters] = useState({
-    category: "",
-    minPrice: 25,
-    maxPrice: 125,
-  });
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
+  const [minPrice, setMinPrice] = useState(1);
+  const [maxPrice, setMaxPrice] = useState(500);
+  const [rangeValue, setRangeValue] = useState(`${minPrice},${maxPrice}`);
   const router = useRouter();
 
-  const [triggerSearch] = useLazySearchFilterAndSortProductsQuery();
+  const [triggerSearch, { data, isLoading, error }] =
+    useLazySearchFilterAndSortProductsQuery();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  const { data: categories } = useGetCategoryQuery();
+  console.log("Image Data: ", data?.data.products);
+
+  const { data: category } = useGetCategoryQuery();
 
   const handleCategoryChange = (categoryId: string) => {
-    const newCategory = filters.category === categoryId ? "" : categoryId;
-    setFilters((prev) => ({
-      ...prev,
-      category: newCategory,
-    }));
-
-    triggerSearch({
-      query: search,
-      page: page,
-      limit: limit,
-      category: newCategory,
-    });
-
-    router.push(
-      `/search?query=${encodeURIComponent(
-        search
-      )}&page=${page}&limit=${limit}&category=${newCategory}`
+    setSelectedCategories((prev) =>
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId]
     );
   };
+
+  useEffect(() => {
+    if (selectedCategories.length > 0) {
+      triggerSearch({
+        query: search,
+        categories: selectedCategories,
+        page,
+        limit,
+        minPrice,
+        maxPrice,
+      });
+      const categoryString = selectedCategories.join(",");
+      router.push(
+        `/search?query=${encodeURIComponent(
+          search
+        )}&categories=${categoryString}&minPrice=${minPrice}&maxPrice=${maxPrice}&page=${page}&limit=${limit}`
+      );
+    }
+  }, [
+    selectedCategories,
+    page,
+    minPrice,
+    maxPrice,
+    limit,
+    search,
+    triggerSearch,
+    router,
+  ]);
+
+  const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Parse the range value and update minPrice or maxPrice accordingly
+    const value = Number(e.target.value);
+    if (value <= maxPrice) {
+      setMinPrice(value);
+    } else {
+      setMaxPrice(value);
+    }
+  };
+
+  console.log("minPrice: ", minPrice);
 
   return (
     <aside className="w-1/4 p-4 border-r-2">
@@ -51,15 +80,16 @@ const Sidebar = () => {
       <div className="mb-6">
         <h3 className="font-bold mb-5">Category</h3>
         <ul>
-          {categories?.categories.map((category) => (
-            <li key={category._id}>
-              <label className="flex items-center font-semibold text-gray-600 space-x-4 space-y-1">
+          {category?.data.map((cat) => (
+            <li key={cat._id}>
+              <label className="flex items-center font-semibold text-gray-600 space-x-4">
                 <input
                   type="checkbox"
-                  onChange={() => handleCategoryChange(category._id)}
-                  checked={filters.category === category._id}
+                  value={cat._id}
+                  onChange={() => handleCategoryChange(cat._id)}
+                  checked={selectedCategories.includes(cat._id)}
                 />
-                <span>{category.name}</span>
+                <span>{cat.name}</span>
               </label>
             </li>
           ))}
@@ -72,19 +102,25 @@ const Sidebar = () => {
         <input
           type="range"
           min="1"
-          max="125"
+          max="500"
           step="1"
-          value={filters.maxPrice}
-          onChange={(e) =>
-            setFilters((prev) => ({
-              ...prev,
-              maxPrice: parseInt(e.target.value),
-            }))
-          }
+          value={minPrice}
+          onChange={handleRangeChange}
+          style={{
+            background: `linear-gradient(to right, #4CAF50 ${
+              ((minPrice - 1) / (500 - 1)) * 100
+            }%, #d3d3d3 ${((minPrice - 1) / (500 - 1)) * 100}%)`,
+          }}
         />
         <div className="flex mt-3 font-semibold text-gray-500 justify-between">
-          <span>${filters.minPrice}</span>
-          <span>${filters.maxPrice}</span>
+          <>
+            <span>
+              {data?.data?.products?.[0]?.currency || "INR"} {minPrice}
+            </span>
+            <span>
+              {data?.data?.products?.[0]?.currency || "INR"} {maxPrice}
+            </span>
+          </>
         </div>
       </div>
     </aside>

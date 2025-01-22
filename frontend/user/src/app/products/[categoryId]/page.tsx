@@ -5,7 +5,7 @@ import {
   useGetProductsByCategoryAndPaginationQuery,
   // useGetProductsByCategoryQuery,
 } from "@/state/userApi";
-import { FetchBaseQueryError, skipToken } from "@reduxjs/toolkit/query";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import Link from "next/link";
 import { addToCart, CartItem } from "@/store/cartSlice";
 import { useAppDispatch } from "@/store";
@@ -15,6 +15,7 @@ import Sidebar from "../../(components)/Sidebar";
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { FiHeart } from "react-icons/fi";
+import { AllProductsLoader } from "@/app/(components)/Loader/loader";
 
 const Products = () => {
   const dispatch = useAppDispatch();
@@ -35,98 +36,10 @@ const Products = () => {
   } = useGetProductsByCategoryAndPaginationQuery({ categoryId, page, limit });
 
   const totalPages = Math.ceil(
-    (products?.pagination.totalProducts || 0) / limit
+    (products?.data.pagination.totalProducts || 0) / limit
   );
 
-  console.log("Products:", products);
-  console.log("Current Page:", page);
-  console.log("Total Products:", products?.data?.length);
-  console.log("Total Pages:", Math.ceil((products?.data?.length || 0) / limit));
-
-  if (isLoading)
-    return (
-      <div className="flex gap-4 mt-32 animate-pulse">
-        {/* Sidebar Filter Options Skeleton */}
-        <div className="w-1/4 space-y-8">
-          <div className="h-7 bg-gray-300 rounded-md w-1/2 ml-10"></div>
-          <div className="space-y-8">
-            <div className="h-6 bg-gray-300 ml-10 rounded-md w-1/3"></div>
-
-            <div className="space-y-2">
-              {" "}
-              {/* Reduce vertical spacing */}
-              {[...Array(7)].map((_, i) => (
-                <div key={i} className="flex items-center gap-4 ml-10">
-                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
-                  <div className="h-6 bg-gray-300 rounded-md w-1/3"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="h-6 bg-gray-300 ml-10 rounded-md w-1/3"></div>
-          <div className="flex flex-col ml-10 gap-2">
-            {/* First Line: 4 */}
-
-            <div className="h-6 bg-gray-300 rounded-md w-[89%]"></div>
-
-            {/* Second Line: Two 30s */}
-            <div className="flex items-center gap-52">
-              <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
-              <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Product Grid Skeleton */}
-        <div className="w-3/4">
-          {/* Product Count */}
-          <div className="flex justify-between items-center mb-4">
-            <div className="h-7 bg-gray-300 rounded-md w-1/3"></div>
-            <div className="h-8 bg-gray-300 rounded-md mr-5 w-1/6"></div>
-          </div>
-
-          {/* Product Cards Skeleton */}
-          <div className="grid grid-cols-3 gap-4">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="p-4 space-y-4 bg-white">
-                <div className="flex gap-0">
-                  <div className="h-28 w-28 ml-24 bg-gray-300 rounded-md"></div>
-                  <div className="h-7 w-7 ml-24 bg-gray-300 rounded-md"></div>
-                </div>
-                <div className="flex gap-44">
-                  <div className="h-6 bg-gray-300 rounded-md w-1/3"></div>
-                  <div className="h-6 w-6 bg-gray-300 rounded-md"></div>
-                </div>
-                <div className="h-6 bg-gray-300 rounded-md w-1/2"></div>
-                <div className="flex gap-24">
-                  <div className="h-6 bg-gray-300 rounded-md w-1/3"></div>
-                  <div className="h-7 bg-gray-300 w-1/3 rounded-md"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Pagination Skeleton */}
-          <div className="flex items-center mt-4">
-            {/* Page Info Skeleton */}
-            <div className="h-8 bg-gray-300 rounded-md w-1/6"></div>
-
-            {/* Pagination Buttons Skeleton */}
-            <div className="flex items-center gap-4 ml-52">
-              {/* Page 1 Skeleton */}
-              <div className="h-8 w-16 bg-gray-300 rounded-md"></div>
-              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
-
-              {/* Page 2 Skeleton */}
-              <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
-
-              {/* Next Button Skeleton */}
-              <div className="h-8 w-16 bg-gray-300 rounded-md"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  if (isLoading) return <AllProductsLoader />;
 
   if (error) {
     if ("data" in (error as FetchBaseQueryError)) {
@@ -145,7 +58,7 @@ const Products = () => {
 
   if (!products) return <div>Failed to fetch products</div>;
 
-  if (products.data.length === 0) {
+  if (products.data.products.length === 0) {
     return (
       <div className="text-center text-2xl mt-64 ml-10 font-semibold py-4">
         No products found for this category
@@ -187,29 +100,6 @@ const Products = () => {
     toast.success(`${product.name} added to wishlist`);
   };
 
-  const getImageSrc = (image: any) => {
-    if (
-      typeof image === "string" &&
-      (image.startsWith("http://") || image.startsWith("https://"))
-    ) {
-      return image;
-    }
-
-    if (image && image.data && Array.isArray(image.data)) {
-      try {
-        return `data:image/png;base64,${Buffer.from(image.data).toString(
-          "base64"
-        )}`;
-      } catch (error) {
-        console.error("Failed to convert Buffer to Base64:", error);
-      }
-    }
-
-    console.warn("No valid image source found:", image);
-
-    return "/default-image.png";
-  };
-
   const handleFilterChange = (key: string, value: string | number[]) => {
     setFilters((prev) => ({
       ...prev,
@@ -227,11 +117,11 @@ const Products = () => {
         <div className="flex justify-between items-center mb-4">
           <div>
             <p className="text-xl font-semibold">
-              Showing {products?.pagination ? (page - 1) * limit + 1 : 0} -{" "}
-              {products?.pagination
-                ? Math.min(page * limit, products.pagination.totalProducts)
+              Showing {products?.data.pagination ? (page - 1) * limit + 1 : 0} -{" "}
+              {products?.data.pagination
+                ? Math.min(page * limit, products.data.pagination.totalProducts)
                 : 0}{" "}
-              of {products?.pagination?.totalProducts || 0} products
+              of {products?.data.pagination?.totalProducts || 0} products
             </p>
           </div>
           <select
@@ -253,7 +143,7 @@ const Products = () => {
 
         {/* Product Cards */}
         <div className="grid grid-cols-3 gap-4">
-          {products?.data.map((product) => (
+          {products?.data.products.map((product) => (
             <div
               key={product._id}
               className="border-2 border-gray-400 rounded-lg p-4 flex flex-col items-start relative"
@@ -263,7 +153,7 @@ const Products = () => {
                   <Image
                     width={998}
                     height={1000}
-                    src={getImageSrc(product.image)}
+                    src={product.image}
                     alt="Product"
                     className="mb-4 ml-16 object-cover w-1/2 h-3/4"
                   />

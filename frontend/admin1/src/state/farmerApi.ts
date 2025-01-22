@@ -1,26 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// Define the ImageBuffer type
-type ImageBuffer = {
-  type: "Buffer";
-  data: number[];
-};
-
 export interface ListProductRequest {
   name: string;
-  category: string; // ID of the category
+  category: string;
   price: number;
   quantity: number;
-  description: string; // Optional field
+  description: string;
   unit: string;
-  image: ImageBuffer; // URL or file path
+  image: File | null;
   currency: string;
 }
 
 export interface Category {
   _id: string;
   name: string;
-  image: ImageBuffer; // Add other fields as needed
+  image: string;
 }
 
 export interface Product {
@@ -32,7 +26,7 @@ export interface Product {
   quantity: number;
   unit: string;
   description: string;
-  image: ImageBuffer;
+  image: string;
   currency: string;
 }
 
@@ -41,8 +35,6 @@ export interface ListProductResponse {
   product: Product;
   category: Category;
 }
-
-// Define Product and NewProduct interfaces
 
 export interface getProduct {
   _id: string;
@@ -54,7 +46,7 @@ export interface getProduct {
   quantity: number;
   description: string;
   unit: string;
-  image: ImageBuffer;
+  image: string;
 }
 
 export interface getProductsByCategoryAndPaginationRequest {
@@ -65,36 +57,35 @@ export interface getProductsByCategoryAndPaginationRequest {
 
 export type getProductsByCategoryAndPaginationResponse = {
   success: boolean;
-  data: getProduct[];
-  pagination: {
-    totalProducts: number;
-    currentPage: number;
-    totalPages: number;
-    limit: number;
+  message: string;
+  data: {
+    products: getProduct[];
+    pagination: {
+      totalProducts: number;
+      currentPage: number;
+      totalPages: number;
+      limit: number;
+    };
   };
 };
 
 export interface UpdateProductRequest {
-  _id: string; // Product ID to update
-  name: string; // Optional fields to update
-  category: string; // Category ID
-  price: number; // Price of the product
-  quantity: number; // Quantity available
-  description: string; // Optional description
-  image: ImageBuffer; // Base64 encoded image string or URL
-  unit: string; // Measurement unit
-  currency: string; // Currency code
+  _id: string;
+  name: string;
+  category: string;
+  price: number;
+  quantity: number;
+  description: string;
+  image: string;
+  unit: string;
+  currency: string;
 }
 
 export interface UpdateProductResponse {
-  updatedProduct: Product; // Updated product details
-  message: string; // Success message
+  success: boolean;
+  message: string;
+  data: Product;
 }
-
-// export interface CreateCategory {
-//   name: string;
-//   image: ImageBuffer;
-// }
 
 export interface DeleteProductRequest {
   productId: string;
@@ -106,15 +97,15 @@ export interface DeleteProductResponse {
 }
 
 export interface CategoriesResponse {
+  success: boolean;
   message: string;
-  categories: Category[];
+  data: Category[];
 }
 
 export interface ProductsResponse {
   products: getProduct[];
 }
 
-// Configure API with token handling in baseQuery
 export const farmerApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -142,11 +133,22 @@ export const farmerApi = createApi({
       providesTags: ["Products"],
     }),
     listProduct: build.mutation<ListProductResponse, ListProductRequest>({
-      query: (newProduct) => ({
-        url: "/auth/listproduct",
-        method: "POST",
-        body: newProduct,
-      }),
+      query: (newProduct) => {
+        const formData = new FormData();
+        formData.append("name", newProduct.name);
+        formData.append("category", newProduct.category);
+        formData.append("price", newProduct.price.toString());
+        formData.append("quantity", newProduct.quantity.toString());
+        formData.append("description", newProduct.description);
+        formData.append("unit", newProduct.unit);
+        formData.append("currency", newProduct.currency);
+        formData.append("image", newProduct.image!);
+        return {
+          url: "/auth/listproduct",
+          method: "POST",
+          body: formData,
+        };
+      },
       transformResponse: (response: ListProductResponse) => response,
       invalidatesTags: ["Products"],
     }),

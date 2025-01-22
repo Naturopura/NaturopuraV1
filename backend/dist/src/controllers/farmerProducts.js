@@ -16,25 +16,31 @@ exports.deleteProduct = exports.updateProduct = exports.getProductsByCategoryAnd
 const admin_farmer_product_1 = __importDefault(require("../models/admin.farmer.product"));
 const admin_model_1 = __importDefault(require("../models/admin.model"));
 const admin_farmer_category_1 = __importDefault(require("../models/admin.farmer.category"));
+const imageUpload_1 = require("./imageUpload");
 const createCategory = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     try {
-        const { name, image } = req.body;
+        const { name } = req.body;
+        const image = (_a = req.file) === null || _a === void 0 ? void 0 : _a.fieldname;
+        const imagePath = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
         // Validate the request
-        if (!name || !image) {
-            res.status(400).json({ error: "Please provide both name and image." });
-            return;
+        if (!name || !image || !imagePath) {
+            return res
+                .status(400)
+                .json({ error: "Please provide both name and image." });
         }
-        // Validate that image is a Base64 string
-        const isBase64 = (str) => {
-            const base64Regex = /^data:image\/\w+;base64,/;
-            return base64Regex.test(str);
-        };
-        if (!isBase64(image)) {
-            res.status(400).json({ error: "Invalid image format." });
-            return;
+        const uploader = new imageUpload_1.FileUploader();
+        const filePath = imagePath;
+        const fileName = image;
+        const result = yield uploader.uploadFile({ filePath, fileName });
+        const { secure_url, public_id } = result;
+        if (!secure_url) {
+            return res.status(400).json({
+                success: false,
+                message: "Error while uploading image",
+                error: secure_url,
+            });
         }
-        // Remove Base64 metadata
-        const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
         // Check for duplicate category name
         const existingCategory = yield admin_farmer_category_1.default.findOne({ name });
         if (existingCategory) {
@@ -44,14 +50,15 @@ const createCategory = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         // Create a new category
         const category = new admin_farmer_category_1.default({
             name,
-            image: Buffer.from(base64Data, "base64"), // Convert Base64 image to binary buffer
+            image: public_id, // Convert Base64 image to binary buffer
         });
         // Save to database
         const savedCategory = yield category.save();
         // Return success response
         res.status(201).json({
+            success: true,
             message: "Category created successfully.",
-            category: savedCategory,
+            data: Object.assign(Object.assign({}, savedCategory.toObject()), { image: secure_url }),
         });
     }
     catch (error) {
@@ -68,10 +75,18 @@ const getCategory = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             res.status(404).json({ error: "No categories found." });
             return;
         }
+        // Initialize the FileUploader instance
+        const fileUploader = new imageUpload_1.FileUploader();
+        // Get the secure URL for each product image
+        const categoriesWithSecureUrl = yield Promise.all(categories.map((category) => __awaiter(void 0, void 0, void 0, function* () {
+            const secureUrl = yield fileUploader.getSecureUrlFromPublicId(category.image);
+            return Object.assign(Object.assign({}, category.toObject()), { image: secureUrl });
+        })));
         // Return the list of categories
         res.status(200).json({
-            message: "Categories retrieved successfully.",
-            categories,
+            success: true,
+            message: "Categories fetched successfully.",
+            data: categoriesWithSecureUrl,
         });
     }
     catch (error) {
@@ -100,38 +115,50 @@ const getProductsByCategory = (req, res, next) => __awaiter(void 0, void 0, void
 });
 exports.getProductsByCategory = getProductsByCategory;
 const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b, _c;
     try {
-        // Extract data from the request body
-        const { name, category, price, quantity, description, unit, image, currency, } = req.body;
-        const farmerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id; // Use req.user from AuthenticatedRequest
-        console.log("Received request to list product for farmer:", farmerId);
-        // Ensure all required fields are provided
+        // Extract data from request body
+        const { name, category, price, quantity, description, unit, currency } = req.body;
+        console.log("Request File: ", req.file);
+        const image = (_a = req.file) === null || _a === void 0 ? void 0 : _a.fieldname;
+        const imagePath = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
+        const farmerId = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id; // Use req.user from AuthenticatedRequest
         if (!farmerId ||
             !name ||
             !category ||
             !price ||
             !quantity ||
-            !image ||
             !unit ||
-            !currency) {
+            !currency ||
+            !image ||
+            !imagePath) {
             return res.status(400).json({
                 error: "Please provide all required fields: name, category, price, quantity, and image.",
             });
         }
+        const uploader = new imageUpload_1.FileUploader();
+        const filePath = imagePath;
+        const fileName = image;
+        // Call the uploadFile method to get the file's secure_url and public_id
+        const result = yield uploader.uploadFile({ filePath, fileName });
+        const { secure_url, public_id } = result;
+        if (!secure_url) {
+            return res.status(400).json({
+                success: false,
+                message: "Error while uploading image",
+                error: secure_url,
+            });
+        }
+        console.log("Request File", req.file);
         // Check if the farmer exists
-        console.log("Checking if farmer exists...");
         const farmerExists = yield admin_model_1.default.findById(farmerId);
-        console.log("here is farmerid", farmerExists);
         if (!farmerExists) {
             return res.status(404).json({ error: "Farmer does not exist." });
         }
-        console.log("Fetching category details...");
         const categoryExists = yield admin_farmer_category_1.default.findById(category);
         if (!categoryExists) {
             return res.status(404).json({ error: "Category does not exist." });
         }
-        // Create a new product using the Product model
         const newProduct = new admin_farmer_product_1.default({
             farmerId,
             name,
@@ -140,20 +167,19 @@ const listProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             quantity,
             unit,
             description,
-            image,
+            image: public_id,
             currency,
         });
         // Save the product to the database
-        console.log("Saving product to database...");
         const savedProduct = yield newProduct.save();
-        // Return the saved product as the response
         res.status(201).json({
+            success: true,
             message: "Product listed successfully.",
-            product: savedProduct,
-            category: categoryExists,
+            data: Object.assign(Object.assign({}, savedProduct.toObject()), { image: secure_url }),
         });
     }
     catch (error) {
+        console.error("Error in listing product:", error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -212,15 +238,25 @@ const getProductsByCategoryAndPagination = (req, res, next) => __awaiter(void 0,
                 .status(404)
                 .json({ message: "No products found for the given criteria." });
         }
+        // Initialize the FileUploader instance
+        const fileUploader = new imageUpload_1.FileUploader();
+        // Get the secure URL for each product image
+        const productsWithSecureUrl = yield Promise.all(products.map((product) => __awaiter(void 0, void 0, void 0, function* () {
+            const secureUrl = yield fileUploader.getSecureUrlFromPublicId(product.image);
+            return Object.assign(Object.assign({}, product.toObject()), { image: secureUrl });
+        })));
         // Return products with pagination metadata
         return res.status(200).json({
             success: true,
-            data: products,
-            pagination: {
-                totalProducts: totalProducts,
-                currentPage: pageNumber,
-                totalPages: Math.ceil(totalProducts / limitNumber),
-                limit: limitNumber,
+            message: "Products fetched successfully",
+            data: {
+                products: productsWithSecureUrl,
+                pagination: {
+                    totalProducts: totalProducts,
+                    currentPage: pageNumber,
+                    totalPages: Math.ceil(totalProducts / limitNumber),
+                    limit: limitNumber,
+                },
             },
         });
     }
@@ -261,9 +297,16 @@ const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                 .status(404)
                 .json({ message: "Product not found or not authorized to update." });
         }
+        // Initialize the FileUploader instance
+        const fileUploader = new imageUpload_1.FileUploader();
+        // Get the secure URL for the updated product image
+        const secureUrl = yield fileUploader.getSecureUrlFromPublicId(updatedProduct.image);
+        // Convert product to a plain object and update the image field
+        const updatedProductWithSecureUrl = Object.assign(Object.assign({}, updatedProduct.toObject()), { image: secureUrl });
         res.status(200).json({
-            updatedProduct: updatedProduct,
+            success: true,
             message: "Product Updated Successfully",
+            data: updatedProductWithSecureUrl,
         });
     }
     catch (error) {

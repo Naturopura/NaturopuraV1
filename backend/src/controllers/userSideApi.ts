@@ -1,10 +1,10 @@
 import Product from "../models/admin.farmer.product";
 import { Response, NextFunction, Request } from "express";
-import { AuthenticatedRequest } from "../middlewares/authenticateToken"; // Adjust this import path as necessary
+import { AuthenticatedRequest } from "../middlewares/authenticateToken";
 import mongoose from "mongoose";
 import Category from "../models/admin.farmer.category";
+import { FileUploader } from "./imageUpload";
 
-// Existing function to list all products
 export const getAllProducts = async (
   req: AuthenticatedRequest,
   res: Response,
@@ -36,10 +36,27 @@ export const getCategory = async (
       return;
     }
 
+    // Initialize the FileUploader instance
+    const fileUploader = new FileUploader();
+
+    // Get the secure URL for each product image
+    const categoriesWithSecureUrl = await Promise.all(
+      categories.map(async (category) => {
+        const secureUrl = await fileUploader.getSecureUrlFromPublicId(
+          category.image
+        );
+        return {
+          ...category.toObject(), // Convert product to plain object
+          image: secureUrl, // Replace public_id with secure_url
+        };
+      })
+    );
+
     // Return the list of categories
     res.status(200).json({
-      message: "Categories retrieved successfully.",
-      categories,
+      success: true,
+      message: "Categories fetched successfully.",
+      data: categoriesWithSecureUrl,
     });
   } catch (error: any) {
     // Handle errors
@@ -50,22 +67,22 @@ export const getCategory = async (
 export const getProductsByCategoryAndPagination = async (
   req: AuthenticatedRequest,
   res: Response
-): Promise<void> => {
+): Promise<any> => {
   try {
     const { categoryId, page = 1, limit = 6 } = req.query;
 
     // Ensure categoryId is provided
     if (!categoryId) {
-      res
+      return res
         .status(400)
         .json({ success: false, message: "categoryId is required." });
-      return;
     }
 
     // Validate categoryId
     if (!mongoose.Types.ObjectId.isValid(categoryId as string)) {
-      res.status(400).json({ success: false, message: "Invalid categoryId." });
-      return;
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid categoryId." });
     }
 
     // Parse page and limit to numbers
@@ -74,15 +91,15 @@ export const getProductsByCategoryAndPagination = async (
 
     // Validate pagination parameters
     if (!pageNumber || pageNumber < 1) {
-      res.status(400).json({ success: false, message: "Invalid page number." });
-      return;
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid page number." });
     }
 
     if (!limitNumber || limitNumber < 1) {
-      res
+      return res
         .status(400)
         .json({ success: false, message: "Invalid limit number." });
-      return;
     }
 
     // Calculate documents to skip
@@ -106,15 +123,34 @@ export const getProductsByCategoryAndPagination = async (
     const totalProducts = await Product.countDocuments(filter);
     console.log("Total Products:", totalProducts);
 
+    // Initialize the FileUploader instance
+    const fileUploader = new FileUploader();
+
+    // Get the secure URL for each product image
+    const productsWithSecureUrl = await Promise.all(
+      products.map(async (product) => {
+        const secureUrl = await fileUploader.getSecureUrlFromPublicId(
+          product.image
+        );
+        return {
+          ...product.toObject(), // Convert product to plain object
+          image: secureUrl, // Replace public_id with secure_url
+        };
+      })
+    );
+
     // Respond with paginated data
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      data: products,
-      pagination: {
-        totalProducts: totalProducts,
-        currentPage: pageNumber,
-        totalPages: Math.ceil(totalProducts / limitNumber),
-        limit: limitNumber,
+      message: "Products fetched successfully",
+      data: {
+        products: productsWithSecureUrl,
+        pagination: {
+          totalProducts: totalProducts,
+          currentPage: pageNumber,
+          totalPages: Math.ceil(totalProducts / limitNumber),
+          limit: limitNumber,
+        },
       },
     });
   } catch (error) {
@@ -139,15 +175,35 @@ export const getProductById = async (
     }
 
     // Fetch the product from the database using its ID
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate("category");
 
     // Check if the product exists
     if (!product) {
       return res.status(404).json({ message: "Product not found." });
     }
 
+    // Initialize the FileUploader instance
+    const fileUploader = new FileUploader();
+
+    const secureUrl = await fileUploader.getSecureUrlFromPublicId(
+      product.image
+    );
+
+    console.log("secureUrl: ", secureUrl);
+
+    const productWithSecureUrl = {
+      ...product.toObject(), // Convert product to a plain object
+      image: secureUrl, // Replace public_id with secure_url
+    };
+
+    console.log("productWithSecureUrl: ", productWithSecureUrl);
+
     // Return the product details
-    return res.status(200).json(product);
+    return res.status(200).json({
+      success: true,
+      message: "Product fetched successfully",
+      data: productWithSecureUrl,
+    });
   } catch (error: any) {
     console.error("Error fetching product by ID:", error.message);
     return res.status(500).json({ error: error.message });
@@ -169,6 +225,8 @@ export const searchFilterAndSortProducts = async (
       sort = "all",
     } = req.query;
 
+    console.log("Request Query Parameters:", req.query);
+
     // Build the filter object dynamically
     const filter: Record<string, any> = {};
 
@@ -177,15 +235,27 @@ export const searchFilterAndSortProducts = async (
       filter.name = { $regex: query, $options: "i" }; // Case-insensitive regex search
     }
 
-    // Add category filter
+    // Add category filter for multiple categories
     if (category) {
-      if (mongoose.Types.ObjectId.isValid(category as string)) {
-        filter.category = new mongoose.Types.ObjectId(category as string);
+      const categoryArray = (category as string)
+        .split(",")
+        .map((id) => id.trim())
+        .filter((id) => mongoose.Types.ObjectId.isValid(id)); // Ensure all IDs are valid
+      console.log("Category Array", categoryArray);
+
+      if (categoryArray.length === 1) {
+        filter.category = new mongoose.Types.ObjectId(categoryArray[0]); // Single category
+      } else if (categoryArray.length > 1) {
+        filter.category = { $in: categoryArray }; // Multiple categories
       } else {
-        res.status(400).json({ error: "Invalid category ID" });
+        res.status(400).json({ error: "Invalid category IDs provided" });
         return;
       }
+
+      console.log("Category Filter Applied:", filter.category);
     }
+
+    console.log("Categories", category);
 
     // Add price range filter
     if (minPrice || maxPrice) {
@@ -216,23 +286,38 @@ export const searchFilterAndSortProducts = async (
         break;
     }
 
-    // Calculate total products and total pages
     const totalProducts = await Product.countDocuments(filter);
     const totalPages = Math.ceil(totalProducts / limitNum);
 
-    // Fetch paginated and sorted results
+    console.log("Filter built:", filter);
+
     const products = await Product.find(filter)
       .populate("category")
       .sort(sortOption)
       .skip((pageNum - 1) * limitNum)
       .limit(limitNum);
 
-    // Respond with results
+    // Initialize the FileUploader instance
+    const fileUploader = new FileUploader();
+
+    // Get the secure URL for each product image
+    const productsWithSecureUrl = await Promise.all(
+      products.map(async (product) => {
+        const secureUrl = await fileUploader.getSecureUrlFromPublicId(
+          product.image
+        );
+        return {
+          ...product.toObject(), // Convert product to plain object
+          image: secureUrl, // Replace public_id with secure_url
+        };
+      })
+    );
+
     res.status(200).json({
       success: true,
       message: "Products search, filter, and sort successful",
       data: {
-        products: products,
+        products: productsWithSecureUrl,
         pagination: {
           totalProducts: totalProducts,
           currentPage: pageNum,

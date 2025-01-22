@@ -7,10 +7,8 @@ import { connectDB } from "./utils/features";
 import apiRouter from "./routes/api";
 import { config } from "dotenv";
 import userSideRoutes from "./routes/userSideRoutes";
-// import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
 import productRouter from "./routes/farmerProducts";
 import orderRouter from "./routes/farmerOrders";
-// Load environment variables from .env file
 
 config({
   path: "./.env",
@@ -32,6 +30,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Security and logging middleware
+
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
@@ -41,15 +40,16 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ extended: false }));
 // Increase payload size in Express.js
 
-// app.use(express.json()); // This line can be kept or removed if bodyParser is used
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Enable CORS for all routes
 app.use(cors());
 
 // Basic route for testing
-app.get("/", (req: Request, res: Response) => {
-  res.send("API Working fine");
-});
+// app.get("/", (req: Request, res: Response) => {
+//   res.send("API Working fine");
+// });
 
 // Use API router for authentication
 app.use("/auth", apiRouter);
@@ -57,6 +57,8 @@ app.use("/auth", apiRouter);
 app.use("/auth", productRouter);
 app.use("/auth", userSideRoutes);
 app.use("/auth", orderRouter);
+
+app.use("/images", express.static("images"));
 
 // Set the port and start the server
 const port = Number(process.env.PORT) || 3001;

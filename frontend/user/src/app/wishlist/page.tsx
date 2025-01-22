@@ -1,16 +1,11 @@
 "use client";
 
-import {
-  useGetProductByIdQuery,
-  useGetProductsByCategoryAndPaginationQuery,
-} from "@/state/userApi";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { addToCart, CartItem } from "@/store/cartSlice";
 import { removeWishlistItem } from "@/store/wishlistSlice";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import toast from "react-hot-toast";
 import { AiFillHeart } from "react-icons/ai";
 
@@ -28,23 +23,6 @@ const Wishlist = () => {
     }
     dispatch(removeWishlistItem(_id));
     toast.success(`${wishlistItem.name} removed from wishlist`);
-  };
-
-  const getImageSrc = (image: any) => {
-    if (
-      typeof image === "string" &&
-      (image.startsWith("http://") || image.startsWith("https://"))
-    ) {
-      return image;
-    }
-
-    if (image?.data && Array.isArray(image.data)) {
-      return `data:image/png;base64,${Buffer.from(image.data).toString(
-        "base64"
-      )}`;
-    }
-
-    return "/default-image.png"; // Fallback image
   };
 
   const handleAddToCart = (product: any) => {
@@ -72,18 +50,16 @@ const Wishlist = () => {
 
   const WishlistCard = ({
     _id,
-    imageSrc,
     name,
     description,
     price,
     image,
   }: {
     _id: string;
-    imageSrc: string;
     name: string;
     description: string;
     price: number;
-    image: unknown;
+    image: string;
   }) => (
     <div className="border p-4 h-[98%] rounded-lg shadow-lg border-gray-300 relative flex flex-col">
       {/* Heart icon in the top right corner */}
@@ -97,7 +73,7 @@ const Wishlist = () => {
       <Image
         width={1000}
         height={1000}
-        src={getImageSrc(image)}
+        src={image}
         alt={name}
         className="h-48 w-5/6 ml-6 object-cover rounded-md"
       />
@@ -139,11 +115,7 @@ const Wishlist = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {wishlistItems.map((item) => (
-            <WishlistCard
-              key={item._id}
-              {...item}
-              imageSrc={getImageSrc(item.image)}
-            />
+            <WishlistCard key={item._id} {...item} />
           ))}
         </div>
       )}

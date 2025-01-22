@@ -44,23 +44,6 @@ const CartPage = () => {
     toast.success(`${cartItem.name} removed from cart`);
   };
 
-  const getImageSrc = (image: any) => {
-    if (
-      typeof image === "string" &&
-      (image.startsWith("http://") || image.startsWith("https://"))
-    ) {
-      return image;
-    }
-
-    if (image?.data && Array.isArray(image.data)) {
-      return `data:image/png;base64,${Buffer.from(image.data).toString(
-        "base64"
-      )}`;
-    }
-
-    return "/default-image.png"; // Fallback image
-  };
-
   return (
     <>
       {loading ? (
@@ -83,7 +66,7 @@ const CartPage = () => {
                           <Image
                             width={150}
                             height={150}
-                            src={getImageSrc(item.image)}
+                            src={item.image}
                             alt={item.name}
                             className="w-20 h-20 rounded"
                           />

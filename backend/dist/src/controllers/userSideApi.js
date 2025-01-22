@@ -16,7 +16,7 @@ exports.searchFilterAndSortProducts = exports.getProductById = exports.getProduc
 const admin_farmer_product_1 = __importDefault(require("../models/admin.farmer.product"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const admin_farmer_category_1 = __importDefault(require("../models/admin.farmer.category"));
-// Existing function to list all products
+const imageUpload_1 = require("./imageUpload");
 const getAllProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield admin_farmer_product_1.default.find({});
@@ -39,10 +39,18 @@ const getCategory = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             res.status(404).json({ error: "No categories found." });
             return;
         }
+        // Initialize the FileUploader instance
+        const fileUploader = new imageUpload_1.FileUploader();
+        // Get the secure URL for each product image
+        const categoriesWithSecureUrl = yield Promise.all(categories.map((category) => __awaiter(void 0, void 0, void 0, function* () {
+            const secureUrl = yield fileUploader.getSecureUrlFromPublicId(category.image);
+            return Object.assign(Object.assign({}, category.toObject()), { image: secureUrl });
+        })));
         // Return the list of categories
         res.status(200).json({
-            message: "Categories retrieved successfully.",
-            categories,
+            success: true,
+            message: "Categories fetched successfully.",
+            data: categoriesWithSecureUrl,
         });
     }
     catch (error) {
@@ -56,29 +64,29 @@ const getProductsByCategoryAndPagination = (req, res) => __awaiter(void 0, void 
         const { categoryId, page = 1, limit = 6 } = req.query;
         // Ensure categoryId is provided
         if (!categoryId) {
-            res
+            return res
                 .status(400)
                 .json({ success: false, message: "categoryId is required." });
-            return;
         }
         // Validate categoryId
         if (!mongoose_1.default.Types.ObjectId.isValid(categoryId)) {
-            res.status(400).json({ success: false, message: "Invalid categoryId." });
-            return;
+            return res
+                .status(400)
+                .json({ success: false, message: "Invalid categoryId." });
         }
         // Parse page and limit to numbers
         const pageNumber = parseInt(page, 10);
         const limitNumber = parseInt(limit, 10);
         // Validate pagination parameters
         if (!pageNumber || pageNumber < 1) {
-            res.status(400).json({ success: false, message: "Invalid page number." });
-            return;
+            return res
+                .status(400)
+                .json({ success: false, message: "Invalid page number." });
         }
         if (!limitNumber || limitNumber < 1) {
-            res
+            return res
                 .status(400)
                 .json({ success: false, message: "Invalid limit number." });
-            return;
         }
         // Calculate documents to skip
         const skip = (pageNumber - 1) * limitNumber;
@@ -96,15 +104,25 @@ const getProductsByCategoryAndPagination = (req, res) => __awaiter(void 0, void 
         // Get total product count for the filter
         const totalProducts = yield admin_farmer_product_1.default.countDocuments(filter);
         console.log("Total Products:", totalProducts);
+        // Initialize the FileUploader instance
+        const fileUploader = new imageUpload_1.FileUploader();
+        // Get the secure URL for each product image
+        const productsWithSecureUrl = yield Promise.all(products.map((product) => __awaiter(void 0, void 0, void 0, function* () {
+            const secureUrl = yield fileUploader.getSecureUrlFromPublicId(product.image);
+            return Object.assign(Object.assign({}, product.toObject()), { image: secureUrl });
+        })));
         // Respond with paginated data
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
-            data: products,
-            pagination: {
-                totalProducts: totalProducts,
-                currentPage: pageNumber,
-                totalPages: Math.ceil(totalProducts / limitNumber),
-                limit: limitNumber,
+            message: "Products fetched successfully",
+            data: {
+                products: productsWithSecureUrl,
+                pagination: {
+                    totalProducts: totalProducts,
+                    currentPage: pageNumber,
+                    totalPages: Math.ceil(totalProducts / limitNumber),
+                    limit: limitNumber,
+                },
             },
         });
     }
@@ -124,13 +142,23 @@ const getProductById = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             return res.status(400).json({ error: "Product ID is required." });
         }
         // Fetch the product from the database using its ID
-        const product = yield admin_farmer_product_1.default.findById(productId);
+        const product = yield admin_farmer_product_1.default.findById(productId).populate("category");
         // Check if the product exists
         if (!product) {
             return res.status(404).json({ message: "Product not found." });
         }
+        // Initialize the FileUploader instance
+        const fileUploader = new imageUpload_1.FileUploader();
+        const secureUrl = yield fileUploader.getSecureUrlFromPublicId(product.image);
+        console.log("secureUrl: ", secureUrl);
+        const productWithSecureUrl = Object.assign(Object.assign({}, product.toObject()), { image: secureUrl });
+        console.log("productWithSecureUrl: ", productWithSecureUrl);
         // Return the product details
-        return res.status(200).json(product);
+        return res.status(200).json({
+            success: true,
+            message: "Product fetched successfully",
+            data: productWithSecureUrl,
+        });
     }
     catch (error) {
         console.error("Error fetching product by ID:", error.message);
@@ -141,22 +169,33 @@ exports.getProductById = getProductById;
 const searchFilterAndSortProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { query, category, minPrice, maxPrice, limit = 6, page = 1, sort = "all", } = req.query;
+        console.log("Request Query Parameters:", req.query);
         // Build the filter object dynamically
         const filter = {};
         // Add search query to filter
         if (query) {
             filter.name = { $regex: query, $options: "i" }; // Case-insensitive regex search
         }
-        // Add category filter
+        // Add category filter for multiple categories
         if (category) {
-            if (mongoose_1.default.Types.ObjectId.isValid(category)) {
-                filter.category = new mongoose_1.default.Types.ObjectId(category);
+            const categoryArray = category
+                .split(",")
+                .map((id) => id.trim())
+                .filter((id) => mongoose_1.default.Types.ObjectId.isValid(id)); // Ensure all IDs are valid
+            console.log("Category Array", categoryArray);
+            if (categoryArray.length === 1) {
+                filter.category = new mongoose_1.default.Types.ObjectId(categoryArray[0]); // Single category
+            }
+            else if (categoryArray.length > 1) {
+                filter.category = { $in: categoryArray }; // Multiple categories
             }
             else {
-                res.status(400).json({ error: "Invalid category ID" });
+                res.status(400).json({ error: "Invalid category IDs provided" });
                 return;
             }
+            console.log("Category Filter Applied:", filter.category);
         }
+        console.log("Categories", category);
         // Add price range filter
         if (minPrice || maxPrice) {
             filter.price = {};
@@ -185,21 +224,26 @@ const searchFilterAndSortProducts = (req, res) => __awaiter(void 0, void 0, void
                 sortOption = {}; // No specific sorting
                 break;
         }
-        // Calculate total products and total pages
         const totalProducts = yield admin_farmer_product_1.default.countDocuments(filter);
         const totalPages = Math.ceil(totalProducts / limitNum);
-        // Fetch paginated and sorted results
+        console.log("Filter built:", filter);
         const products = yield admin_farmer_product_1.default.find(filter)
             .populate("category")
             .sort(sortOption)
             .skip((pageNum - 1) * limitNum)
             .limit(limitNum);
-        // Respond with results
+        // Initialize the FileUploader instance
+        const fileUploader = new imageUpload_1.FileUploader();
+        // Get the secure URL for each product image
+        const productsWithSecureUrl = yield Promise.all(products.map((product) => __awaiter(void 0, void 0, void 0, function* () {
+            const secureUrl = yield fileUploader.getSecureUrlFromPublicId(product.image);
+            return Object.assign(Object.assign({}, product.toObject()), { image: secureUrl });
+        })));
         res.status(200).json({
             success: true,
             message: "Products search, filter, and sort successful",
             data: {
-                products: products,
+                products: productsWithSecureUrl,
                 pagination: {
                     totalProducts: totalProducts,
                     currentPage: pageNum,

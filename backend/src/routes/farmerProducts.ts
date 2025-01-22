@@ -10,10 +10,16 @@ import {
   listProduct,
   updateProduct,
 } from "../controllers/farmerProducts";
+import { upload } from "../middlewares/multer";
 
 const router = express.Router();
 
-router.post("/createCategory", authenticateJWT, createCategory);
+router.post(
+  "/createCategory",
+  authenticateJWT,
+  upload.single("image"),
+  createCategory
+);
 router.get("/getCategory", authenticateJWT, getCategory);
 router.get("/getProductsByCategory", authenticateJWT, getProductsByCategory);
 router.get(
@@ -21,7 +27,12 @@ router.get(
   authenticateJWT,
   getProductsByCategoryAndPagination
 );
-router.post("/listproduct", authenticateJWT, listProduct);
+router.post(
+  "/listproduct",
+  authenticateJWT,
+  upload.single("image"),
+  listProduct
+);
 router.get("/getProduct", authenticateJWT, getProductsByFarmer);
 router.put("/updateProduct", authenticateJWT, updateProduct);
 router.delete("/deleteProduct", authenticateJWT, deleteProduct);

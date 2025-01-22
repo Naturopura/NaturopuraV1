@@ -12,10 +12,8 @@ const features_1 = require("./utils/features");
 const api_1 = __importDefault(require("./routes/api"));
 const dotenv_1 = require("dotenv");
 const userSideRoutes_1 = __importDefault(require("./routes/userSideRoutes"));
-// import {farmerUploadImageRoute} from "./routes/farmerUploadImage";
 const farmerProducts_1 = __importDefault(require("./routes/farmerProducts"));
 const farmerOrders_1 = __importDefault(require("./routes/farmerOrders"));
-// Load environment variables from .env file
 (0, dotenv_1.config)({
     path: "./.env",
 });
@@ -38,19 +36,21 @@ app.use((0, morgan_1.default)("common"));
 app.use(body_parser_1.default.json({ limit: "50mb" }));
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 // Increase payload size in Express.js
-// app.use(express.json()); // This line can be kept or removed if bodyParser is used
+app.use(express_1.default.json({ limit: "10mb" }));
+app.use(express_1.default.urlencoded({ extended: true, limit: "10mb" }));
 // Enable CORS for all routes
 app.use((0, cors_1.default)());
 // Basic route for testing
-app.get("/", (req, res) => {
-    res.send("API Working fine");
-});
+// app.get("/", (req: Request, res: Response) => {
+//   res.send("API Working fine");
+// });
 // Use API router for authentication
 app.use("/auth", api_1.default);
 // app.use('/api',farmerUploadImageRoute)
 app.use("/auth", farmerProducts_1.default);
 app.use("/auth", userSideRoutes_1.default);
 app.use("/auth", farmerOrders_1.default);
+app.use("/images", express_1.default.static("images"));
 // Set the port and start the server
 const port = Number(process.env.PORT) || 3001;
 app.listen(port, "0.0.0.0", () => {

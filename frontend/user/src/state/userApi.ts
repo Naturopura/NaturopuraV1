@@ -1,14 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-type ImageBuffer = {
-  type: "Buffer";
-  data: number[];
-};
-
 export interface Category {
   _id: string;
   name: string;
-  image: ImageBuffer;
+  image: string;
 }
 
 export interface getProduct {
@@ -21,24 +16,32 @@ export interface getProduct {
   quantity: number;
   description: string;
   unit: string;
-  image: ImageBuffer;
+  image: string;
 }
 
 export interface getProductById {
   _id: string;
+  farmerId: string;
   name: string;
-  category: string;
+  category: Category;
   price: number;
   currency: string;
   quantity: number;
   description: string;
   unit: string;
-  image: ImageBuffer;
+  image: string;
+}
+
+export interface getProductByIdResponse {
+  success: boolean;
+  message: string;
+  data: getProductById;
 }
 
 export interface CategoriesResponse {
+  success: boolean;
   message: string;
-  categories: Category[];
+  data: Category[];
 }
 
 export interface getProductsByCategoryAndPaginationRequest {
@@ -48,12 +51,16 @@ export interface getProductsByCategoryAndPaginationRequest {
 }
 
 export type getProductsByCategoryAndPaginationResponse = {
-  data: getProduct[];
-  pagination: {
-    totalProducts: number;
-    currentPage: number;
-    totalPages: number;
-    limit: number;
+  success: boolean;
+  message: string;
+  data: {
+    products: getProduct[];
+    pagination: {
+      totalProducts: number;
+      currentPage: number;
+      totalPages: number;
+      limit: number;
+    };
   };
 };
 
@@ -61,7 +68,7 @@ export interface searchFilterAndSortProductsRequest {
   query?: string;
   page?: number;
   limit?: number;
-  category?: string | string[];
+  categories?: string | string[];
   minPrice?: number;
   maxPrice?: number;
   sort?: string;
@@ -94,6 +101,7 @@ export const userApi = createApi({
     }),
     getProductById: build.query<getProductById, string>({
       query: (id) => `/auth/getProduct/${id}`,
+      transformResponse: (response: getProductByIdResponse) => response.data,
       providesTags: ["Products"],
     }),
     getCategory: build.query<CategoriesResponse, void>({
@@ -122,10 +130,28 @@ export const userApi = createApi({
       searchFilterAndSortProductsResponse,
       searchFilterAndSortProductsRequest
     >({
-      query: (params) => ({
-        url: "/auth/search",
-        params,
-      }),
+      query: (params) => {
+        const { categories, ...otherParams } = params;
+        console.log("Params: ", params);
+
+        // Ensure category is correctly serialized if it's an array
+        const queryParams = {
+          ...otherParams,
+          ...(categories
+            ? {
+                category: Array.isArray(categories)
+                  ? categories.join(",")
+                  : categories,
+              }
+            : {}),
+        };
+        console.log("Query Params: ", queryParams);
+
+        return {
+          url: "/auth/search",
+          params: queryParams,
+        };
+      },
     }),
   }),
 });

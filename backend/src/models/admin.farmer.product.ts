@@ -26,7 +26,10 @@ const productSchema = new mongoose.Schema({
   },
   quantity: { type: Number, required: [true, "Please enter quantity"] },
   description: { type: String },
-  image: { type: Buffer, required: true },
+  image: {
+    type: String,
+    required: true,
+  },
   createdAt: { type: Date, default: Date.now },
 });
 

@@ -26,32 +26,9 @@ const productCategories = [
 
 const NewArrivals = () => {
   const { data, isLoading, isError } = useGetCategoryQuery();
-  console.log("Categories Data:", data?.categories);
+  console.log("Categories Data:", data?.data);
   console.log("isLoading:", isLoading);
   console.log("isError:", isError);
-
-  const getImageSrc = (image: any) => {
-    if (
-      typeof image === "string" &&
-      (image.startsWith("http://") || image.startsWith("https://"))
-    ) {
-      return image;
-    }
-
-    if (image && image.data && Array.isArray(image.data)) {
-      try {
-        return `data:image/png;base64,${Buffer.from(image.data).toString(
-          "base64"
-        )}`;
-      } catch (error) {
-        console.error("Failed to convert Buffer to Base64:", error);
-      }
-    }
-
-    console.warn("No valid image source found:", image);
-
-    return "/default-image.png";
-  };
 
   return (
     <section className="px-8 py-12 flex flex-col md:flex-row items-start md:items-center justify-between">
@@ -72,7 +49,7 @@ const NewArrivals = () => {
         {productCategories.map(({ image, category, title }) => {
           // Filter categories based on product category
           const filteredCategories =
-            data?.categories?.filter((cat) => cat.name === category) || [];
+            data?.data?.filter((cat) => cat.name === category) || [];
 
           return filteredCategories.map((filteredCategory) => (
             <div key={filteredCategory._id} className="p-4 hover:opacity-70">

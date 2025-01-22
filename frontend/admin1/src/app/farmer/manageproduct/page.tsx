@@ -14,6 +14,7 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Edit, MoreVertical, Search, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { ManageProductLoader } from "@/app/(components)/Loader/loader";
 
 interface FormFieldProps {
   label: string;
@@ -114,15 +115,10 @@ const TextAreaField: React.FC<TextAreaFieldProps> = ({
   </FormField>
 );
 
-type ImageBuffer = {
-  type: "Buffer";
-  data: number[];
-};
-
 interface Category {
   _id: string;
   name: string;
-  image: ImageBuffer;
+  image: string;
 }
 
 interface ProductFormData {
@@ -133,7 +129,7 @@ interface ProductFormData {
   quantity: number;
   description: string;
   unit: string;
-  image: ImageBuffer;
+  image: string;
   category: Category;
 }
 
@@ -262,322 +258,15 @@ const ManageProduct: React.FC = () => {
 
   const { data: categoryData } = useGetCategoryQuery();
 
+  console.log("CategoryData", categoryData);
+
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
   const router = useRouter();
 
-  if (isLoading)
-    return (
-      <div className="p-4 mx-2 pl-64 -mt-[37rem] animate-pulse">
-        <div className="w-full mb-4">
-          <div className="h-8 w-1/6 bg-gray-300 rounded-md"></div>
-        </div>
+  if (isLoading) return <ManageProductLoader />;
 
-        <div className="flex justify-between items-center mb-4">
-          <div className="w-1/3 h-8 bg-gray-300 rounded-md"></div>
-          <div className="w-1/6 h-9 bg-gray-300 ml-[21.4rem] rounded-md"></div>
-          <div className="w-1/6 h-9 bg-gray-300 rounded-md"></div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-300 rounded-md">
-            <thead>
-              <tr>
-                {[
-                  "Name",
-                  "Image",
-                  "Price",
-                  "Stock",
-                  "Unit",
-                  "Category",
-                  "Description",
-                  "Actions",
-                ].map((header, index) => (
-                  <th key={index} className="px-4 py-2">
-                    <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              <tr className="border-t">
-                <td className="px-2 py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-10 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-4 py-2">
-                  <div className="h-6 w-20 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-8 py-2">
-                  <div className="h-6 w-12 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-9 py-2">
-                  <div className="h-6 w-10 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-2 py-2">
-                  <div className="h-6 w-24 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="py-2">
-                  <div className="h-6 w-32 bg-gray-300 rounded-md"></div>
-                </td>
-                <td className="px-10 py-2">
-                  <div className="h-6 w-8 bg-gray-300 rounded-md"></div>
-                </td>
-              </tr>
-              {/* Repeat rows as needed */}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex mt-20">
-          <div className="h-8 w-28 ml-20 bg-gray-300 rounded-md"></div>
-          <div className="flex space-x-4 ml-60">
-            <div className="h-8 w-20 bg-gray-300 rounded-md"></div>
-            <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
-            <div className="h-8 w-8 bg-gray-300 rounded-full"></div>
-            <div className="h-8 w-20 bg-gray-300 rounded-md"></div>
-          </div>
-        </div>
-      </div>
-    );
-
-  const totalPages = products?.pagination?.totalPages || 1;
+  const totalPages = products?.data.pagination?.totalPages || 1;
 
   if (isError) {
     if ("data" in (error as FetchBaseQueryError)) {
@@ -603,34 +292,6 @@ const ManageProduct: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getImageSrc = (image: any) => {
-    // Check if the image is already a URL string
-    if (
-      typeof image === "string" &&
-      (image.startsWith("http://") || image.startsWith("https://"))
-    ) {
-      return image;
-    }
-
-    // Check if the image is a Buffer with data
-    if (image && image.data && Array.isArray(image.data)) {
-      try {
-        return `data:image/png;base64,${Buffer.from(image.data).toString(
-          "base64"
-        )}`;
-      } catch (error) {
-        console.error("Failed to convert Buffer to Base64:", error);
-      }
-    }
-
-    // Log an error if no valid image source is found
-    console.warn("No valid image source found:", image);
-
-    // Return a placeholder image as a fallback
-    return "/default-image.png"; // Ensure this placeholder exists in your public folder
-  };
-
   console.log("selectedProduct?.category.id", selectedProduct?.category._id);
 
   const toggleDropdown = (
@@ -639,25 +300,6 @@ const ManageProduct: React.FC = () => {
   ) => {
     e.stopPropagation();
     setVisibleDropdown((prev) => (prev === id ? null : id));
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (reader.result) {
-          setSelectedProduct((prev) => ({
-            ...prev!,
-            image: {
-              type: "Buffer",
-              data: Array.from(new Uint8Array(reader.result as ArrayBuffer)),
-            },
-          }));
-        }
-      };
-      reader.readAsArrayBuffer(file);
-    }
   };
 
   const handleChange = (
@@ -751,7 +393,7 @@ const ManageProduct: React.FC = () => {
                 className="border-2 border-gray-500 py-2.5 rounded-lg font-semibold"
               >
                 <option value="Select Category">Select Category</option>
-                {categoryData?.categories.map((category) => (
+                {categoryData?.data.map((category) => (
                   <option key={category._id} value={category._id}>
                     {category.name}
                   </option>
@@ -779,71 +421,72 @@ const ManageProduct: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {products?.data.map((product) => (
-                  <tr key={product._id} className="border-b">
-                    <td className="px-4 py-2 font-semibold">{product.name}</td>
-                    <td className="px-4 py-2">
-                      <Image
-                        src={getImageSrc(product.image)}
-                        alt={product.name}
-                        width={50}
-                        height={50}
-                      />
-                    </td>
-                    <td className="px-4 py-2 font-semibold">
-                      {product.currency} {product.price}
-                    </td>
-                    <td className="px-4 py-2 font-semibold">
-                      {product.quantity}
-                    </td>
-                    <td className="px-4 py-2 font-semibold">{product.unit}</td>
-                    <td className="px-4 py-2 font-semibold">
-                      {product.category ? product.category.name : "No Category"}
-                    </td>
-                    <td className="px-4 py-2 font-semibold">
-                      {product.description}
-                    </td>
-                    <td className="px-4 py-2 font-semibold relative dropdown-container">
-                      <button
-                        onClick={(e) => toggleDropdown(product._id, e)}
-                        className="px-2 py-1 rounded"
-                      >
-                        <MoreVertical />
-                      </button>
+                {Array.isArray(products?.data.products) &&
+                  products?.data.products.map((product) => (
+                    <tr key={product._id} className="border-b">
+                      <td className="px-4 py-2 font-semibold">
+                        {product.name}
+                      </td>
+                      <td className="px-4 py-2">
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          width={50}
+                          height={50}
+                        />
+                      </td>
+                      <td className="px-4 py-2 font-semibold">
+                        {product.currency} {product.price}
+                      </td>
+                      <td className="px-4 py-2 font-semibold">
+                        {product.quantity}
+                      </td>
+                      <td className="px-4 py-2 font-semibold">
+                        {product.unit}
+                      </td>
+                      <td className="px-4 py-2 font-semibold">
+                        {product.category
+                          ? product.category.name
+                          : "No Category"}
+                      </td>
+                      <td className="px-4 py-2 font-semibold">
+                        {product.description}
+                      </td>
+                      <td className="px-4 py-2 font-semibold relative dropdown-container">
+                        <button
+                          onClick={(e) => toggleDropdown(product._id, e)}
+                          className="px-2 py-1 rounded"
+                        >
+                          <MoreVertical />
+                        </button>
 
-                      {visibleDropdown === product._id && (
-                        <div className="absolute right-0 bg-white shadow-md rounded-md mt-2 z-50 w-40">
-                          <button
-                            className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 w-full"
-                            onClick={() => {
-                              setVisibleDropdown(null);
-                              openEditModal(product);
-                              console.log(
-                                "Product passed to openEditModal:",
-                                product
-                              );
-                            }}
-                          >
-                            <Edit className="mr-2" size={20} />
-                            Edit
-                          </button>
-                          <button
-                            className="flex items-center px-4 py-2 text-red-600 hover:bg-gray-100 w-full"
-                            onClick={() => {
-                              console.log("Delete Product", product._id);
-                              setVisibleDropdown(null);
-
-                              openDeleteModal(product);
-                            }}
-                          >
-                            <Trash2 className="mr-2" size={20} />
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                        {visibleDropdown === product._id && (
+                          <div className="absolute right-0 bg-white shadow-md rounded-md mt-2 z-50 w-40">
+                            <button
+                              className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 w-full"
+                              onClick={() => {
+                                setVisibleDropdown(null);
+                                openEditModal(product);
+                              }}
+                            >
+                              <Edit className="mr-2" size={20} />
+                              Edit
+                            </button>
+                            <button
+                              className="flex items-center px-4 py-2 text-red-600 hover:bg-gray-100 w-full"
+                              onClick={() => {
+                                setVisibleDropdown(null);
+                                openDeleteModal(product);
+                              }}
+                            >
+                              <Trash2 className="mr-2" size={20} />
+                              Delete
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
@@ -1013,7 +656,7 @@ const ManageProduct: React.FC = () => {
                     <Image
                       width={80}
                       height={80}
-                      src={getImageSrc(selectedProduct?.image)}
+                      src={selectedProduct?.image}
                       alt={selectedProduct?.name || ""}
                       className="rounded-md"
                     />
@@ -1021,7 +664,7 @@ const ManageProduct: React.FC = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleImageChange}
+                    onChange={handleChange}
                     className="w-full border-2 text-lg border-gray-300 rounded-md p-2"
                   />
                 </div>
