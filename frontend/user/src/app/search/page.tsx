@@ -17,11 +17,7 @@ const Search = () => {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
-  const [filters, setFilters] = useState({
-    priceRange: [25, 125],
-    sort: "",
-  });
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [sort, setSort] = useState("all");
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
   const categories = searchParams.get("categories") || "";
@@ -35,10 +31,13 @@ const Search = () => {
   const [triggerSearch, { data: product, isLoading, isError }] =
     useLazySearchFilterAndSortProductsQuery();
 
-  console.log(
-    "Product Image URL",
-    product?.data.products.map((pr) => pr.image)
-  );
+  console.log("Sorted Products: ", product?.data.products);
+
+  // Handle filter changes
+
+  const handleFilterChange = (value: string) => {
+    setSort(value); // Directly update sort as a string
+  };
 
   console.log("Categories------", categories);
   console.log("Category Array: ", categoryArray);
@@ -61,9 +60,19 @@ const Search = () => {
         page: page,
         limit: limit,
         categories: categoryArray,
+        sort: sort,
       });
     }
-  }, [categoryArray, page, minPrice, maxPrice, limit, query, triggerSearch]);
+  }, [
+    categoryArray,
+    page,
+    sort,
+    minPrice,
+    maxPrice,
+    limit,
+    query,
+    triggerSearch,
+  ]);
 
   useEffect(() => {
     const urlPage = parseInt(searchParams.get("page") || "1", 10);
@@ -201,36 +210,6 @@ const Search = () => {
     toast.success(`${product.name} added to wishlist`);
   };
 
-  const getImageSrc = (image: any) => {
-    if (
-      typeof image === "string" &&
-      (image.startsWith("http://") || image.startsWith("https://"))
-    ) {
-      return image;
-    }
-
-    if (image && image.data && Array.isArray(image.data)) {
-      try {
-        return `data:image/png;base64,${Buffer.from(image.data).toString(
-          "base64"
-        )}`;
-      } catch (error) {
-        console.error("Failed to convert Buffer to Base64:", error);
-      }
-    }
-
-    console.warn("No valid image source found:", image);
-
-    return "/default-image.png";
-  };
-
-  const handleFilterChange = (key: string, value: string | number[]) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
   return (
     <div className="flex mt-32 mx-5 border-t-2">
       {/* Sidebar Filters */}
@@ -273,18 +252,22 @@ const Search = () => {
               </div>
               <select
                 className={`border font-semibold rounded p-2 ${
-                  filters.sort === "price-low" ||
-                  filters.sort === "price-high" ||
-                  filters.sort === "all-products"
+                  sort === "price_low_to_high" ||
+                  sort === "price_high_to_low" ||
+                  sort === "all"
                     ? "w-64"
                     : "w-44"
                 }`}
-                onChange={(e) => handleFilterChange("sort", e.target.value)}
+                onChange={(e) => handleFilterChange(e.target.value)}
               >
-                <option value="all-products">Sort By: All Products</option>
+                <option value="all">Sort By: All Products</option>
                 <option value="newest">Sort By: Newest</option>
-                <option value="price-low">Sort By: Price: Low to High</option>
-                <option value="price-high">Sort By: Price: High to Low</option>
+                <option value="price_low_to_high">
+                  Sort By: Price: Low to High
+                </option>
+                <option value="price_high_to_low">
+                  Sort By: Price: High to Low
+                </option>
               </select>
             </div>
 
@@ -300,7 +283,7 @@ const Search = () => {
                       <Image
                         width={998}
                         height={1000}
-                        src={getImageSrc(p.image)}
+                        src={p.image}
                         alt="Product"
                         className="mb-4 ml-16 object-cover w-1/2 h-3/4"
                       />

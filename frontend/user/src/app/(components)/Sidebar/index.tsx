@@ -9,11 +9,11 @@ import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("all");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
   const [minPrice, setMinPrice] = useState(1);
   const [maxPrice, setMaxPrice] = useState(500);
-  const [rangeValue, setRangeValue] = useState(`${minPrice},${maxPrice}`);
   const router = useRouter();
 
   const [triggerSearch, { data, isLoading, error }] =
@@ -37,6 +37,7 @@ const Sidebar = () => {
       triggerSearch({
         query: search,
         categories: selectedCategories,
+        sort,
         page,
         limit,
         minPrice,
@@ -51,6 +52,7 @@ const Sidebar = () => {
     }
   }, [
     selectedCategories,
+    sort,
     page,
     minPrice,
     maxPrice,

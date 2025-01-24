@@ -131,10 +131,14 @@ export const userApi = createApi({
       searchFilterAndSortProductsRequest
     >({
       query: (params) => {
-        const { categories, ...otherParams } = params;
-        console.log("Params: ", params);
+        const { categories, sort, ...otherParams } = params;
 
-        // Ensure category is correctly serialized if it's an array
+        // Ensure correct sort mapping if needed
+        let sortValue = "";
+        if (sort === "price_low_to_high") sortValue = "price_low_to_high";
+        else if (sort === "price_high_to_low") sortValue = "price_high_to_low";
+        else if (sort === "newest") sortValue = "newest";
+
         const queryParams = {
           ...otherParams,
           ...(categories
@@ -144,8 +148,10 @@ export const userApi = createApi({
                   : categories,
               }
             : {}),
+          ...(sortValue ? { sort: sortValue } : {}),
         };
-        console.log("Query Params: ", queryParams);
+
+        console.log("Query Params Sent to API:", queryParams);
 
         return {
           url: "/auth/search",

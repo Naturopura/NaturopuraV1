@@ -34,7 +34,12 @@ router.post(
   listProduct
 );
 router.get("/getProduct", authenticateJWT, getProductsByFarmer);
-router.put("/updateProduct", authenticateJWT, updateProduct);
+router.put(
+  "/updateProduct",
+  authenticateJWT,
+  upload.single("image"),
+  updateProduct
+);
 router.delete("/deleteProduct", authenticateJWT, deleteProduct);
 
 export default router;

@@ -192,7 +192,7 @@ const NewProduct = () => {
       toast.success("Product created successfully");
       router.refresh();
       router.push("/farmer/manageproduct");
-      refetch();
+      await refetch();
       console.log(res, "listing response");
     } catch (error) {
       console.error("Failed to create product:", error);

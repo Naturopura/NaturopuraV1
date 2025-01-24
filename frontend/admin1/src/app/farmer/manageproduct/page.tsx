@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  getProduct,
   UpdateProductRequest,
   useDeleteProductMutation,
   useGetCategoryQuery,
@@ -129,7 +130,7 @@ interface ProductFormData {
   quantity: number;
   description: string;
   unit: string;
-  image: string;
+  image: File | null;
   category: Category;
 }
 
@@ -137,7 +138,7 @@ type DeleteProduct = {
   _id: string;
 };
 
-const ManageProduct: React.FC = () => {
+const ManageProduct = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -149,19 +150,11 @@ const ManageProduct: React.FC = () => {
   const [categoryId, setCategoryId] = useState<string | undefined>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] =
-    useState<ProductFormData | null>(null);
   const [deletedProduct, setDeletedProduct] = useState<DeleteProduct | null>(
     null
   );
-
-  useEffect(() => {
-    console.log("Selected Product updated:", selectedProduct);
-  }, [selectedProduct]);
-
-  useEffect(() => {
-    console.log("Edit Modal state updated:", isEditModalOpen);
-  }, [isEditModalOpen]);
+  const [formData, setFormData] = useState<ProductFormData | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -179,6 +172,9 @@ const ManageProduct: React.FC = () => {
   let interval: NodeJS.Timeout;
   let isLoadingProgress = false; // Prevent multiple intervals
 
+  {
+    /* Start loading progress */
+  }
   const startLoading = () => {
     if (isLoadingProgress) return; // Prevent duplicate loading
     isLoadingProgress = true;
@@ -197,6 +193,9 @@ const ManageProduct: React.FC = () => {
     }, 500);
   };
 
+  {
+    /* Finish loading progress */
+  }
   const finishLoading = () => {
     if (!isLoadingProgress) return; // Skip if not loading
     console.log("Finishing loading");
@@ -230,6 +229,7 @@ const ManageProduct: React.FC = () => {
     setTimeout(() => {
       finishLoading();
     }, 5000); // Simulated loading time
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -281,9 +281,22 @@ const ManageProduct: React.FC = () => {
     );
   }
 
-  const openEditModal = (product: ProductFormData) => {
+  const openEditModal = (product: getProduct) => {
     console.log("Opening edit modal with product:", product);
-    setSelectedProduct({ ...product });
+
+    setFormData({
+      _id: product._id,
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      quantity: product.quantity,
+      description: product.description,
+      unit: product.unit,
+      currency: product.currency,
+      image: null, // Ensure it's null because we can't store a File yet
+    });
+
+    setPreview(product.image); // Keep the existing image preview
     setIsEditModalOpen(true);
   };
 
@@ -292,7 +305,7 @@ const ManageProduct: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  console.log("selectedProduct?.category.id", selectedProduct?.category._id);
+  // console.log("selectedProduct?.category.id", selectedProduct?.category._id);
 
   const toggleDropdown = (
     id: string,
@@ -308,30 +321,42 @@ const ManageProduct: React.FC = () => {
     >
   ) => {
     const { id, value } = e.target;
-    setSelectedProduct((prev) => (prev ? { ...prev, [id]: value } : null));
+
+    setFormData((prev) => {
+      if (!prev) return prev; // Ensure prev is not null
+
+      return { ...prev, [id]: value };
+    });
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+
+    setFormData((prev) => {
+      if (prev) {
+        return { ...prev, image: file }; // Set image as File or null
+      }
+      return prev; // If prev is null, return it as is
+    });
+
+    setPreview(file ? URL.createObjectURL(file) : ""); // Update preview or clear it
+  };
+
+  console.log("Preview: ", preview);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (selectedProduct) {
-      const updatedProduct: UpdateProductRequest = {
-        ...selectedProduct,
-        category: selectedProduct.category._id, // Convert category to the expected string (e.g., category ID)
-      };
-
-      try {
-        // Your function to update the product, e.g., API call
-        await updateProduct(updatedProduct).unwrap();
-        toast.success("Product updated successfully");
-        router.refresh();
-        setIsEditModalOpen(false); // Close the modal after update
-        refetch();
-      } catch (error) {
-        console.error("Error updating product:", error);
-        toast.error("Failed to update product");
-      }
+    if (!formData?.image || !(formData.image instanceof File)) {
+      toast.error("Please select a valid image");
+      return;
     }
+
+    await updateProduct(formData as UpdateProductRequest).unwrap(); // Type assertion
+    toast.success("Product updated successfully");
+    router.refresh();
+    setIsEditModalOpen(false);
+    refetch();
   };
 
   const deleteHandler = async () => {
@@ -355,6 +380,7 @@ const ManageProduct: React.FC = () => {
 
   return (
     <>
+      {/* Loading progress */}
       <div
         style={{
           position: "fixed",
@@ -374,6 +400,7 @@ const ManageProduct: React.FC = () => {
           <h1 className="text-2xl font-bold">Products</h1>
 
           <div className="mt-4 flex items-center justify-between">
+            {/* Search products */}
             <div className="relative w-1/2">
               <Search
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
@@ -386,6 +413,7 @@ const ManageProduct: React.FC = () => {
               />
             </div>
 
+            {/* Select Category */}
             <div className="flex items-center gap-1">
               <select
                 value={categoryId || ""}
@@ -406,6 +434,7 @@ const ManageProduct: React.FC = () => {
             </div>
           </div>
 
+          {/* View Product */}
           <div className="mt-6 border border-gray-400 rounded-lg">
             <table className="w-full table-auto text-left border-collapse">
               <thead>
@@ -429,7 +458,7 @@ const ManageProduct: React.FC = () => {
                       </td>
                       <td className="px-4 py-2">
                         <Image
-                          src={product.image}
+                          src={product.image || ""}
                           alt={product.name}
                           width={50}
                           height={50}
@@ -492,6 +521,7 @@ const ManageProduct: React.FC = () => {
           </div>
         </main>
 
+        {/* Pagination */}
         <div className="flex flex-col items-center mt-12">
           <hr className="w-full border-t-2 border-black mb-6" />
           <div className="flex justify-between items-center w-full max-w-4xl">
@@ -534,6 +564,7 @@ const ManageProduct: React.FC = () => {
         </div>
       </div>
 
+      {/* Edit Product */}
       {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center backdrop-blur-sm justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white w-full max-w-4xl h-auto rounded-lg shadow-lg p-6 overflow-y-auto max-h-[90vh]">
@@ -552,14 +583,14 @@ const ManageProduct: React.FC = () => {
                 <InputField
                   label="Product Name"
                   id="name"
-                  value={selectedProduct?.name}
+                  value={formData?.name}
                   onChange={handleChange}
                   placeholder="Enter Product Name"
                 />
                 <TextAreaField
                   id="description"
                   label="Product Description"
-                  value={selectedProduct?.description}
+                  value={formData?.description}
                   onChange={handleChange}
                   placeholder="Enter Product Description"
                 />
@@ -573,7 +604,7 @@ const ManageProduct: React.FC = () => {
                 <SelectField
                   id="unit"
                   label="Unit"
-                  value={selectedProduct?.unit}
+                  value={formData?.unit}
                   onChange={handleChange}
                 >
                   <option value="">Select Unit</option>
@@ -586,7 +617,7 @@ const ManageProduct: React.FC = () => {
                 <SelectField
                   id="currency"
                   label="Currency"
-                  value={selectedProduct?.currency}
+                  value={formData?.currency}
                   onChange={handleChange}
                 >
                   <option value="INR">INR</option>
@@ -601,7 +632,7 @@ const ManageProduct: React.FC = () => {
                   type="number"
                   label="Price"
                   id="price"
-                  value={selectedProduct?.price}
+                  value={formData?.price}
                   onChange={handleChange}
                   placeholder="Enter Price"
                 />
@@ -613,24 +644,24 @@ const ManageProduct: React.FC = () => {
                 <SelectField
                   id="category"
                   label="Product Category"
-                  value={selectedProduct?.category._id || ""}
+                  value={formData?.category._id || ""}
                   onChange={(e) => {
                     const selectedCategoryId = e.target.value;
-                    setSelectedProduct((prev) =>
-                      prev
-                        ? {
-                            ...prev,
-                            category: {
-                              ...prev.category,
-                              _id: selectedCategoryId, // Update category ID
-                            },
-                          }
-                        : null
-                    );
+                    setFormData((prev) => {
+                      if (!prev) return prev; // Ensure prev is not null
+
+                      return {
+                        ...prev,
+                        category: {
+                          ...prev.category, // Ensure category exists before spreading
+                          _id: selectedCategoryId, // Update category ID
+                        },
+                      };
+                    });
                   }}
                 >
-                  <option value={selectedProduct?.category._id}>
-                    {selectedProduct?.category.name || "Select a category"}
+                  <option value={formData?.category._id}>
+                    {formData?.category.name || "Select a category"}
                   </option>
                 </SelectField>
               </div>
@@ -642,7 +673,7 @@ const ManageProduct: React.FC = () => {
                   id="quantity"
                   type="number"
                   label="Product Stock"
-                  value={selectedProduct?.quantity}
+                  value={formData?.quantity}
                   onChange={handleChange}
                   placeholder="Enter Product Stock"
                 />
@@ -652,19 +683,19 @@ const ManageProduct: React.FC = () => {
                 <h2 className="text-xl font-semibold mb-2">Product Image</h2>
                 <hr className="border-b border-gray-200 my-4" />
                 <div className="flex items-center space-x-4">
-                  {selectedProduct?.image && (
+                  {preview && (
                     <Image
-                      width={80}
-                      height={80}
-                      src={selectedProduct?.image}
-                      alt={selectedProduct?.name || ""}
+                      width={50}
+                      height={50}
+                      src={preview}
+                      alt={formData?.name || ""}
                       className="rounded-md"
                     />
                   )}
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleChange}
+                    onChange={handleFileChange}
                     className="w-full border-2 text-lg border-gray-300 rounded-md p-2"
                   />
                 </div>
@@ -692,6 +723,7 @@ const ManageProduct: React.FC = () => {
         </div>
       )}
 
+      {/* Delete Product */}
       {isModalOpen && deletedProduct && (
         <div className="fixed inset-0 z-50 backdrop-blur-sm flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg">

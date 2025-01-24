@@ -14,6 +14,6 @@ router.get("/getProductsByCategory", authenticateToken_1.default, farmerProducts
 router.get("/getProductsByCategoryAndPagination", authenticateToken_1.default, farmerProducts_1.getProductsByCategoryAndPagination);
 router.post("/listproduct", authenticateToken_1.default, multer_1.upload.single("image"), farmerProducts_1.listProduct);
 router.get("/getProduct", authenticateToken_1.default, farmerProducts_1.getProductsByFarmer);
-router.put("/updateProduct", authenticateToken_1.default, farmerProducts_1.updateProduct);
+router.put("/updateProduct", authenticateToken_1.default, multer_1.upload.single("image"), farmerProducts_1.updateProduct);
 router.delete("/deleteProduct", authenticateToken_1.default, farmerProducts_1.deleteProduct);
 exports.default = router;

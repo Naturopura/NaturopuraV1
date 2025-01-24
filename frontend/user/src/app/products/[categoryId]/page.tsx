@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import {
+  getProduct,
   useGetProductsByCategoryAndPaginationQuery,
+  useLazySearchFilterAndSortProductsQuery,
   // useGetProductsByCategoryQuery,
 } from "@/state/userApi";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
@@ -12,7 +14,7 @@ import { useAppDispatch } from "@/store";
 import toast from "react-hot-toast";
 import { addToWishlist, WishlistItem } from "@/store/wishlistSlice";
 import Sidebar from "../../(components)/Sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FiHeart } from "react-icons/fi";
 import { AllProductsLoader } from "@/app/(components)/Loader/loader";
@@ -21,19 +23,47 @@ const Products = () => {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
-  const [filters, setFilters] = useState({
-    priceRange: [25, 125],
-    sort: "",
-  });
+  const [sort, setSort] = useState("all");
+  const [filteredProducts, setFilteredProducts] = useState<getProduct[]>([]);
   const { categoryId }: { categoryId: string } = useParams();
 
   console.log("categoryId:", categoryId);
+
+  const [triggerSearch, { data: product, isError }] =
+    useLazySearchFilterAndSortProductsQuery();
+
+  const handleFilterChange = (value: string) => {
+    setSort(value); // Directly update sort as a string
+  };
+
+  useEffect(() => {
+    if (sort !== "all") {
+      triggerSearch({
+        sort: sort,
+      });
+    }
+  }, [sort, triggerSearch]);
 
   const {
     data: products,
     isLoading,
     error,
   } = useGetProductsByCategoryAndPaginationQuery({ categoryId, page, limit });
+
+  useEffect(() => {
+    const filterProducts = () => {
+      if (categoryId && products?.data?.products) {
+        const categoryFilteredProducts = products.data.products.filter(
+          (product) => product.category._id === categoryId
+        );
+        setFilteredProducts(categoryFilteredProducts);
+      } else {
+        setFilteredProducts(products?.data?.products || []);
+      }
+    };
+
+    filterProducts();
+  }, [sort, categoryId, products]);
 
   const totalPages = Math.ceil(
     (products?.data.pagination.totalProducts || 0) / limit
@@ -100,12 +130,9 @@ const Products = () => {
     toast.success(`${product.name} added to wishlist`);
   };
 
-  const handleFilterChange = (key: string, value: string | number[]) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
+  // Conditionally display the products either with the default fetch or based on the sorting
+  const productsToDisplay =
+    sort === "all" ? filteredProducts : product?.data?.products || [];
 
   return (
     <div className="flex mt-32 mx-5 border-t-2">
@@ -126,24 +153,28 @@ const Products = () => {
           </div>
           <select
             className={`border font-semibold rounded p-2 ${
-              filters.sort === "price-low" ||
-              filters.sort === "price-high" ||
-              filters.sort === "all-products"
+              sort === "price_low_to_high" ||
+              sort === "price_high_to_low" ||
+              sort === "all"
                 ? "w-64"
                 : "w-44"
             }`}
-            onChange={(e) => handleFilterChange("sort", e.target.value)}
+            onChange={(e) => handleFilterChange(e.target.value)}
           >
-            <option value="all-products">Sort By: All Products</option>
+            <option value="all">Sort By: All Products</option>
             <option value="newest">Sort By: Newest</option>
-            <option value="price-low">Sort By: Price: Low to High</option>
-            <option value="price-high">Sort By: Price: High to Low</option>
+            <option value="price_low_to_high">
+              Sort By: Price: Low to High
+            </option>
+            <option value="price_high_to_low">
+              Sort By: Price: High to Low
+            </option>
           </select>
         </div>
 
         {/* Product Cards */}
         <div className="grid grid-cols-3 gap-4">
-          {products?.data.products.map((product) => (
+          {productsToDisplay?.map((product) => (
             <div
               key={product._id}
               className="border-2 border-gray-400 rounded-lg p-4 flex flex-col items-start relative"

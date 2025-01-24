@@ -72,11 +72,11 @@ export type getProductsByCategoryAndPaginationResponse = {
 export interface UpdateProductRequest {
   _id: string;
   name: string;
-  category: string;
-  price: number;
-  quantity: number;
+  category: Category;
+  price: number | undefined;
+  quantity: number | undefined;
   description: string;
-  image: string;
+  image: File | null;
   unit: string;
   currency: string;
 }
@@ -154,6 +154,7 @@ export const farmerApi = createApi({
     }),
     listProducts: build.query<ListProductResponse, void>({
       query: () => "/auth/listproduct",
+      providesTags: ["Products"],
     }),
     getProducts: build.query<getProduct[], void>({
       query: () => "/auth/getProduct",
@@ -180,12 +181,26 @@ export const farmerApi = createApi({
       }),
     }),
     updateProduct: build.mutation<UpdateProductResponse, UpdateProductRequest>({
-      query: (updateProduct) => ({
-        url: "/auth/updateProduct",
-        method: "PUT",
-        body: updateProduct,
-      }),
-      transformResponse: (response: UpdateProductResponse) => response,
+      query: (updateProduct) => {
+        const formData = new FormData();
+        formData.append("_id", updateProduct._id);
+        formData.append("name", updateProduct.name);
+        formData.append("category", updateProduct.category._id);
+        formData.append("price", (updateProduct.price ?? 0).toString());
+        formData.append("quantity", (updateProduct.quantity ?? 0).toString());
+        formData.append("description", updateProduct.description);
+        formData.append("unit", updateProduct.unit);
+        formData.append("currency", updateProduct.currency);
+        // ✅ Only append image if it's a File (not null)
+        if (updateProduct.image instanceof File) {
+          formData.append("image", updateProduct.image);
+        }
+        return {
+          url: "/auth/updateProduct",
+          method: "PUT",
+          body: formData,
+        };
+      },
       invalidatesTags: ["Products"],
     }),
     deleteProduct: build.mutation<DeleteProductResponse, DeleteProductRequest>({

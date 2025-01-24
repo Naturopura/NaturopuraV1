@@ -347,17 +347,44 @@ export const updateProduct = async (
       price,
       quantity,
       description,
-      image,
       unit,
       currency,
     } = req.body;
-    const farmerId = req.user?.id;
+    // const farmerId = req.user?.id;
     console.log("Updating product:", _id);
 
-    if (!_id || !farmerId) {
-      return res
-        .status(400)
-        .json({ error: "Please provide both productId and farmerId." });
+    const image = req.file?.fieldname!;
+    const imagePath = req.file?.path!;
+
+    if (
+      !_id ||
+      !name ||
+      !category ||
+      !price ||
+      !quantity ||
+      !unit ||
+      !currency ||
+      !image ||
+      !imagePath
+    ) {
+      return res.status(400).json({ error: "Please provide all fields." });
+    }
+
+    const uploader = new FileUploader();
+    const filePath = imagePath;
+    const fileName = image;
+
+    // Call the uploadFile method to get the file's secure_url and public_id
+    const result = await uploader.uploadFile({ filePath, fileName });
+
+    const { secure_url, public_id } = result;
+
+    if (!secure_url) {
+      return res.status(400).json({
+        success: false,
+        message: "Error while uploading image",
+        error: secure_url,
+      });
     }
 
     const existingCategory = await Category.findById(category);
@@ -368,14 +395,17 @@ export const updateProduct = async (
     }
 
     const updatedProduct = await Product.findOneAndUpdate(
-      { _id: _id, farmerId },
+      {
+        _id: _id,
+        // farmerId
+      },
       {
         name,
         category: existingCategory._id,
         price,
         quantity,
         description,
-        image,
+        image: public_id,
         unit,
         currency,
       },
@@ -388,24 +418,13 @@ export const updateProduct = async (
         .json({ message: "Product not found or not authorized to update." });
     }
 
-    // Initialize the FileUploader instance
-    const fileUploader = new FileUploader();
-
-    // Get the secure URL for the updated product image
-    const secureUrl = await fileUploader.getSecureUrlFromPublicId(
-      updatedProduct.image
-    );
-
-    // Convert product to a plain object and update the image field
-    const updatedProductWithSecureUrl = {
-      ...updatedProduct.toObject(),
-      image: secureUrl,
-    };
-
     res.status(200).json({
       success: true,
       message: "Product Updated Successfully",
-      data: updatedProductWithSecureUrl,
+      data: {
+        ...updatedProduct.toObject(),
+        image: secure_url,
+      },
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message });

@@ -266,15 +266,36 @@ const getProductsByCategoryAndPagination = (req, res, next) => __awaiter(void 0,
 });
 exports.getProductsByCategoryAndPagination = getProductsByCategoryAndPagination;
 const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     try {
-        const { _id, name, category, price, quantity, description, image, unit, currency, } = req.body;
-        const farmerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+        const { _id, name, category, price, quantity, description, unit, currency, } = req.body;
+        // const farmerId = req.user?.id;
         console.log("Updating product:", _id);
-        if (!_id || !farmerId) {
-            return res
-                .status(400)
-                .json({ error: "Please provide both productId and farmerId." });
+        const image = (_a = req.file) === null || _a === void 0 ? void 0 : _a.fieldname;
+        const imagePath = (_b = req.file) === null || _b === void 0 ? void 0 : _b.path;
+        if (!_id ||
+            !name ||
+            !category ||
+            !price ||
+            !quantity ||
+            !unit ||
+            !currency ||
+            !image ||
+            !imagePath) {
+            return res.status(400).json({ error: "Please provide all fields." });
+        }
+        const uploader = new imageUpload_1.FileUploader();
+        const filePath = imagePath;
+        const fileName = image;
+        // Call the uploadFile method to get the file's secure_url and public_id
+        const result = yield uploader.uploadFile({ filePath, fileName });
+        const { secure_url, public_id } = result;
+        if (!secure_url) {
+            return res.status(400).json({
+                success: false,
+                message: "Error while uploading image",
+                error: secure_url,
+            });
         }
         const existingCategory = yield admin_farmer_category_1.default.findById(category);
         if (!existingCategory) {
@@ -282,13 +303,16 @@ const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                 .status(400)
                 .json({ error: "The specified category does not exist." });
         }
-        const updatedProduct = yield admin_farmer_product_1.default.findOneAndUpdate({ _id: _id, farmerId }, {
+        const updatedProduct = yield admin_farmer_product_1.default.findOneAndUpdate({
+            _id: _id,
+            // farmerId
+        }, {
             name,
             category: existingCategory._id,
             price,
             quantity,
             description,
-            image,
+            image: public_id,
             unit,
             currency,
         }, { new: true, runValidators: true });
@@ -297,16 +321,10 @@ const updateProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                 .status(404)
                 .json({ message: "Product not found or not authorized to update." });
         }
-        // Initialize the FileUploader instance
-        const fileUploader = new imageUpload_1.FileUploader();
-        // Get the secure URL for the updated product image
-        const secureUrl = yield fileUploader.getSecureUrlFromPublicId(updatedProduct.image);
-        // Convert product to a plain object and update the image field
-        const updatedProductWithSecureUrl = Object.assign(Object.assign({}, updatedProduct.toObject()), { image: secureUrl });
         res.status(200).json({
             success: true,
             message: "Product Updated Successfully",
-            data: updatedProductWithSecureUrl,
+            data: Object.assign(Object.assign({}, updatedProduct.toObject()), { image: secure_url }),
         });
     }
     catch (error) {
