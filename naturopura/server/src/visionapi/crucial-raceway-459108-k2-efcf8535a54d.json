@@ -1,0 +1,14 @@
+{
+  "type": "service_account",
+  "project_id": "crucial-raceway-459108-k2",
+  "private_key_id": "efcf8535a54dfa7be3b09c54c54a88f52eb91d79",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDmO4nmQ/aHSSC4\naaCgreY5CKnv+Az4cGi2mPGhR2Asn81ibqBNbnNKbEQ3AnNodsOEDIh80YkxAZnm\nhaN4JEajZTsViGADEHqjV6e6xQdi0HIDiyobYYFfxIVy1tF6mQzMeJLJdqGysnJr\n7dtB5bxF9u5hUYh52uVcB7ywaRT7aDR7H9PsqfMjQVnLR9mpQmG7YzWe4/9oH3zi\nPesTny5xRfNXvS53qUYq5bjw1b405AvKEULBYx48eKjtWdVWog989qk9/SJmRioy\nvpGocF+sKM9EUg+rkQqzVx+QE34e+d6a7PT/9fmMBwE3Tw7UcVPu81Z+JFKRmcs1\nEDRKK6SNAgMBAAECggEAEtwQtUie8sEWSZT5gAAOymA/z3UB1v4aTc7kiEIZCj7C\n68vFHOKt1gxdYCY2vvlvlasTKSpe8yE+8qfC1s4d7TeXKfHkb4vTh/rftgh6zOjn\nVgv51IlduDMYfWpEeab86ej8mT07DLDad6Xh3pmLnS2XpGgx5k18mVfW6JqLCfb9\nAkwV/mWAzW3wsjH2/RnIPbjNJvNeUC7vAVrzZCfQpM5EtXzaWb4DW5X9il/0qDNa\nZ6hcNXw8epQ0pT5IEcE+954y301XhHGUD8f+BUywaRC7t0VIftakwBD9HdSILOVi\nPv1YZGJCQdZVZSJmTSPc85NifPbfoXIARVoFPHGyjwKBgQD2JFz8RKQZvK1kmdBj\nhpmWcZRTRozfPNyjEKmHmwC6swJ+Q6FB5koXUSHlqS05EYRVY+58hrxCEfRYmCSw\nX6RAEnESXvnlcfwSoAVGjGc+4vEhx8c50nF3ZApBhWgMRwKmOBCmPWK1JpK2NIbs\nrhuKxqwDc8IAOS5Lni/MhBOAowKBgQDvdA8ybToIFozMiOoQoi523F4jO64pwFab\nhwyXliBhi6AoSuWYFpyfAJyxei5rbZ6tH6TX1RukycEH2mu0o8PclXRsSbLrnOaq\n21KQdEqpcNNPWuBYw1kmyo5a0dJIyi6HXAmE64GRsKZsXlLy/KBQX2kzscp2YWcB\ncbczaq8pDwKBgQC+sCUperP3DGj4SwFaWWibWJqkeT+horD702jDGZ5TBWOlFhfT\nyekUb1Jnbc0PLTbsQGL+LhOiy+4UxKmHylChIqhepx3KV6gFddsgcJ175q0QkokR\njqtA50vavtOAz3KJ+11KrLvPw3Zdmgv9SFUmCgwxEHj3W1U2V/KH6rqBKQKBgAak\nd490jDmRNpKt8aBIf3V4o3viufAaj8x8sJK77WYHU4gKm9feOLYIdFBQDV2Zit9O\nk2oRVVT668nl+zrlmBdUZghi+v2iOpvevamYMEIHCTWYVcTglmaHE+/dBjJSuXuz\nx+fSCKQb/GHhM/fdnizcmLSAaBdkmFDn8KcSfI1tAoGBAPR5Lin2v1UMZbXiQcAX\n0hEPWOjt2D8B07KEW61DIKZmfUTvpgp0CLfzzKIROhBWSPg7NJEshyTSIRE4Eubw\nR/Titk8eG/MiQUb6pPKIj3ppJwA0Jcq8ldKdsiTXYZTBVD2FfjrRKaVzCdzgqWoO\n0+XouT6h0NrrIl5cg/bGyxv0\n-----END PRIVATE KEY-----\n",
+  "client_email": "naturopura@crucial-raceway-459108-k2.iam.gserviceaccount.com",
+  "client_id": "111574306449682333312",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/naturopura%40crucial-raceway-459108-k2.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+
