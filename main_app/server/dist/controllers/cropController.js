@@ -19,14 +19,16 @@ const detectCropHealth = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     try {
         const imageFile = req.file;
         if (!imageFile) {
-            res.status(statusCode_1.default.BAD_REQUEST).json({ error: "No image provided" });
+            res.status(statusCode_1.default.BAD_REQUEST).json({ error: "No image provided", details: "No image provided" });
             return;
         }
         const result = yield (0, cropService_1.detectCropIssueService)(imageFile.buffer, imageFile.mimetype);
         res.status(statusCode_1.default.OK).json(result);
     }
     catch (err) {
-        res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+        const error = err;
+        console.error("Crop detection error:", error.message);
+        res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({ error: "Failed to detect crop health", details: error.message });
     }
 });
 exports.detectCropHealth = detectCropHealth;

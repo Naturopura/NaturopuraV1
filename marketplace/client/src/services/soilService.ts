@@ -1,4 +1,4 @@
-import { SoilDataResponse } from '../types/soil';
+import type{ SoilDataResponse } from '../types/soil';
 
 export const fetchSoilDataFromAPI = async (latitude: string, longitude: string): Promise<SoilDataResponse> => {
   const lat = parseFloat(latitude);

@@ -19,7 +19,6 @@ import {
   TrendingUp,
   Filter,
   Search,
-  Truck,
 } from "lucide-react";
 
 import { Toaster } from "../ui/toaster";

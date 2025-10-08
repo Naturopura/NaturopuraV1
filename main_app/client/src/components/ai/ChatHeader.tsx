@@ -8,7 +8,11 @@ const SIDEBAR_EXPANDED_WIDTH = 256; // px
 const SIDEBAR_COLLAPSED_WIDTH = 64; // px
 const CHAT_SIDEBAR_WIDTH = 256; // px
 
-const ChatHeader = ({ setSidebarOpen }) => {
+interface ChatHeaderProps {
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ChatHeader: React.FC<ChatHeaderProps> = ({ setSidebarOpen }) => {
   const { isExpanded } = useSidebar();
   const isMobile = useMediaQuery("(max-width: 639px)");
 

@@ -88,8 +88,8 @@ const verifyOtpService = (phoneNumber, otp, userId) => __awaiter(void 0, void 0,
     const updatedUser = yield userDao.updateUserById(userId, {
         isPhoneVerified: true,
         phoneVerifiedAt: new Date(),
-        kyc: { phoneVerified: true },
-        phoneNumber: phoneNumber
+        phoneNumber: phoneNumber,
+        'kyc.phoneVerified': true
     });
     if (!updatedUser) {
         throw new Error('User not found');

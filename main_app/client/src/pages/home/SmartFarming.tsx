@@ -20,7 +20,7 @@ import { FaUser } from "react-icons/fa";
 
 const SmartFarming = () => {
   const [activeTab, setActiveTab] = useState("overview");
-  const [expandedFaq, setExpandedFaq] = useState(null);
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   const technologyFeatures = [
     {

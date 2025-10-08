@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useToast } from '@/components/ui/use-toast';
-import { Location } from './types';
+import { useToast } from '../ui/use-toast';
+import type{ Location } from './types';
 
 interface LocationContextType {
   location: Location | null;

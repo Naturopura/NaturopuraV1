@@ -41,6 +41,7 @@ export interface IUser extends Document {
       number: string;
       otpSent: boolean;
       otpVerified: boolean;
+      phoneVerified: boolean;
       transactionId: string;
       verifiedAt: Date;
     };

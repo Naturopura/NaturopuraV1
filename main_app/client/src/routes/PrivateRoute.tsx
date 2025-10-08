@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 interface PrivateRouteProps {
   children: React.ReactNode;
-  allowedRoles?: Array<'admin' | 'farmer' | 'delivery_partner'>;
+  allowedRoles?: Array<'admin' | 'farmer' | 'delivery_partner' | 'store_manager' | 'vendor'>;
 }
 
 const PrivateRoute = ({ children, allowedRoles }: PrivateRouteProps) => {

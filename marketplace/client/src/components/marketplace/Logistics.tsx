@@ -10,7 +10,6 @@ import {
 import { getLogisticsService } from "../../services/logisticsService";
 import { useToast } from "../ui/use-toast";
 import { useAuth } from "../../context/AuthContext";
-import FarmerLayout from "../layouts/FarmerLayout";
 import type { Status, LogisticsStatus } from "../../types/types";
 import { logisticsSteps } from "../../types/types";
 
@@ -162,10 +161,7 @@ const Logistics = () => {
   const progressPercentage = getProgressPercentage();
 
   return (
-    <FarmerLayout
-      title="Logistics Tracking"
-      subtitle="Track your product's journey from farm to table"
-    >
+    <>
       {status && (
         <div className="space-y-8">
           {/* Progress Overview Card */}
@@ -323,7 +319,7 @@ const Logistics = () => {
           </div>
         </div>
       )}
-    </FarmerLayout>
+      </>
   );
 };
 

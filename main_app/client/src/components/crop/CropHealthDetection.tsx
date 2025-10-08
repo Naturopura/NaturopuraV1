@@ -36,7 +36,6 @@ const CropHealthDetection = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<BackendResponseResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [language, setLanguage] = useState<LanguageOption>('en');
@@ -98,7 +97,6 @@ const CropHealthDetection = () => {
     }
 
     setLoading(true);
-    setIsAnalyzing(true);
     setError(null);
 
     const formData = new FormData();
@@ -131,7 +129,6 @@ const CropHealthDetection = () => {
       setError(error.message || "An unknown error occurred");
     } finally {
       setLoading(false);
-      setIsAnalyzing(false);
     }
   };
 

@@ -1,4 +1,5 @@
-import { createApiClient, ENDPOINTS, ApiError } from '../config/api';
+import { createApiClient, ENDPOINTS} from '../config/api';
+import type { ApiError } from '../types/api';
 import { AxiosError } from 'axios';
 
 // Add interfaces for better type safety

@@ -45,9 +45,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.predictPrice = exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProductById = exports.getProducts = void 0;
+exports.predictPrice = exports.deleteProduct = exports.updateProduct = exports.createProduct = exports.getProductsByCategory = exports.getProductById = exports.getProducts = void 0;
 const productService = __importStar(require("../services/productService"));
 const statusCode_1 = __importDefault(require("../utils/statusCode"));
+const productDao_1 = require("../dao/productDao");
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield productService.fetchAllProducts();
@@ -74,6 +75,22 @@ const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getProductById = getProductById;
+const getProductsByCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { slug } = req.params;
+        const products = yield (0, productDao_1.findProductsByCategory)(slug);
+        if (!products || products.length === 0) {
+            res.status(404).json({ message: "No products found for this category" });
+            return;
+        }
+        res.json(products);
+    }
+    catch (error) {
+        console.error("Error fetching products by category:", error);
+        res.status(500).json({ message: "Server error", error });
+    }
+});
+exports.getProductsByCategory = getProductsByCategory;
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!req.user) {

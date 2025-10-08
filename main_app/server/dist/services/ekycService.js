@@ -1,37 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,40 +12,76 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyPhoneNumber = exports.getEkycStatus = exports.updateEkycDocuments = exports.getUserById = void 0;
-const userDao = __importStar(require("../dao/userDao"));
-const path_1 = __importDefault(require("path"));
-const getUserById = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield userDao.findUserById(userId);
+exports.verifyOtp = exports.generateOtp = exports.verifyAadhaar = void 0;
+// services/ekycService.ts
+const axios_1 = __importDefault(require("axios"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const BASE_URL = 'https://production.deepvue.tech/v1/ekyc/aadhaar';
+const headers = {
+    'x-api-key': process.env.DEEPVUE_CLIENT_SECRET || '', // You may want to replace this with actual API key if dynamic
+    'client-id': process.env.DEEPVUE_CLIENT_ID || '',
+    'Content-Type': 'application/json',
+};
+// Aadhaar initialization (connect)
+const verifyAadhaar = (aadhaarNumber) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    try {
+        const response = yield axios_1.default.get(`${BASE_URL}/connect`, {
+            params: {
+                consent: 'Y',
+                purpose: 'For KYC',
+                aadhaar_number: aadhaarNumber,
+            },
+            headers,
+        });
+        return response.data;
+    }
+    catch (error) {
+        throw new Error(((_b = (_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.message) || 'Deepvue Aadhaar verification failed');
+    }
 });
-exports.getUserById = getUserById;
-const updateEkycDocuments = (userId, files) => __awaiter(void 0, void 0, void 0, function* () {
-    const documents = {
-        aadhar: path_1.default.relative(path_1.default.join(__dirname, '../../'), files.aadhar[0].path),
-        pan: path_1.default.relative(path_1.default.join(__dirname, '../../'), files.pan[0].path),
-        selfie: path_1.default.relative(path_1.default.join(__dirname, '../../'), files.selfie[0].path),
-    };
-    yield userDao.updateUserById(userId, {
-        kyc: {
-            status: 'verified',
-            documents,
-            verifiedAt: new Date(),
-        }
-    });
-    return documents;
+exports.verifyAadhaar = verifyAadhaar;
+// Generate OTP
+const generateOtp = (aadhaarNumber, captcha, sessionId) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    try {
+        const response = yield axios_1.default.post(`${BASE_URL}/generate-otp`, {}, {
+            params: {
+                aadhaar_number: aadhaarNumber,
+                captcha,
+                session_id: sessionId,
+                consent: 'Y',
+                purpose: 'For KYC',
+            },
+            headers,
+        });
+        return response.data;
+    }
+    catch (error) {
+        throw new Error(((_b = (_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.message) || 'OTP generation failed');
+    }
 });
-exports.updateEkycDocuments = updateEkycDocuments;
-const getEkycStatus = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userDao.findUserById(userId);
-    return user === null || user === void 0 ? void 0 : user.kyc;
+exports.generateOtp = generateOtp;
+// Verify OTP
+const verifyOtp = (otp_1, sessionId_1, ...args_1) => __awaiter(void 0, [otp_1, sessionId_1, ...args_1], void 0, function* (otp, sessionId, mobileNumber = '9827780783' // Static unless dynamic needed
+) {
+    var _a, _b;
+    try {
+        const response = yield axios_1.default.post(`${BASE_URL}/verify-otp`, {}, {
+            params: {
+                otp,
+                session_id: sessionId,
+                consent: 'Y',
+                purpose: 'For KYC',
+                mobile_number: mobileNumber,
+            },
+            headers,
+        });
+        return response.data;
+    }
+    catch (error) {
+        throw new Error(((_b = (_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.message) || 'OTP verification failed');
+    }
 });
-exports.getEkycStatus = getEkycStatus;
-const verifyPhoneNumber = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userDao.updateUserById(userId, {
-        isPhoneVerified: true,
-        phoneVerifiedAt: new Date(),
-        kyc: { phoneVerified: true },
-    });
-    return user;
-});
-exports.verifyPhoneNumber = verifyPhoneNumber;
+exports.verifyOtp = verifyOtp;

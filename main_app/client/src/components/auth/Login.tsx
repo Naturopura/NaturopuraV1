@@ -60,7 +60,6 @@ function Login() {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(""); // NEW
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -77,7 +76,6 @@ function Login() {
       const response = await apiClient.post(ENDPOINTS.LOGIN, {
         email,
         password,
-        phoneNumber, // NEW
       });
 
       const { token, user } = response.data;
@@ -100,10 +98,7 @@ function Login() {
         const isAlreadySaved = localStorage.getItem(userSpecificKey) === 'true';
         
         if (!isAlreadySaved) {
-          await saveProfileToBlockchain({
-            ...user,
-            phoneNumber: user.phoneNumber || phoneNumber,
-          });
+          await saveProfileToBlockchain(user);
           localStorage.setItem(userSpecificKey, 'true');
         }
       }

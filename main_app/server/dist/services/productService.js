@@ -45,7 +45,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPricePredictions = exports.deleteProductById = exports.updateProductById = exports.createNewProduct = exports.fetchProductById = exports.fetchAllProducts = void 0;
+exports.getPricePredictions = exports.deleteProductById = exports.updateProductById = exports.createNewProduct = exports.fetchProductsByCategory = exports.fetchProductById = exports.fetchAllProducts = void 0;
 const productDao = __importStar(require("../dao/productDao"));
 const axios_1 = __importDefault(require("axios"));
 const path_1 = __importDefault(require("path"));
@@ -58,6 +58,10 @@ const fetchProductById = (id) => __awaiter(void 0, void 0, void 0, function* () 
     return yield productDao.findProductById(id);
 });
 exports.fetchProductById = fetchProductById;
+const fetchProductsByCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield productDao.findProductsByCategory(category);
+});
+exports.fetchProductsByCategory = fetchProductsByCategory;
 const createNewProduct = (body, userId, files) => __awaiter(void 0, void 0, void 0, function* () {
     const imagePaths = (files === null || files === void 0 ? void 0 : files.map((file) => `/uploads/products/${file.filename}`)) || [];
     return yield productDao.createProductRecord(Object.assign(Object.assign({}, body), { price: Number(body.price), quantity: Number(body.quantity), farmerId: userId, images: imagePaths, status: 'available' }));

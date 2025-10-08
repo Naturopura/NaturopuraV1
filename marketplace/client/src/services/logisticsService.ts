@@ -1,15 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 import { createApiClient, ENDPOINTS } from '../config/api';
-
-interface AuthContext {
-  token: string | null;
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-  };
-}
+import type { AuthContextType } from '../context/AuthContext';
 
 interface LogisticsData {
   productId: string;
@@ -24,14 +15,14 @@ class LogisticsService {
   private apiClient: ReturnType<typeof createApiClient>;
   private listeners: Map<string, ((data: LogisticsData) => void)[]> = new Map();
 
-  private constructor(authContext?: AuthContext) {
+  private constructor(authContext?: AuthContextType) {
     if (!authContext?.token) {
       throw new Error('Authentication token is required');
     }
     this.apiClient = createApiClient(authContext.token);
   }
 
-  static getInstance(authContext?: AuthContext): LogisticsService {
+  static getInstance(authContext?: AuthContextType): LogisticsService {
     if (!this.instance) {
       this.instance = new LogisticsService(authContext);
     }

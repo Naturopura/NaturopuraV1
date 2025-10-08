@@ -6,6 +6,7 @@ import { Skeleton } from "../components/ui/skeleton";
 import CategoryBanner from "../components/category/CategoryBanner";
 
 interface Farmer {
+  _id: string;
   name: string;
   email: string;
 }
@@ -105,6 +106,7 @@ const CategoryPage: React.FC = () => {
             <ProductCard
               key={product._id}
               product={product}
+              onUpdate={() => {}} // No-op for category page
               currentUserId="" // Replace with logged-in user ID if needed
               onClick={handleProductClick} // Navigate to product details page
               onDelete={handleDelete}

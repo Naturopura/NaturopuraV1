@@ -61,9 +61,9 @@ export const verifyOtpService = async (
     {
       isPhoneVerified: true,
       phoneVerifiedAt: new Date(),
-      kyc: { phoneVerified: true },
-      phoneNumber: phoneNumber
-    }
+      phoneNumber: phoneNumber,
+      'kyc.phoneVerified': true
+    } as any
   );
 
   if (!updatedUser) {

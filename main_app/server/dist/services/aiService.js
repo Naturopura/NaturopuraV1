@@ -12,46 +12,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clearUserMessages = exports.getAiResponse = void 0;
+exports.clearUserMessages = exports.clearSessionMessages = exports.getAiResponse = void 0;
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const aiDao_1 = require("../dao/aiDao");
-const getAiResponse = (prompt) => __awaiter(void 0, void 0, void 0, function* () {
+const generateNaturopuraPrompt_1 = __importDefault(require("../ai/generateNaturopuraPrompt")); // import your prompt generator
+const getAiResponse = (userQuestion) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f;
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey)
         throw new Error('Missing Gemini API Key');
-    // **CORRECTION HERE:**
-    // The 'modelName' already includes 'models/', so remove 'models/' from the URL base.
-    // Use the specific model name you found from the 'ListModels' call, e.g., 'models/gemini-1.0-pro'
-    const modelName = 'models/gemini-2.5-pro'; // Or 'models/gemini-1.5-flash', 'models/gemini-1.0-pro-001', etc.
-    // Correct URL construction:
+    // Generate the prompt including instructions and context
+    const prompt = (0, generateNaturopuraPrompt_1.default)(userQuestion);
+    const modelName = 'models/gemini-2.5-flash';
     const url = `https://generativelanguage.googleapis.com/v1/${modelName}:generateContent?key=${apiKey}`;
     const response = yield (0, node_fetch_1.default)(url, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            contents: [
-                {
-                    parts: [
-                        { text: prompt }
-                    ]
-                }
-            ]
+            contents: [{ parts: [{ text: prompt }] }]
         }),
     });
-    // Always check response.ok first before trying to parse JSON
-    // This helps catch non-JSON error responses gracefully
     if (!response.ok) {
         let errorData;
         try {
-            errorData = yield response.json(); // Try to parse JSON for detailed error
+            errorData = yield response.json();
         }
         catch (e) {
-            // If it's not JSON, just get the text or status
             const errorText = yield response.text();
             console.error(`❌ Gemini API Error (Non-JSON): Status ${response.status}, Text: ${errorText}`);
             throw new Error(`Gemini API call failed with status ${response.status}: ${errorText.substring(0, 200)}...`);
@@ -64,6 +52,11 @@ const getAiResponse = (prompt) => __awaiter(void 0, void 0, void 0, function* ()
     return reply || 'No response from Gemini';
 });
 exports.getAiResponse = getAiResponse;
+// Session-specific services
+const clearSessionMessages = (sessionId) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, aiDao_1.deleteMessagesBySession)(sessionId);
+});
+exports.clearSessionMessages = clearSessionMessages;
 const clearUserMessages = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, aiDao_1.deleteMessagesByUser)(userId);
 });

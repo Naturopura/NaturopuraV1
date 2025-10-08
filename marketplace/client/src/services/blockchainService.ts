@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import SoilDataStorageABI from "../constants/SoilDataStorage.json";
 import { CONTRACT_ADDRESSES } from "../constants/soil_addrs";
-import { BlockchainSoilData } from "../types/soil";
+import type{ BlockchainSoilData } from "../types/soil";
 
 interface StoreSoilDataParams {
   ph: number;

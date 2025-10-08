@@ -1,4 +1,5 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect} from "react";
+import type { ReactNode } from "react";
 import { useToast } from "../ui/use-toast";
 import { ethers } from "ethers";
 import { useAccount, useSwitchChain } from "wagmi";

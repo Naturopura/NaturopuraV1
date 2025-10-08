@@ -76,6 +76,7 @@ export interface ProductProps {
 
 const ProductCard = ({
   product,
+  onUpdate,
   onDelete,
   onDeleteSuccess,
   currentUserId,

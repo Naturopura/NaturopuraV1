@@ -10,11 +10,27 @@ const FARMER_HEADER_HEIGHT = 64; // px
 const SIDEBAR_EXPANDED_WIDTH = 256; // px
 const SIDEBAR_COLLAPSED_WIDTH = 64; // px
 
-const Sidebar = ({
+interface SidebarProps {
+  sessions: any[];
+  selectedSessionId: string | null;
+  setSelectedSessionId: (id: string | null) => void;
+  showNewSessionDialog: boolean;
+  setShowNewSessionDialog: (open: boolean) => void;
+  editingSessionId: string | null;
+  setEditingSessionId: (id: string | null) => void;
+  editingSessionName: string;
+  setEditingSessionName: (name: string) => void;
+  renameSession: (id: string) => void;
+  deleteSession: (id: string) => void;
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+  style?: React.CSSProperties;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
   sessions,
   selectedSessionId,
   setSelectedSessionId,
-  showNewSessionDialog,
   setShowNewSessionDialog,
   editingSessionId,
   setEditingSessionId,
@@ -24,6 +40,7 @@ const Sidebar = ({
   deleteSession,
   sidebarOpen,
   setSidebarOpen,
+  style,
 }) => {
   const { isExpanded } = useSidebar();
   const isMobile = useMediaQuery("(max-width: 639px)");
@@ -45,6 +62,7 @@ const Sidebar = ({
         top: FARMER_HEADER_HEIGHT, // ensures space below Farmer header
         left: leftOffset,
         height: `calc(100vh - ${FARMER_HEADER_HEIGHT}px)`,
+        ...style,
       }}
     >
       <div className="p-4 border-b border-gray-200 flex items-center justify-between flex-shrink-0">

@@ -37,7 +37,25 @@ const mongoose_1 = __importStar(require("mongoose"));
 const productSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
-    category: { type: String, required: true },
+    category: {
+        type: String,
+        required: true,
+        enum: [
+            'cereals_grains',
+            'pulses_legumes',
+            'oilseeds',
+            'fiber_crops',
+            'sugar_crops',
+            'vegetables',
+            'fruits',
+            'beverage_crops',
+            'cultivated_fungi',
+            'aquaculture',
+            'farmed_animals',
+            'animal_husbandry',
+            'other'
+        ]
+    },
     price: { type: Number, required: true },
     quantity: { type: Number, required: true },
     unit: { type: String, required: true },

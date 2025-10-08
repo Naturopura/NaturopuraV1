@@ -16,7 +16,6 @@ const InteractiveMap = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   // More reliable India map image URL
-  const mapImageUrl = "https://images.pexels.com/photos/1022092/pexels-photo-1022092.jpeg";
   
   // Fallback: Create a simple outline using CSS if image fails
   const MapFallback = () => (

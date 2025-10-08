@@ -14,6 +14,7 @@ const indexRoutes_1 = __importDefault(require("./routes/indexRoutes"));
 const createDefaultAdmin_1 = __importDefault(require("./config/createDefaultAdmin"));
 const socketService_1 = require("./services/socketService");
 require("./jobs/autoConfirmPurchases");
+require("./jobs/weatherAlertScheduler");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
@@ -25,7 +26,7 @@ const httpServer = (0, http_1.createServer)(app);
     (0, createDefaultAdmin_1.default)(); // Create default admin once DB is connected
 });
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://localhost:5175'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token', 'Accept', 'X-Requested-With'],

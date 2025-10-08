@@ -1,4 +1,5 @@
 "use strict";
+// userServices.ts
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -115,10 +116,12 @@ const authenticateUser = (email, password) => __awaiter(void 0, void 0, void 0, 
         name: user.name,
         email: user.email,
         role: user.role,
+        phoneNumber: user.phoneNumber,
         aadhaarNumber: user.aadhaarNumber,
         storeManagerApprovalStatus: user.storeManagerApprovalStatus,
         deliveryPartnerApprovalStatus: user.deliveryPartnerApprovalStatus,
-        vendorApprovalStatus: user.vendorApprovalStatus
+        vendorApprovalStatus: user.vendorApprovalStatus,
+        kyc: user.kyc
     };
     const token = jsonwebtoken_1.default.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
     return { token, user: payload };
@@ -153,11 +156,11 @@ const sendResetPasswordEmail = (email) => __awaiter(void 0, void 0, void 0, func
     yield user.save();
     const resetLink = `http://localhost:5173/reset-password/${token}`;
     const message = `
-    <p>Hello ${user.name},</p>
-    <p>You requested a password reset. Click the link below:</p>
-    <a href="${resetLink}">Reset Password</a>
-    <p>If you didn't request this, ignore this email.</p>
-  `;
+        <p>Hello ${user.name},</p>
+        <p>You requested a password reset. Click the link below:</p>
+        <a href="${resetLink}">Reset Password</a>
+        <p>If you didn't request this, ignore this email.</p>
+    `;
     yield (0, emailService_1.sendEmail)(user.email, "Reset Password Request", message);
 });
 exports.sendResetPasswordEmail = sendResetPasswordEmail;

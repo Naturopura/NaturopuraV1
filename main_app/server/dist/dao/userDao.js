@@ -16,7 +16,7 @@ exports.findUserByResetToken = exports.updateUserPassword = exports.findAllFarme
 const User_1 = __importDefault(require("../models/User"));
 const findUserByField = (field, value) => {
     return User_1.default.findOne({ [field]: value })
-        .select('+storeManagerApprovalStatus +deliveryPartnerApprovalStatus');
+        .select('+storeManagerApprovalStatus +deliveryPartnerApprovalStatus +kyc');
 };
 exports.findUserByField = findUserByField;
 const findUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {

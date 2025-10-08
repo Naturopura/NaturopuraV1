@@ -12,12 +12,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchEquipments = exports.addEquipment = exports.getEquipmentsByVendor = void 0;
+exports.deleteEquipment = exports.updateEquipment = exports.searchEquipments = exports.addEquipment = exports.getAllEquipments = exports.getEquipmentsByVendor = void 0;
 const Equipment_1 = __importDefault(require("../models/Equipment"));
 const getEquipmentsByVendor = (vendorId) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield Equipment_1.default.find({ vendorId });
+    console.log('Fetching equipments for vendor ID:', vendorId); // Log the vendor ID
+    const equipments = yield Equipment_1.default.find({ vendorId });
+    return equipments;
 });
 exports.getEquipmentsByVendor = getEquipmentsByVendor;
+const getAllEquipments = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const equipments = yield Equipment_1.default.find({});
+        console.log('All equipments fetched:', equipments); // Log the fetched equipments
+        return equipments;
+    }
+    catch (error) {
+        console.error('Error fetching all equipments:', error);
+        throw error; // Rethrow the error for further handling
+    }
+});
+exports.getAllEquipments = getAllEquipments;
 const addEquipment = (vendorId, equipmentData) => __awaiter(void 0, void 0, void 0, function* () {
     const newEquipment = new Equipment_1.default(Object.assign(Object.assign({}, equipmentData), { vendorId }));
     return yield newEquipment.save();
@@ -31,3 +45,17 @@ const searchEquipments = (searchTerm) => __awaiter(void 0, void 0, void 0, funct
     });
 });
 exports.searchEquipments = searchEquipments;
+const updateEquipment = (equipmentId, vendorId, updateData) => __awaiter(void 0, void 0, void 0, function* () {
+    const equipment = yield Equipment_1.default.findOne({ _id: equipmentId, vendorId });
+    if (!equipment) {
+        throw new Error('Equipment not found or unauthorized');
+    }
+    Object.assign(equipment, updateData);
+    return yield equipment.save();
+});
+exports.updateEquipment = updateEquipment;
+const deleteEquipment = (equipmentId, vendorId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield Equipment_1.default.findOneAndDelete({ _id: equipmentId, vendorId });
+    return !!result;
+});
+exports.deleteEquipment = deleteEquipment;

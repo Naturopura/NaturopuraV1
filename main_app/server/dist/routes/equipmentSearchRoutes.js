@@ -9,5 +9,6 @@ const equipmentSearchController_1 = require("../controllers/equipmentSearchContr
 const router = express_1.default.Router();
 router.use(auth_1.authenticateToken);
 router.get('/search', equipmentSearchController_1.searchEquipments);
+router.get('/equipments', equipmentSearchController_1.getAllEquipments);
 router.post('/requests/status', equipmentSearchController_1.getRequestStatuses);
 exports.default = router;

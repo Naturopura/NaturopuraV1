@@ -45,7 +45,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRequestStatuses = exports.searchEquipments = void 0;
+exports.getRequestStatuses = exports.getAllEquipments = exports.searchEquipments = void 0;
 const equipmentService = __importStar(require("../services/equipmentService"));
 const equipmentRequestService = __importStar(require("../services/equipmentRequestService"));
 const statusCode_1 = __importDefault(require("../utils/statusCode"));
@@ -53,7 +53,8 @@ const searchEquipments = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { search } = req.query;
         if (!search || typeof search !== 'string') {
-            res.status(statusCode_1.default.BAD_REQUEST).json({ message: 'Search query is required' });
+            const equipments = yield equipmentService.getAllEquipments(); // Fetch all equipments
+            res.status(statusCode_1.default.OK).json(equipments);
             return;
         }
         let equipments = yield equipmentService.searchEquipments(search);
@@ -67,6 +68,34 @@ const searchEquipments = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.searchEquipments = searchEquipments;
+const getAllEquipments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const vendorId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id; // Get vendor ID from authenticated user
+        console.log('Authenticated vendor ID:', vendorId); // Log the vendor ID
+        if (!vendorId) {
+            res.status(statusCode_1.default.UNAUTHORIZED).json({ message: 'Unauthorized' });
+            return;
+        }
+        // Fetch all equipments and populate vendor info
+        let equipments = yield equipmentService.getAllEquipments();
+        // Populate vendor info for each equipment
+        equipments = yield Promise.all(equipments.map((eq) => __awaiter(void 0, void 0, void 0, function* () {
+            const populatedEq = yield eq.populate({
+                path: 'vendorId',
+                select: 'name phoneNumber',
+                model: 'User'
+            });
+            return populatedEq.toObject();
+        })));
+        res.status(statusCode_1.default.OK).json(equipments);
+    }
+    catch (error) {
+        console.error('Error in getAllEquipments controller:', error);
+        res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({ message: 'Failed to fetch equipments' });
+    }
+});
+exports.getAllEquipments = getAllEquipments;
 const getRequestStatuses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {

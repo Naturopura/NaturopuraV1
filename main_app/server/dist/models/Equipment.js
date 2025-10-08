@@ -38,6 +38,7 @@ const equipmentSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     quantity: { type: Number, required: true, min: 0 },
     price: { type: Number, required: true, min: 0 },
+    image: { type: String },
     vendorId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model('Equipment', equipmentSchema);

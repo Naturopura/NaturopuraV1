@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
 import { createApiClient, ENDPOINTS } from "../../config/api";
-import { formatEther, parseEther } from "ethers";
 import {
   ShoppingCart,
   User,

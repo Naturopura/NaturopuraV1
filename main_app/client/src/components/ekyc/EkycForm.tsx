@@ -163,7 +163,7 @@ const EkycForm = () => {
           />
         </div>
         
-        {['start', 'captcha', 'otp', 'done'].map((stepName, index) => {
+        {['start', 'captcha', 'otp', 'done'].map((stepName, _) => {
           const isActive = step === stepName;
           const isCompleted = isStepCompleted(stepName);
           

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadsPath = exports.uploadDebugRouter = exports.upload = void 0;
+exports.uploadsPath = exports.uploadDebugRouter = exports.equipmentUpload = exports.upload = void 0;
 exports.uploadStaticLogger = uploadStaticLogger;
 exports.handleProductUpload = handleProductUpload;
 exports.handleEkycUpload = handleEkycUpload;
@@ -30,8 +30,24 @@ const storage = multer_1.default.diskStorage({
         cb(null, uniqueName);
     }
 });
+// Configure multer for equipment image uploads
+const equipmentStorage = multer_1.default.diskStorage({
+    destination: (_req, _file, cb) => {
+        const uploadsDir = path_1.default.join(__dirname, '..', '..', 'uploads', 'equipment');
+        if (!fs_1.default.existsSync(uploadsDir)) {
+            fs_1.default.mkdirSync(uploadsDir, { recursive: true });
+        }
+        cb(null, uploadsDir);
+    },
+    filename: (_req, file, cb) => {
+        const uniqueName = `${(0, uuid_1.v4)()}-${file.originalname}`;
+        cb(null, uniqueName);
+    }
+});
 const upload = (0, multer_1.default)({ storage });
 exports.upload = upload;
+const equipmentUpload = (0, multer_1.default)({ storage: equipmentStorage });
+exports.equipmentUpload = equipmentUpload;
 // Middleware for enhanced static file serving with detailed logging
 function uploadStaticLogger(req, _res, next) {
     const fullPath = path_1.default.join(uploadsPath, req.url);

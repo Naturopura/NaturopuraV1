@@ -17,6 +17,10 @@ const generative_ai_1 = require("@google/generative-ai");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const geminiApiKey = process.env.GEMINI_API_KEY;
+if (!geminiApiKey) {
+    throw new Error("GEMINI_API_KEY is not set in environment variables. Please add it to your .env file.");
+}
+console.log("Gemini API Key loaded:", geminiApiKey ? "Yes" : "No");
 const genAI = new generative_ai_1.GoogleGenerativeAI(geminiApiKey);
 function bufferToBase64(buffer) {
     return buffer.toString("base64");
@@ -73,7 +77,7 @@ const plantHealthDatabase = {
 const detectCropIssueService = (fileBuffer, mimeType) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e;
     const base64Image = bufferToBase64(fileBuffer);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
     // --- UPDATED PROMPT: Request multi-language JSON output from Gemini ---
     const prompt = `Analyze the plant in this image for any health issues (diseases or pests). 
   Provide the response in a JSON format. The JSON should contain the following fields:

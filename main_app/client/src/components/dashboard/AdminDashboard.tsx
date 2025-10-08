@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Users, BadgeCheck, IndianRupee, ShoppingBag, TrendingUp, Activity, ArrowRight, Sparkles, Shield, Package2} from 'lucide-react';
+import { Users, BadgeCheck, IndianRupee, ShoppingBag, Activity, ArrowRight, Sparkles, Shield, Package2} from 'lucide-react';
 import { createApiClient, ENDPOINTS } from '../../config/api';
 import AdminLayout from '../layouts/AdminLayout';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";

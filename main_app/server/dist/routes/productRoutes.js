@@ -14,6 +14,7 @@ router.get('/predict-price', authMiddleware_1.authenticate, productController_1.
 router.get('/', productController_1.getProducts);
 router.post('/', authMiddleware_1.authenticate, upload_1.handleProductUpload, productController_1.createProduct);
 router.get('/:id', productController_1.getProductById);
+router.get("/category/:slug", productController_1.getProductsByCategory);
 router.put('/:id', authMiddleware_1.authenticate, upload_1.handleProductUpload, productController_1.updateProduct);
 router.delete('/:id', authMiddleware_1.authenticate, productController_1.deleteProduct);
 exports.default = router;

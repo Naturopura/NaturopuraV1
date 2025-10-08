@@ -38,8 +38,8 @@ const addToCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             return;
         }
         const userId = new mongoose_1.Types.ObjectId(user._id);
-        yield cartService.addToCart(userId, productId, quantity);
-        void res.status(200).json({ success: true, message: 'Item added to cart' });
+        const cart = yield cartService.addToCart(userId, productId, quantity);
+        void res.status(200).json({ success: true, cart: cart.items });
     }
     catch (error) {
         next(error);

@@ -25,20 +25,56 @@ if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE_NUMBER) {
 }
 const twilioClient = (0, twilio_1.default)(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const formatPhoneNumber = (number) => {
-    return number.startsWith("+") ? number : `+91${number.replace(/[^0-9]/g, "")}`;
+    // Remove all non-digit characters except +
+    const cleanNumber = number.replace(/[^0-9+]/g, "");
+    // If it already starts with +, return as is (already formatted)
+    if (cleanNumber.startsWith("+")) {
+        return cleanNumber;
+    }
+    // Remove + if present and get only digits
+    const digitsOnly = cleanNumber.replace(/[^0-9]/g, "");
+    // Check if it's already a full international number starting with 91
+    if (digitsOnly.startsWith("91") && digitsOnly.length === 12) {
+        return `+${digitsOnly}`;
+    }
+    // If it's a 10-digit Indian number, add +91
+    if (digitsOnly.length === 10 && /^[6-9]/.test(digitsOnly)) {
+        return `+91${digitsOnly}`;
+    }
+    // If it's 11 digits starting with 0, remove the 0 and add +91
+    if (digitsOnly.length === 11 && digitsOnly.startsWith("0")) {
+        return `+91${digitsOnly.substring(1)}`;
+    }
+    // Default case: assume it's a 10-digit number and add +91
+    return `+91${digitsOnly}`;
 };
 const sendSingleSMS = (to, message) => __awaiter(void 0, void 0, void 0, function* () {
-    const formattedNumber = formatPhoneNumber(to);
-    const smsResponse = yield twilioClient.messages.create({
-        body: message,
-        from: TWILIO_PHONE_NUMBER,
-        to: formattedNumber,
-    });
-    return {
-        to: formattedNumber,
-        sid: smsResponse.sid,
-        success: true,
-    };
+    try {
+        const formattedNumber = formatPhoneNumber(to);
+        const smsResponse = yield twilioClient.messages.create({
+            body: message,
+            from: TWILIO_PHONE_NUMBER,
+            to: formattedNumber,
+        });
+        console.log(`SMS sent successfully! SID: ${smsResponse.sid}`);
+        console.log(`Message status: ${smsResponse.status}`);
+        console.log(`Full Twilio response:`, JSON.stringify(smsResponse, null, 2));
+        return {
+            to: formattedNumber,
+            sid: smsResponse.sid,
+            success: true,
+        };
+    }
+    catch (error) {
+        console.error('SMS sending failed:', error);
+        console.error('Error details:', {
+            code: error.code,
+            message: error.message,
+            status: error.status,
+            moreInfo: error.moreInfo
+        });
+        throw error;
+    }
 });
 exports.sendSingleSMS = sendSingleSMS;
 const sendBulkSMSMessages = (recipients, message) => __awaiter(void 0, void 0, void 0, function* () {

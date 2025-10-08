@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProductById = exports.updateProductById = exports.createProductRecord = exports.findProductById = exports.findAllProducts = void 0;
+exports.findProductsByCategory = exports.deleteProductById = exports.updateProductById = exports.createProductRecord = exports.findProductById = exports.findAllProducts = void 0;
 const Product_1 = __importDefault(require("../models/Product"));
 const findAllProducts = () => __awaiter(void 0, void 0, void 0, function* () {
     return yield Product_1.default.find().populate('farmerId', 'name email').sort({ createdAt: -1 });
@@ -35,3 +35,9 @@ const deleteProductById = (productId) => __awaiter(void 0, void 0, void 0, funct
     return yield Product_1.default.findByIdAndDelete(productId);
 });
 exports.deleteProductById = deleteProductById;
+const findProductsByCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield Product_1.default.find({ category })
+        .populate("farmerId", "name email")
+        .sort({ createdAt: -1 });
+});
+exports.findProductsByCategory = findProductsByCategory;

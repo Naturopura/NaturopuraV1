@@ -1,37 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,140 +12,80 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyPhone = exports.getEkycStatus = exports.verifyEkyc = void 0;
-const ekycService = __importStar(require("../services/ekycService"));
-const statusCode_1 = __importDefault(require("../utils/statusCode"));
-const verifyEkyc = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.aadhaarVerifyOtp = exports.aadhaarGenerateOtp = exports.aadhaarVerification = void 0;
+const User_1 = __importDefault(require("../models/User"));
+const ekycService_1 = require("../services/ekycService");
+// Step 1: Aadhaar Connect
+const aadhaarVerification = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
+    const { aadhaarNumber } = req.body;
+    if (!aadhaarNumber) {
+        res.status(400).json({ message: "Aadhaar number is required" });
+        return;
+    }
     try {
-        if (!req.user) {
-            res.status(statusCode_1.default.UNAUTHORIZED).json({
-                success: false,
-                message: 'User not authenticated',
-            });
-            return;
-        }
-        const filesRaw = req.files;
-        if (!filesRaw.aadhar || !filesRaw.pan || !filesRaw.selfie) {
-            res.status(statusCode_1.default.BAD_REQUEST).json({
-                success: false,
-                message: 'All required documents must be provided',
-            });
-            return;
-        }
-        if (!filesRaw.aadhar || !filesRaw.pan || !filesRaw.selfie) {
-            res.status(statusCode_1.default.BAD_REQUEST).json({
-                success: false,
-                message: 'All required documents (aadhar, pan, selfie) must be provided',
-            });
-            return;
-        }
-        const files = {
-            aadhar: filesRaw.aadhar,
-            pan: filesRaw.pan,
-            selfie: filesRaw.selfie,
-        };
-        const userId = req.user._id;
-        const user = yield ekycService.getUserById(userId);
-        if (!user) {
-            res.status(statusCode_1.default.NOT_FOUND).json({
-                success: false,
-                message: 'User not found',
-            });
-            return;
-        }
-        if (!user.isPhoneVerified || (user.kyc && !user.kyc.phoneVerified)) {
-            res.status(statusCode_1.default.BAD_REQUEST).json({
-                success: false,
-                message: 'Phone number must be verified before completing eKYC',
-                verificationStatus: {
-                    isPhoneVerified: user.isPhoneVerified,
-                    kycPhoneVerified: (_a = user.kyc) === null || _a === void 0 ? void 0 : _a.phoneVerified,
-                },
-            });
-            return;
-        }
-        const documents = yield ekycService.updateEkycDocuments(userId, files);
-        res.status(statusCode_1.default.OK).json({
-            success: true,
-            message: 'eKYC verification completed successfully',
-            documents,
-        });
+        const data = yield (0, ekycService_1.verifyAadhaar)(aadhaarNumber);
+        res.status(200).json(data);
     }
     catch (error) {
-        res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({
-            success: false,
-            message: 'Failed to process eKYC verification',
-            error: error instanceof Error ? error.message : 'Unknown error',
+        res.status(500).json({
+            message: error.message,
+            error: ((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message,
         });
     }
 });
-exports.verifyEkyc = verifyEkyc;
-const getEkycStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.aadhaarVerification = aadhaarVerification;
+// Step 2: Generate OTP
+const aadhaarGenerateOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { aadhaarNumber, captcha, sessionId } = req.body;
+    if (!aadhaarNumber || !captcha || !sessionId) {
+        res.status(400).json({ message: 'aadhaarNumber, captcha, and sessionId are required' });
+        return;
+    }
     try {
-        if (!req.user) {
-            res.status(statusCode_1.default.UNAUTHORIZED).json({
-                success: false,
-                message: 'User not authenticated',
-            });
-            return;
-        }
-        const kyc = yield ekycService.getEkycStatus(req.user._id);
-        if (!kyc) {
-            res.status(statusCode_1.default.NOT_FOUND).json({
-                success: false,
-                message: 'User not found',
-            });
-            return;
-        }
-        res.status(statusCode_1.default.OK).json({
-            success: true,
-            data: kyc,
-        });
+        const data = yield (0, ekycService_1.generateOtp)(aadhaarNumber, captcha, sessionId);
+        res.status(200).json(data);
     }
     catch (error) {
-        res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({
-            success: false,
-            message: 'Failed to fetch eKYC status',
-            error: error instanceof Error ? error.message : 'Unknown error',
+        res.status(500).json({
+            message: error.message,
+            error: ((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message,
         });
     }
 });
-exports.getEkycStatus = getEkycStatus;
-const verifyPhone = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+exports.aadhaarGenerateOtp = aadhaarGenerateOtp;
+// ✅ Step 3: Verify OTP and Update KYC
+const aadhaarVerifyOtp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
+    const { otp, sessionId } = req.body;
+    if (!otp || !sessionId || !userId) {
+        res
+            .status(400)
+            .json({ message: "otp, sessionId, and _id (user ID) are required" });
+        return;
+    }
     try {
-        if (!req.user) {
-            res.status(statusCode_1.default.UNAUTHORIZED).json({
-                success: false,
-                message: 'User not authenticated',
-            });
-            return;
-        }
-        const user = yield ekycService.verifyPhoneNumber(req.user._id);
-        if (!user) {
-            res.status(statusCode_1.default.NOT_FOUND).json({
-                success: false,
-                message: 'User not found',
-            });
-            return;
-        }
-        res.status(statusCode_1.default.OK).json({
-            success: true,
-            message: 'Phone number verified successfully',
-            data: {
-                isPhoneVerified: user.isPhoneVerified,
-                kycPhoneVerified: (_a = user.kyc) === null || _a === void 0 ? void 0 : _a.phoneVerified,
-                verifiedAt: user.phoneVerifiedAt,
+        const data = yield (0, ekycService_1.verifyOtp)(otp, sessionId);
+        // ✅ Update user KYC status in the DB
+        yield User_1.default.findByIdAndUpdate(userId, {
+            $set: {
+                'kyc.status': 'verified',
+                'kyc.aadhaarDetails.otpVerified': true,
+                'kyc.aadhaarDetails.verifiedAt': new Date(),
             },
         });
+        res.status(200).json({
+            message: 'OTP verified and KYC status updated',
+            data,
+        });
     }
     catch (error) {
-        res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({
-            success: false,
-            message: 'Failed to verify phone number',
-            error: error instanceof Error ? error.message : 'Unknown error',
+        res.status(500).json({
+            message: error.message,
+            error: ((_b = error === null || error === void 0 ? void 0 : error.response) === null || _b === void 0 ? void 0 : _b.data) || error.message,
         });
     }
 });
-exports.verifyPhone = verifyPhone;
+exports.aadhaarVerifyOtp = aadhaarVerifyOtp;

@@ -4,7 +4,6 @@ import { useToast } from '../components/ui/use-toast';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { CreditCard } from 'lucide-react';
-import FarmerLayout from '../components/layouts/FarmerLayout';
 
 const MetaMaskPaymentPage = () => {
   const location = useLocation();
@@ -32,7 +31,6 @@ const MetaMaskPaymentPage = () => {
   };
 
   return (
-    <FarmerLayout title="Complete Payment" subtitle="Secure blockchain payment with MetaMask">
       <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-teal-50 p-6">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Wallet Connection Card - Consistent Width */}
@@ -70,7 +68,7 @@ const MetaMaskPaymentPage = () => {
           </div>
         </div>
       </div>
-    </FarmerLayout>
+    
   );
 };
 

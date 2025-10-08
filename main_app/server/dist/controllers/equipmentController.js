@@ -45,9 +45,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addVendorEquipment = exports.getVendorEquipments = void 0;
+exports.deleteVendorEquipment = exports.updateVendorEquipment = exports.addVendorEquipment = exports.getVendorEquipments = void 0;
 const equipmentService = __importStar(require("../services/equipmentService"));
 const statusCode_1 = __importDefault(require("../utils/statusCode"));
+const upload_1 = require("../middleware/upload");
 const getVendorEquipments = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -64,7 +65,64 @@ const getVendorEquipments = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.getVendorEquipments = getVendorEquipments;
-const addVendorEquipment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addVendorEquipment = [
+    upload_1.equipmentUpload.single('image'),
+    (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
+        try {
+            const vendorId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
+            if (!vendorId) {
+                res.status(statusCode_1.default.UNAUTHORIZED).json({ message: 'Unauthorized' });
+                return;
+            }
+            const { name, quantity, price } = req.body;
+            if (!name || quantity == null || price == null) {
+                res.status(statusCode_1.default.BAD_REQUEST).json({ message: 'Missing required fields: name, quantity, price' });
+                return;
+            }
+            const image = req.file ? `/uploads/equipment/${req.file.filename}` : undefined;
+            const newEquipment = yield equipmentService.addEquipment(vendorId, { name, quantity, price, image });
+            res.status(statusCode_1.default.CREATED).json(newEquipment);
+        }
+        catch (error) {
+            res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({ message: 'Failed to add equipment' });
+        }
+    })
+];
+exports.updateVendorEquipment = [
+    upload_1.equipmentUpload.single('image'),
+    (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
+        try {
+            const vendorId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
+            if (!vendorId) {
+                res.status(statusCode_1.default.UNAUTHORIZED).json({ message: 'Unauthorized' });
+                return;
+            }
+            const { id } = req.params;
+            const { name, quantity, price } = req.body;
+            const updateData = {};
+            if (name !== undefined)
+                updateData.name = name;
+            if (quantity !== undefined)
+                updateData.quantity = Number(quantity);
+            if (price !== undefined)
+                updateData.price = Number(price);
+            if (req.file)
+                updateData.image = `/uploads/equipment/${req.file.filename}`;
+            const updatedEquipment = yield equipmentService.updateEquipment(id, vendorId, updateData);
+            if (!updatedEquipment) {
+                res.status(statusCode_1.default.NOT_FOUND).json({ message: 'Equipment not found' });
+                return;
+            }
+            res.status(statusCode_1.default.OK).json(updatedEquipment);
+        }
+        catch (error) {
+            res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({ message: 'Failed to update equipment' });
+        }
+    })
+];
+const deleteVendorEquipment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const vendorId = (_a = req.user) === null || _a === void 0 ? void 0 : _a._id;
@@ -72,16 +130,16 @@ const addVendorEquipment = (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.status(statusCode_1.default.UNAUTHORIZED).json({ message: 'Unauthorized' });
             return;
         }
-        const { name, quantity, price } = req.body;
-        if (!name || quantity == null || price == null) {
-            res.status(statusCode_1.default.BAD_REQUEST).json({ message: 'Missing required fields: name, quantity, price' });
+        const { id } = req.params;
+        const deleted = yield equipmentService.deleteEquipment(id, vendorId);
+        if (!deleted) {
+            res.status(statusCode_1.default.NOT_FOUND).json({ message: 'Equipment not found' });
             return;
         }
-        const newEquipment = yield equipmentService.addEquipment(vendorId, { name, quantity, price });
-        res.status(statusCode_1.default.CREATED).json(newEquipment);
+        res.status(statusCode_1.default.OK).json({ message: 'Equipment deleted successfully' });
     }
     catch (error) {
-        res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({ message: 'Failed to add equipment' });
+        res.status(statusCode_1.default.INTERNAL_SERVER_ERROR).json({ message: 'Failed to delete equipment' });
     }
 });
-exports.addVendorEquipment = addVendorEquipment;
+exports.deleteVendorEquipment = deleteVendorEquipment;
