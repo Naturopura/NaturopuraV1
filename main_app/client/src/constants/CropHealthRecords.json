@@ -1,0 +1,138 @@
+[
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "farmer",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "plantName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "issueType",
+				"type": "string"
+			}
+		],
+		"name": "DetectionStored",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "getMyDetectionResults",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "plantName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "issueType",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "issueName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "symptomsOrDamage",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "treatmentOrControl",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string[]",
+						"name": "causesOrBiology",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string",
+						"name": "detectedAt",
+						"type": "string"
+					}
+				],
+				"internalType": "struct CropHealthRecords.DetectionResult[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_plantName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_issueType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_issueName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_symptomsOrDamage",
+				"type": "string"
+			},
+			{
+				"internalType": "string[]",
+				"name": "_treatmentOrControl",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "_causesOrBiology",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string",
+				"name": "_detectedAt",
+				"type": "string"
+			}
+		],
+		"name": "storeDetectionResult",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]

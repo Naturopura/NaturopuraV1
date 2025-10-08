@@ -1,0 +1,77 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_phone",
+				"type": "string"
+			}
+		],
+		"name": "setFarmer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_farmerAddress",
+				"type": "address"
+			}
+		],
+		"name": "getFarmer",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "phone",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getMyDetails",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "phone",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
