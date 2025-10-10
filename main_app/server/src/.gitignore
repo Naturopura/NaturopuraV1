@@ -13,7 +13,7 @@ server/src/visionapi/crucial-raceway-459108-k2-efcf8535a54d.json
 # solidity-coverage files
 /coverage/
 /coverage.json
-main_app/server/src/visionapi/*.json
+
 
 # Hardhat Ignition default folder for deployments against a local node
 /ignition/deployments/chain-31337/
