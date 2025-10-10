@@ -319,7 +319,7 @@ const EquipmentSearch: React.FC = () => {
                                   <img
                                     src={`${
                                       import.meta.env.VITE_API_URL ||
-                                      "http://localhost:5000"
+                                      "http://localhost:5000/api"
                                     }${eq.image}`}
                                     alt={eq.name}
                                     className="w-10 h-8 rounded object-cover cursor-pointer hover:opacity-80 transition-opacity"

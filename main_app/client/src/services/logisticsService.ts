@@ -36,7 +36,7 @@ class LogisticsService {
     }
 
     // Use the same port as the API server
-    let socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    let socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
     if (socketUrl.endsWith('/')) {
       socketUrl = socketUrl.slice(0, -1);
     }

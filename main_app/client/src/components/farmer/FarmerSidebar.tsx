@@ -69,7 +69,7 @@ const FarmerSidebar: React.FC = () => {
   const handleMarketplaceClick = () => {
     const token = localStorage.getItem("token");
     if (token) {
-      window.location.href = `http://localhost:5175/marketplace/login?token=${token}`;
+      window.location.href = `${import.meta.env.VITE_MARKETPLACE_LINK}/marketplace/login?token=${token}`;
     } else {
       console.error("No token found!");
     }

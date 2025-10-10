@@ -87,7 +87,9 @@ const ProductList = ({ onPurchase, onProductClick, currentUserId, hideOwnerFeatu
         // Process image URLs for each product
         const productsWithProcessedImages = response.data.map(product => ({
           ...product,
-          processedImages: product.images.map(image => getImageUrl(image))
+          processedImages: product.images.map(image =>
+            image.startsWith('https://res.cloudinary.com') ? image : getImageUrl(image)
+          )
         }));
         setProducts(productsWithProcessedImages);
         setTimeout(() => setIsVisible(true), 100); // For fade-in effect

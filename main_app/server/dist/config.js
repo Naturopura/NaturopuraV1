@@ -4,5 +4,10 @@ exports.default = {
     jwtSecret: process.env.JWT_SECRET || 'your_jwt_secret_key',
     jwtExpiration: '24h',
     mongoURI: process.env.MONGO_URI || 'mongodb://localhost:27017/naturopura',
-    port: process.env.PORT || 5000
+    port: process.env.PORT || 5000,
+    cloudinary: {
+        cloud_name: process.env.CLOUDINARY_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET
+    }
 };

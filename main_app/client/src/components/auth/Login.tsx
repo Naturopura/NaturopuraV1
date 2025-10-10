@@ -104,16 +104,12 @@ function Login() {
       }
 
       // Navigation logic
-      if (user.kyc?.status === "verified") {
-        if (user.role === "admin") navigate("/admin/dashboard");
-        else if (user.role === "farmer") navigate("/farmer/dashboard");
-        else if (user.role === "delivery_partner") navigate("/delivery-partner/dashboard");
-        else if (user.role === "store_manager") navigate("/store_manager/dashboard");
-        else if (user.role === "vendor") navigate("/vendor/dashboard");
-        else navigate("/");
-      } else {
-        navigate("/farmer/ekyc");
-      }
+      if (user.role === "admin") navigate("/admin/dashboard");
+      else if (user.role === "farmer") navigate("/farmer/dashboard");
+      else if (user.role === "delivery_partner") navigate("/delivery-partner/dashboard");
+      else if (user.role === "store_manager") navigate("/store_manager/dashboard");
+      else if (user.role === "vendor") navigate("/vendor/dashboard");
+      else navigate("/");
     } catch (error) {
       const errorMessage = handleApiError(error);
       console.error("Login error:", { message: errorMessage, error });

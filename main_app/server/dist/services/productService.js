@@ -48,8 +48,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPricePredictions = exports.deleteProductById = exports.updateProductById = exports.createNewProduct = exports.fetchProductsByCategory = exports.fetchProductById = exports.fetchAllProducts = void 0;
 const productDao = __importStar(require("../dao/productDao"));
 const axios_1 = __importDefault(require("axios"));
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
+const config_1 = __importDefault(require("../config"));
+const cloudinary_1 = require("cloudinary");
+cloudinary_1.v2.config(config_1.default.cloudinary);
 const fetchAllProducts = () => __awaiter(void 0, void 0, void 0, function* () {
     return yield productDao.findAllProducts();
 });
@@ -63,8 +64,14 @@ const fetchProductsByCategory = (category) => __awaiter(void 0, void 0, void 0, 
 });
 exports.fetchProductsByCategory = fetchProductsByCategory;
 const createNewProduct = (body, userId, files) => __awaiter(void 0, void 0, void 0, function* () {
-    const imagePaths = (files === null || files === void 0 ? void 0 : files.map((file) => `/uploads/products/${file.filename}`)) || [];
-    return yield productDao.createProductRecord(Object.assign(Object.assign({}, body), { price: Number(body.price), quantity: Number(body.quantity), farmerId: userId, images: imagePaths, status: 'available' }));
+    const imageUrls = [];
+    if (files && files.length > 0) {
+        for (const file of files) {
+            const result = yield cloudinary_1.v2.uploader.upload(file.path, { folder: 'products' });
+            imageUrls.push(result.secure_url);
+        }
+    }
+    return yield productDao.createProductRecord(Object.assign(Object.assign({}, body), { price: Number(body.price), quantity: Number(body.quantity), farmerId: userId, images: imageUrls, status: 'available' }));
 });
 exports.createNewProduct = createNewProduct;
 const updateProductById = (productId, body, userId, files) => __awaiter(void 0, void 0, void 0, function* () {
@@ -81,19 +88,13 @@ const updateProductById = (productId, body, userId, files) => __awaiter(void 0, 
     }
     let updatedImages = [...product.images];
     if (files === null || files === void 0 ? void 0 : files.length) {
-        const newImages = files.map(file => `/uploads/products/${file.filename}`);
+        const newImages = [];
+        for (const file of files) {
+            const result = yield cloudinary_1.v2.uploader.upload(file.path, { folder: 'products' });
+            newImages.push(result.secure_url);
+        }
         const keepImages = body.keepImages ? JSON.parse(body.keepImages) : [];
-        if (keepImages.length) {
-            updatedImages = [...keepImages, ...newImages];
-        }
-        else {
-            product.images.forEach(img => {
-                const filePath = path_1.default.join(__dirname, '../../uploads/products', path_1.default.basename(img));
-                if (fs_1.default.existsSync(filePath))
-                    fs_1.default.unlinkSync(filePath);
-            });
-            updatedImages = newImages;
-        }
+        updatedImages = [...keepImages, ...newImages];
     }
     const updatedProduct = yield productDao.updateProductById(productId, Object.assign(Object.assign({}, body), { price: Number(body.price), quantity: Number(body.quantity), images: updatedImages }));
     if (!updatedProduct) {
@@ -114,11 +115,6 @@ const deleteProductById = (productId, userId) => __awaiter(void 0, void 0, void 
     if (farmerIdStr !== userId) {
         throw new Error('Not authorized');
     }
-    product.images.forEach(img => {
-        const filePath = path_1.default.join(__dirname, '../../uploads/products', path_1.default.basename(img));
-        if (fs_1.default.existsSync(filePath))
-            fs_1.default.unlinkSync(filePath);
-    });
     yield productDao.deleteProductById(productId);
 });
 exports.deleteProductById = deleteProductById;

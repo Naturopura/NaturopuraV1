@@ -29,7 +29,7 @@ const EkycForm = () => {
     setError('');
     
     try {
-      const res = await axios.post('http://localhost:5000/api/ekyc/connect', {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/ekyc/connect`, {
         aadhaarNumber,
       });
 
@@ -82,7 +82,7 @@ const EkycForm = () => {
         }
 
         const res = await axios.post(
-            'http://localhost:5000/api/ekyc/verify-otp',
+            `${import.meta.env.VITE_API_URL}/ekyc/verify-otp`,
             {
                 otp,
                 sessionId,

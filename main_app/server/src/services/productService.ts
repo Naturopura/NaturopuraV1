@@ -2,6 +2,10 @@ import * as productDao from '../dao/productDao';
 import axios from 'axios';
 import path from 'path';
 import fs from 'fs';
+import config from '../config';
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config(config.cloudinary);
 
 export const fetchAllProducts = async () => {
   return await productDao.findAllProducts();
@@ -16,14 +20,20 @@ export const fetchProductsByCategory = async (category: string) => {
 };
 
 export const createNewProduct = async (body: any, userId: string, files: Express.Multer.File[]) => {
-  const imagePaths = files?.map((file) => `/uploads/products/${file.filename}`) || [];
+  const imageUrls: string[] = [];
+  if (files && files.length > 0) {
+    for (const file of files) {
+      const result = await cloudinary.uploader.upload(file.path, { folder: 'products' });
+      imageUrls.push(result.secure_url);
+    }
+  }
 
   return await productDao.createProductRecord({
     ...body,
     price: Number(body.price),
     quantity: Number(body.quantity),
     farmerId: userId,
-    images: imagePaths,
+    images: imageUrls,
     status: 'available'
   });
 };
@@ -45,18 +55,14 @@ export const updateProductById = async (productId: string, body: any, userId: st
   let updatedImages = [...product.images];
 
   if (files?.length) {
-    const newImages = files.map(file => `/uploads/products/${file.filename}`);
+    const newImages: string[] = [];
+    for (const file of files) {
+      const result = await cloudinary.uploader.upload(file.path, { folder: 'products' });
+      newImages.push(result.secure_url);
+    }
     const keepImages = body.keepImages ? JSON.parse(body.keepImages) : [];
 
-    if (keepImages.length) {
-      updatedImages = [...keepImages, ...newImages];
-    } else {
-      product.images.forEach(img => {
-        const filePath = path.join(__dirname, '../../uploads/products', path.basename(img));
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-      });
-      updatedImages = newImages;
-    }
+    updatedImages = [...keepImages, ...newImages];
   }
 
   const updatedProduct = await productDao.updateProductById(
@@ -88,11 +94,6 @@ export const deleteProductById = async (productId: string, userId: string) => {
   if (farmerIdStr !== userId) {
     throw new Error('Not authorized');
   }
-
-  product.images.forEach(img => {
-    const filePath = path.join(__dirname, '../../uploads/products', path.basename(img));
-    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-  });
 
   await productDao.deleteProductById(productId);
 };

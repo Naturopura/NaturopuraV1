@@ -357,10 +357,10 @@ const Dashboard: React.FC = () => {
                         <div className="flex items-center gap-3">
                           {eq.image ? (
                             <img
-                              src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${eq.image}`}
+                              src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}${eq.image}`}
                               alt={eq.name}
                               className="w-12 h-12 rounded-lg object-cover cursor-pointer hover:opacity-80 transition-opacity"
-                              onClick={() => setSelectedImage(eq.image ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${eq.image}` : null)}
+                              onClick={() => setSelectedImage(eq.image ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}${eq.image}` : null)}
                             />
                           ) : (
                             <div className="p-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg">
@@ -448,10 +448,10 @@ const Dashboard: React.FC = () => {
                             <div className="flex items-center gap-3">
                               {eq.image ? (
                               <img
-                                src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${eq.image}`}
+                                src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}${eq.image}`}
                                 alt={eq.name}
                                 className="w-8 h-8 rounded object-cover cursor-pointer hover:opacity-80 transition-opacity"
-                                onClick={() => setSelectedImage(eq.image ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${eq.image}` : null)}
+                                onClick={() => setSelectedImage(eq.image ? `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}${eq.image}` : null)}
                               />
                               ) : (
                                 <div className="p-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 rounded">

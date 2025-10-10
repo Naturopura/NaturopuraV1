@@ -6,21 +6,17 @@ import FarmerLayout from "../layouts/FarmerLayout";
 // Import our custom components
 import ImageUploadCard from "./components/ImageUploadCard";
 import DetectionResultsCard from "./components/DetectionResultsCard";
-import BlockchainResultsCard from "./components/BlockchainResultsCard";
 import PDFContent from "./components/PDFContent";
 
 // Import utilities and types
-import { LanguageOption, BackendResponseResult, DetectionResultFromContract, MultiLangString } from "./types";
+import { LanguageOption, BackendResponseResult, MultiLangString } from "./types";
 import uiTexts from "./uiTexts";
 
 // Import PDF libraries
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas-pro';
 
-// Import ethers for blockchain
-import { ethers } from "ethers";
-import CONTRACT_ABI from "../../constants/CropHealthRecords.json";
-import { CONTRACT_ADDRESSES } from "../../constants/crop_health_addrs";
+
 
 interface ApiError extends Error {
   response?: {
@@ -42,36 +38,9 @@ const CropHealthDetection = () => {
   const [showTempPdfContent, setShowTempPdfContent] = useState(false); // State to control temp PDF content visibility
 
   // New state for blockchain detection results
-  const [blockchainResults, setBlockchainResults] = useState<DetectionResultFromContract[] | null>(null);
-  const [blockchainLoading, setBlockchainLoading] = useState(false);
   const [blockchainError, setBlockchainError] = useState<string | null>(null);
 
-  // Setup ethers provider and contract instance
-  const getContract = async () => {
-    if (!window.ethereum) {
-      throw new Error("MetaMask is not installed");
-    }
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-    const contract = new ethers.Contract(CONTRACT_ADDRESSES, CONTRACT_ABI, signer);
-    return contract;
-  };
 
-  // Function to fetch detection results from blockchain contract
-  const fetchBlockchainResults = async () => {
-    setBlockchainLoading(true);
-    setBlockchainError(null);
-    try {
-      const contract = await getContract();
-      const results: DetectionResultFromContract[] = await contract.getMyDetectionResults();
-      setBlockchainResults(results);
-    } catch (err) {
-      const error = err as Error;
-      setBlockchainError(error.message);
-    } finally {
-      setBlockchainLoading(false);
-    }
-  };
 
   // Create refs for the elements to be captured
   const tempPdfContentRef = useRef<HTMLDivElement>(null); // NEW ref for hidden PDF content
@@ -83,7 +52,6 @@ const CropHealthDetection = () => {
       setImagePreview(URL.createObjectURL(file));
       setError(null);
       setResult(null);
-      setBlockchainResults(null);
       setBlockchainError(null);
     }
   };
@@ -103,7 +71,7 @@ const CropHealthDetection = () => {
     formData.append("image", selectedImage);
 
     try {
-      const response = await fetch("http://localhost:5000/api/crops/detect", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/crops/detect`, {
         method: "POST",
         body: formData,
       });
@@ -121,7 +89,6 @@ const CropHealthDetection = () => {
       }
 
       setResult(data);
-      setBlockchainResults(null);
       setBlockchainError(null);
     } catch (err) {
       const error = err as ApiError;
@@ -238,13 +205,6 @@ const CropHealthDetection = () => {
           </Alert>
         )}
 
-        <BlockchainResultsCard
-          blockchainResults={blockchainResults}
-          blockchainLoading={blockchainLoading}
-          blockchainError={blockchainError}
-          fetchBlockchainResults={fetchBlockchainResults}
-          currentTexts={currentTexts}
-        />
 
         <DetectionResultsCard
           result={result}
