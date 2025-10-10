@@ -4,37 +4,37 @@ import posthog from 'posthog-js';
 
 // AuthContext.tsx
 interface User {
-    id: string;
-  name: string;
-  email: string;
- role: 'admin' | 'farmer' | 'delivery_partner' | 'store_manager' | 'vendor';
-  token: string | null;
-  phoneNumber?: string;
-  isPhoneVerified?: boolean;
-  phoneVerifiedAt?: Date;
-  location?: {
-    latitude: number;
-    longitude: number;
-  };
-  // Add the kyc property here 👇
-  kyc?: {
-    status: 'pending' | 'verified' | 'rejected';
-    phoneVerified: boolean;
-    aadhaarDetails?: {
-      number: string;
-      otpSent: boolean;
-      otpVerified: boolean;
-      transactionId: string;
-      verifiedAt: Date;
-    };
-    documents: {
-      aadhar?: string;
-      pan?: string;
-      selfie?: string;
-    };
-    verifiedAt?: Date;
-    remarks?: string;
-  };
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'farmer' | 'delivery_partner' | 'store_manager' | 'vendor';
+  token: string | null;
+  phoneNumber?: string;
+  isPhoneVerified?: boolean;
+  phoneVerifiedAt?: Date;
+  location?: {
+    latitude: number;
+    longitude: number;
+  };
+  // Add the kyc property here
+  kyc?: {
+    status: 'pending' | 'verified' | 'rejected';
+    phoneVerified: boolean;
+    aadhaarDetails?: {
+      number: string;
+      otpSent: boolean;
+      otpVerified: boolean;
+      transactionId: string;
+      verifiedAt: Date;
+    };
+    documents: {
+      aadhar?: string;
+      pan?: string;
+      selfie?: string;
+    };
+    verifiedAt?: Date;
+    remarks?: string;
+  };
 }
 
 export interface AuthContextType {
@@ -43,6 +43,7 @@ export interface AuthContextType {
   login: (userData: User, token: string) => void;
   logout: () => void;
   updateUser: (userData: User) => void;
+  setToken: (token: string | null) => void;
   isAuthenticated: boolean;
   loading: boolean;
 }
@@ -152,6 +153,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     login,
     logout,
     updateUser,
+    setToken,
     isAuthenticated: !!user && !!token,
     loading,
   };

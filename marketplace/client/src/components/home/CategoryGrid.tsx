@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Users } from "lucide-react";
+import LazyImage from '../ui/LazyImage';
 
 interface Category {
   slug: string;
@@ -132,11 +133,10 @@ const CategoryGrid: React.FC = () => {
 
                 {/* Image Container */}
                 <div className="relative overflow-hidden">
-                  <img
+                  <LazyImage
                     src={cat.image}
                     alt={cat.name}
-                    loading="lazy"
-                    className="w-full h-56 object-cover transform transition-transform duration-700 group-hover:scale-110"
+                    className="transform transition-transform duration-700 group-hover:scale-110"
                   />
 
                   {/* Gradient overlay */}

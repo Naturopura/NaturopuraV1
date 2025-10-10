@@ -100,7 +100,7 @@ const StoreManagerDashboard: React.FC = () => {
 
   const fetchAllProducts = async () => {
     try {
-      const response = await axios.get("api/products");
+      const response = await axios.get(`/api/products`);
       const data = Array.isArray(response.data) ? response.data : response.data.products;
       if (Array.isArray(data)) {
         setAllProducts(data);

@@ -28,7 +28,7 @@ connectDB()
     createDefaultAdmin(); // Create default admin once DB is connected
   })
 const corsOptions: cors.CorsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:5175'],
+  origin: ['http://localhost:5173', 'http://localhost:5175','https://market.naturopura.in'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token', 'Accept', 'X-Requested-With'],

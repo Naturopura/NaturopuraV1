@@ -2,11 +2,13 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { Eye, EyeOff, ShoppingBag, Mail, Lock } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const urlToken = searchParams.get("token");
+  const { setToken } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,6 +33,7 @@ const Login = () => {
       );
 
       localStorage.setItem("token", response.data.token);
+      setToken(response.data.token);
       console.log("✅ Login successful:", response.data);
       navigate("/");
     } catch (err: any) {
@@ -42,7 +45,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4 relative">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
