@@ -144,7 +144,7 @@ function Login() {
                 transition={{ duration: 0.6 }}
               >
                 <span className="text-naturopura-gradient">
-                  Welcome to Naturopura
+                  Welcome Back 
                 </span>
               </motion.h1>
             </>

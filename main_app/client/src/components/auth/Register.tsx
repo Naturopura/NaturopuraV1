@@ -616,7 +616,7 @@ const Register: React.FC = () => {
               transition={{ duration: 0.6 }}
             >
               <span className="text-naturopura-gradient">
-                Welcome to Naturopura
+                Welcome 
               </span>
             </motion.h1>
             <motion.p
