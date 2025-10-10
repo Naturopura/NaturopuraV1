@@ -4,11 +4,21 @@ import FarmerLayout from "../layouts/FarmerLayout";
 import { notificationService } from "../../services/notificationService";
 import { useAuth } from "../../context/AuthContext";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import LazyImage from "../ui/LazyImage";
 
 interface DetectedObjectType {
   label: string;
   confidence: number;
   boundingBox: number[];
+}
+
+interface RawMotionEvent {
+  _id: string;
+  timestamp: string;
+  photo: {
+    data: Uint8Array;
+  };
+  detectedObjects?: DetectedObjectType[];
 }
 
 interface MotionEventType {
@@ -46,6 +56,8 @@ const MotionEvent: React.FC = () => {
   const [sortOption, setSortOption] = useState("all");
   const { user } = useAuth();
   const latestEventIdRef = useRef<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 9;
 
   const rawPhoneNumber =
     localStorage.getItem("userPhoneNumber") || user?.phoneNumber || "";
@@ -56,7 +68,7 @@ const MotionEvent: React.FC = () => {
       const client = createApiClient();
       const res = await client.get(ENDPOINTS.GET_MOTION_EVENTS);
 
-      const processedEvents: MotionEventType[] = res.data.map((event: any) => ({
+      const processedEvents: MotionEventType[] = res.data.map((event: RawMotionEvent) => ({
         _id: event._id,
         timestamp: event.timestamp,
         photo: `data:image/jpeg;base64,${arrayBufferToBase64(
@@ -128,6 +140,7 @@ const MotionEvent: React.FC = () => {
 
   useEffect(() => {
     applySorting(sortOption, events);
+    setCurrentPage(1);
   }, [sortOption, events]);
 
   const sendNotificationManually = async (event: MotionEventType) => {
@@ -151,6 +164,11 @@ const MotionEvent: React.FC = () => {
       alert("Failed to send notification.");
     }
   };
+
+  const totalPages = Math.ceil(filteredEvents.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedEvents = filteredEvents.slice(startIndex, endIndex);
 
   return (
     <FarmerLayout title="Motion Events" subtitle="Detected Motion Events">
@@ -188,66 +206,87 @@ const MotionEvent: React.FC = () => {
           {filteredEvents.length === 0 ? (
             <p className="text-gray-500">No motion events found.</p>
           ) : (
-            <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-              {filteredEvents.map((event) => (
-                <div
-                  key={event._id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden dark:bg-gray-200 dark:shadow-gray-700"
-                >
-                  <img
-                    src={event.photo}
-                    alt="Motion"
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="p-4">
-                    <p className="text-sm text-gray-600 dark:text-black">
-                      Detected at:
-                    </p>
-                    <p className="font-semibold text-gray-900 dark:text-black">
-                      {formatTimestamp(event.timestamp)}
-                    </p>
+            <>
+              <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                {paginatedEvents.map((event) => (
+                  <div
+                    key={event._id}
+                    className="bg-white rounded-xl shadow-lg overflow-hidden dark:bg-gray-200 dark:shadow-gray-700"
+                  >
+                    <LazyImage
+                      src={event.photo}
+                      alt="Motion"
+                      className="w-full h-64 object-cover"
+                    />
+                    <div className="p-4">
+                      <p className="text-sm text-gray-600 dark:text-black">
+                        Detected at:
+                      </p>
+                      <p className="font-semibold text-gray-900 dark:text-black">
+                        {formatTimestamp(event.timestamp)}
+                      </p>
 
-                    {event.detectedObjects.length > 0 && (
-                      <div className="mt-4">
-                        <p className="text-sm text-gray-600 dark:text-black">
-                          Detected Objects:
-                        </p>
-                        <ul className="list-disc pl-5 text-black dark:text-black">
-                          {event.detectedObjects.map((obj, idx) => (
-                            <li key={idx}>
-                              {obj.label} (Confidence:{" "}
-                              {(obj.confidence * 100).toFixed(0)}%)
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    <div className="mt-4 flex justify-between items-center">
-                      <span
-                        className={`text-sm ${
-                          event.notificationSent
-                            ? "text-green-600"
-                            : "text-gray-500"
-                        }`}
-                      >
-                        {event.notificationSent
-                          ? "Notification sent"
-                          : "No notification sent"}
-                      </span>
-                      {!event.notificationSent && formattedPhoneNumber && (
-                        <button
-                          onClick={() => sendNotificationManually(event)}
-                          className="px-3 py-1 bg-naturopura-gradient text-white rounded-md hover:bg-blue-700 text-sm"
-                        >
-                          Send notification
-                        </button>
+                      {event.detectedObjects.length > 0 && (
+                        <div className="mt-4">
+                          <p className="text-sm text-gray-600 dark:text-black">
+                            Detected Objects:
+                          </p>
+                          <ul className="list-disc pl-5 text-black dark:text-black">
+                            {event.detectedObjects.map((obj, idx) => (
+                              <li key={idx}>
+                                {obj.label} (Confidence:{" "}
+                                {(obj.confidence * 100).toFixed(0)}%)
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       )}
+
+                      <div className="mt-4 flex justify-between items-center">
+                        <span
+                          className={`text-sm ${
+                            event.notificationSent
+                              ? "text-green-600"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {event.notificationSent
+                            ? "Notification sent"
+                            : "No notification sent"}
+                        </span>
+                        {!event.notificationSent && formattedPhoneNumber && (
+                          <button
+                            onClick={() => sendNotificationManually(event)}
+                            className="px-3 py-1 bg-naturopura-gradient text-white rounded-md hover:bg-blue-700 text-sm"
+                          >
+                            Send notification
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+              <div className="flex justify-center items-center mt-4 space-x-4">
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50 dark:bg-gray-600"
+                >
+                  Previous
+                </button>
+                <span className="text-sm">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50 dark:bg-gray-600"
+                >
+                  Next
+                </button>
+              </div>
+            </>
           )}
         </div>
       )}
